@@ -6,7 +6,7 @@ class Glove(Embeddings):
                               dimensions=100,
                               corpus_size='27B',
                               vocabulary_size='1.2M',
-                              download_url='',
+                              download_url='http://www-nlp.stanford.edu/data/glove.twitter.27B.zip',
                               format='.txt',
                               architecture='glove',
                               trained_data='Twitter 2B Tweets')
@@ -15,7 +15,7 @@ class Glove(Embeddings):
                               dimensions=200,
                               corpus_size='27B',
                               vocabulary_size='1.2M',
-                              download_url='',
+                              download_url='http://www-nlp.stanford.edu/data/glove.twitter.27B.zip',
                               format='.txt',
                               architecture='glove',
                               trained_data='Twitter 2B Tweets')
@@ -24,7 +24,7 @@ class Glove(Embeddings):
                              dimensions=25,
                              corpus_size='27B',
                              vocabulary_size='1.2M',
-                             download_url='',
+                             download_url='http://www-nlp.stanford.edu/data/glove.twitter.27B.zip',
                              format='.txt',
                              architecture='glove',
                              trained_data='Twitter 2B Tweets')
@@ -33,7 +33,7 @@ class Glove(Embeddings):
                              dimensions=50,
                              corpus_size='27B',
                              vocabulary_size='1.2M',
-                             download_url='',
+                             download_url='http://www-nlp.stanford.edu/data/glove.twitter.27B.zip',
                              format='.txt',
                              architecture='glove',
                              trained_data='Twitter 2B Tweets')
@@ -42,7 +42,7 @@ class Glove(Embeddings):
                            dimensions=100,
                            corpus_size='6B',
                            vocabulary_size='0.4M',
-                           download_url='',
+                           download_url='http://nlp.stanford.edu/data/glove.6B.zip',
                            format='.txt',
                            architecture='glove',
                            trained_data='Wikipedia+Gigaword')
@@ -51,7 +51,7 @@ class Glove(Embeddings):
                            dimensions=200,
                            corpus_size='6B',
                            vocabulary_size='0.4M',
-                           download_url='',
+                           download_url='http://nlp.stanford.edu/data/glove.6B.zip',
                            format='.txt',
                            architecture='glove',
                            trained_data='Wikipedia+Gigaword'
@@ -61,7 +61,7 @@ class Glove(Embeddings):
                            dimensions=300,
                            corpus_size='6B',
                            vocabulary_size='0.4M',
-                           download_url='',
+                           download_url='http://nlp.stanford.edu/data/glove.6B.zip',
                            format='.txt',
                            architecture='glove',
                            trained_data='Wikipedia+Gigaword')
@@ -70,7 +70,7 @@ class Glove(Embeddings):
                           dimensions=50,
                           corpus_size='6B',
                           vocabulary_size='0.4M',
-                          download_url='',
+                          download_url='http://nlp.stanford.edu/data/glove.6B.zip',
                           format='.txt',
                           architecture='glove',
                           trained_data='Wikipedia+Gigaword')
@@ -79,7 +79,7 @@ class Glove(Embeddings):
                                 dimensions=300,
                                 corpus_size='42B',
                                 vocabulary_size='1.9M',
-                                download_url='',
+                                download_url='http://nlp.stanford.edu/data/glove.42B.300d.zip',
                                 format='.txt',
                                 architecture='glove',
                                 trained_data='Common Crawl (42B tokens)')
@@ -88,7 +88,7 @@ class Glove(Embeddings):
                                  dimensions=300,
                                  corpus_size='840B',
                                  vocabulary_size='2.2M',
-                                 download_url='',
+                                 download_url='http://nlp.stanford.edu/data/glove.840B.300d.zip',
                                  format='.txt',
                                  architecture='glove',
                                  trained_data='Common Crawl (840B tokens)')
