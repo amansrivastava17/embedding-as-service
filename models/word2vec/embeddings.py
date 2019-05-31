@@ -9,7 +9,7 @@ class Word2Vec(Embeddings):
                                   download_url='https://s3.amazonaws.com/dl4j-distribution/GoogleNews-vectors-negative300.bin.gz',
                                   format='.vec',
                                   architecture='skip-gram',
-                                  trained_data=[]
+                                  trained_data='Google News'
                                   )
 
     _members = (
