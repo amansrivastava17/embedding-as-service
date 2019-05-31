@@ -9,7 +9,7 @@ class Word2Vec(Embeddings):
                                   download_url='',
                                   format='.vec',
                                   architecture='skip-gram',
-                                  trained_data=[]
+                                  trained_data='Google News'
                                   )
 
     _members = (
