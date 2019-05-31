@@ -6,7 +6,7 @@ class Word2Vec(Embeddings):
                                   dimensions=300,
                                   corpus_size='100B',
                                   vocabulary_size='3M',
-                                  download_path='',
+                                  download_url='',
                                   format='.vec',
                                   architecture='skip-gram',
                                   trained_data=[]
