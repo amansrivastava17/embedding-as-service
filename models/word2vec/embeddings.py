@@ -6,7 +6,7 @@ class Word2Vec(Embeddings):
                                   dimensions=300,
                                   corpus_size='100B',
                                   vocabulary_size='3M',
-                                  download_url='',
+                                  download_url='https://s3.amazonaws.com/dl4j-distribution/GoogleNews-vectors-negative300.bin.gz',
                                   format='vec',
                                   architecture='skip-gram',
                                   trained_data='Google News'

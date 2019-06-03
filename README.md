@@ -1,4 +1,5 @@
-# v1
+## v1
+##
 To do
 1. Download all pretrained Models - https://developer.syn.co.in/tutorial/bot/oscova/pretrained-vectors.html
 2. Build end to end working model for all embeddings with mean, max, hierarchical pooling.

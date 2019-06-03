@@ -6,7 +6,7 @@ class FastText(Embeddings):
                                 dimensions=300,
                                 corpus_size='16B',
                                 vocabulary_size='1M',
-                                download_url='',
+                                download_url='https://dl.fbaipublicfiles.com/fasttext/vectors-english/wiki-news-300d-1M.vec.zip',
                                 format='vec',
                                 architecture='CBOW',
                                 trained_data='Wikipedia 2017')
@@ -15,7 +15,7 @@ class FastText(Embeddings):
                             dimensions=300,
                             corpus_size='600B',
                             vocabulary_size='2M',
-                            download_url='',
+                            download_url='https://dl.fbaipublicfiles.com/fasttext/vectors-english/crawl-300d-2M.vec.zip',
                             format='vec',
                             architecture='CBOW',
                             trained_data='Common Crawl (600B tokens)')
