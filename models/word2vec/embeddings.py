@@ -7,7 +7,7 @@ class Word2Vec(Embeddings):
                                   corpus_size='100B',
                                   vocabulary_size='3M',
                                   download_url='',
-                                  format='.vec',
+                                  format='vec',
                                   architecture='skip-gram',
                                   trained_data='Google News'
                                   )
