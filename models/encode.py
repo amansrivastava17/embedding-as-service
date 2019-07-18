@@ -18,17 +18,17 @@ class Encoder(object):
         # check if embedding exits
         if embedding not in supported_embeddings:
             print(f"Given embedding \"{embedding}\" is not supported, use below available embeddings:\n"
-                  f"-> {supported_embeddings}")
+                  f"{supported_embeddings}")
             return
 
-        self.embedding_model_dict = importlib.import_module(
-            f'models.{embedding}').EMBEDDING_MODELS
+        self.embedding_cls = importlib.import_module(
+            f'models.{embedding}').Embeddings()
 
         # check if given model exits for embedding
-        model_names = self.embedding_model_dict.keys()
+        model_names = list(self.embedding_cls.EMBEDDING_MODELS.keys())
         if model_name not in model_names:
             print(f"Given embedding \"{embedding}\" does not have any model \"{model_name}\", here are the supported "
-                  f"models: \n-> {model_names}")
+                  f"models: {model_names}")
             return
 
         self.model_path = self._get_or_download_model(download)
@@ -73,10 +73,16 @@ class Encoder(object):
                 return
 
             model_download_path = model_path + '.zip'
-            model_download_url = self.embedding_model_dict[self.model_name].download_url
+            model_download_url = self.embedding_cls.EMBEDDING_MODELS[self.model_name].download_url
             print(f"Model does not exists, Downloading model: {self.model_name}")
             download_from_url(model_download_url, model_download_path)
             unzip(model_download_path, model_path)
             os.remove(model_download_path)
 
         return model_path
+
+    def load_model(self):
+        pass
+
+    def encode(self):
+        pass

@@ -14,3 +14,4 @@ class Embedding(NamedTuple):
     format: str
     architecture: str
     trained_data: str
+    language: str
