@@ -111,17 +111,17 @@ class Embeddings(object):
 
     word_vectors: Dict[Any, Any] = {}
     vocab: Set[str] = set()
-    model_name: str
+    model: str
 
     @classmethod
     def _tokens(cls, text: str) -> List[str]:
-        return tokenizer(text, cls.EMBEDDING_MODELS[cls.model_name].language)
+        return tokenizer(text, cls.EMBEDDING_MODELS[cls.model].language)
 
     @classmethod
-    def load_model(cls, model_name: str, model_path: str):
+    def load_model(cls, model: str, model_path: str):
         try:
-            if cls.EMBEDDING_MODELS[model_name].format == 'txt':
-                f = open(os.path.join(model_path, model_name), 'r')
+            if cls.EMBEDDING_MODELS[model].format == 'txt':
+                f = open(os.path.join(model_path, model), 'r')
                 for line in f:
                     split_line = line.split()
                     word = split_line[0]
@@ -129,7 +129,7 @@ class Embeddings(object):
                     cls.word_vectors[word] = embedding
                     cls.vocab.add(word)
                 print("Model loaded Successfully !")
-                cls.model_name = model_name
+                cls.model = model
                 return cls
         except Exception as e:
             print('Error loading Model, ', str(e))
@@ -137,7 +137,7 @@ class Embeddings(object):
 
     @classmethod
     def encode(cls, text: str, pooling: str = 'mean', tfidf_dict: Optional[Dict[str, float]] = None) -> np.array:
-        result = np.zeros(cls.EMBEDDING_MODELS[cls.model_name].dimensions, dtype="float32")
+        result = np.zeros(cls.EMBEDDING_MODELS[cls.model].dimensions, dtype="float32")
         tokens = cls._tokens(text)
         vectors = np.array([cls.word_vectors[token] for token in tokens if token in cls.vocab])
 
@@ -159,6 +159,6 @@ class Embeddings(object):
                                          for token in tokens if token in cls.vocab and token in tfidf_dict])
             result = np.mean(weighted_vectors, axis=0)
         else:
-            print(f'Given pooling method "{pooling}" not implemented')
+            print(f'Given pooling method "{pooling}" not implemented in "{cls.embedding}"')
         return result
 

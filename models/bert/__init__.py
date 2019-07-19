@@ -18,7 +18,7 @@ class Embeddings(object):
                                   trained_data='BooksCorpus(800M) English Wikipedia (2500M) words',
                                   language='en'),
 
-                        Embedding(name=u'bert__base_cased',
+                        Embedding(name=u'bert_base_cased',
                                   dimensions=768,
                                   corpus_size='3300M',
                                   vocabulary_size='30522(sub-word)',
