@@ -36,16 +36,16 @@ class Embeddings(object):
 
     word_vectors: Dict[Any, Any] = {}
     vocab: Set[str] = set()
-    model_name: str
+    model: str
 
     @classmethod
     def _tokens(cls, text):
-        return tokenizer(text, cls.EMBEDDING_MODELS[cls.model_name].language)
+        return tokenizer(text, cls.EMBEDDING_MODELS[cls.model].language)
 
     @classmethod
-    def load_model(cls, model_name: str, model_path: str):
+    def load_model(cls, model: str, model_path: str):
         try:
-            if cls.EMBEDDING_MODELS[model_name].format == 'vec':
+            if cls.EMBEDDING_MODELS[model].format == 'vec':
                 f = open(os.path.join(model_path, model), 'r')
                 next(f)
                 for line in f:
@@ -54,7 +54,7 @@ class Embeddings(object):
                     cls.word_vectors[word] = embedding
                     cls.vocab.add(word)
                 print("Model loaded Successfully !")
-                cls.model_name = model_name
+                cls.model_name = model
                 return cls
         except Exception as e:
             print('Error loading Model, ', str(e))
