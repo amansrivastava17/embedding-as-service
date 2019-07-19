@@ -4,6 +4,7 @@ import zipfile
 import hashlib
 import requests
 from pathlib import Path
+import os
 
 
 def unzip(zip_path: str, target_path: str = '.') -> None:
@@ -15,9 +16,12 @@ def unzip(zip_path: str, target_path: str = '.') -> None:
     Returns:
 
     """
-    zip_ref = zipfile.ZipFile(zip_path, 'r')
-    zip_ref.extractall(target_path)
-    zip_ref.close()
+    with zipfile.ZipFile(zip_path, 'r') as zipObj:
+        files = zipObj.namelist()
+        for file in files:
+            zip_dir_path = os.path.dirname(os.path.realpath(zip_path))
+            zipObj.extract(file, zip_dir_path)
+            os.rename(os.path.join(zip_dir_path, file), target_path)
 
 
 def tokenizer(text: str, language: str) -> List[str]:

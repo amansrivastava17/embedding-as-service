@@ -1,2 +1,3 @@
+numpy
 gensim==3.7.2
 requests==2.8.1

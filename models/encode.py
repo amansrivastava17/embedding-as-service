@@ -1,7 +1,7 @@
 from utils import home_directory, get_hashed_name, download_from_url, unzip
 from models import MODELS_DIR
 
-from typing import Union, Optional, List
+from typing import Union, Optional, List, Dict
 import importlib
 import os
 
@@ -34,6 +34,8 @@ class Encoder(object):
         self.model_path = self._get_or_download_model(download)
         if not self.model_path:
             print(f"Model does not exits, pass download param as True")
+
+        self._load_model()
 
     @staticmethod
     def get_supported_embeddings() -> List[str]:
@@ -81,8 +83,9 @@ class Encoder(object):
 
         return model_path
 
-    def load_model(self):
-        pass
+    def _load_model(self):
+        self.embedding_cls.load_model(self.model_name, self.model_path)
+        return
 
-    def encode(self):
-        pass
+    def encode(self, text: str, pool_method: str, tfidf_dict: Optional[Dict[str, float]] = None):
+        return self.embedding_cls.encode(text, pool_method, tfidf_dict)

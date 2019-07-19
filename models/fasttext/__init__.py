@@ -1,6 +1,7 @@
 from typing import List, Dict
 
 from models import Embedding
+from utils import tokenizer
 
 
 class Embeddings(object):
@@ -31,8 +32,9 @@ class Embeddings(object):
 
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
 
-    def tokenizer(self):
-        pass
+    @classmethod
+    def tokens(cls, text, model_name):
+        return tokenizer(text, Embeddings.EMBEDDING_MODELS[model_name].language)
 
     def encode(self):
         pass
