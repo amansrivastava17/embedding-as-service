@@ -5,9 +5,11 @@ import hashlib
 import requests
 from pathlib import Path
 import os
+import tarfile
+import gzip
 
 
-def unzip(zip_path: str, target_path: str = '.') -> None:
+def extract_file(zip_path: str, target_path: str = '.') -> None:
     """
     Unzip file at zip_path to target_path
     Args:
@@ -16,7 +18,18 @@ def unzip(zip_path: str, target_path: str = '.') -> None:
     Returns:
 
     """
-    with zipfile.ZipFile(zip_path, 'r') as zipObj:
+    if zip_path.endswith('.zip'):
+        opener, mode = zipfile.ZipFile, 'r'
+    elif zip_path.endswith('.tar.gz') or zip_path.endswith('.tgz'):
+        opener, mode = tarfile.open, 'r:gz'
+    elif zip_path.endswith('.tar.bz2') or zip_path.endswith('.tbz'):
+        opener, mode = tarfile.open, 'r:bz2'
+    elif zip_path.endswith('.gz'):
+        opener, mode = gzip.open, 'rb'
+    else:
+        raise(ValueError, f"Could not extract `{zip_path}` as no appropriate extractor is found")
+
+    with opener(zip_path, mode) as zipObj:
         files = zipObj.namelist()
         for file in files:
             zip_dir_path = os.path.dirname(os.path.realpath(zip_path))
