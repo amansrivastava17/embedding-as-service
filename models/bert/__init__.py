@@ -15,7 +15,8 @@ EMBEDDING_MODELS : List[Embedding] = [
                               download_url='https://tfhub.dev/google/bert_uncased_L-12_H-768_A-12/1',
                               format='tar.gz',
                               architecture='Layers=12, Hidden = 768, heads = 12',
-                              trained_data='BooksCorpus(800M) English Wikipedia (2500M) words'),
+                              trained_data='BooksCorpus(800M) English Wikipedia (2500M) words',
+                              language='en'),
 
                     Embedding(name=u'bert__base_cased',
                               dimensions=768,
@@ -24,7 +25,8 @@ EMBEDDING_MODELS : List[Embedding] = [
                               download_url='https://tfhub.dev/google/bert_cased_L-12_H-768_A-12/1',
                               format='tar.gz',
                               architecture='Layers=12, Hidden = 768, heads = 12',
-                              trained_data='BooksCorpus(800M) English Wikipedia (2500M) words'),
+                              trained_data='BooksCorpus(800M) English Wikipedia (2500M) words',
+                              language='en'),
                     Embedding(name=u'bert_multi_cased',
                               dimensions=768,
                               corpus_size='3300M',
@@ -32,7 +34,8 @@ EMBEDDING_MODELS : List[Embedding] = [
                               download_url='https://tfhub.dev/google/bert_multi_cased_L-12_H-768_A-12/1',
                               format='tar.gz',
                               architecture='Layers=12, Hidden = 768, heads = 12',
-                              trained_data='BooksCorpus(800M) English Wikipedia (2500M) words'),
+                              trained_data='BooksCorpus(800M) English Wikipedia (2500M) words',
+                              language='en'),
 
                     Embedding(name=u'bert_large_uncased',
                               dimensions=1024,
@@ -41,7 +44,8 @@ EMBEDDING_MODELS : List[Embedding] = [
                               download_url='https://tfhub.dev/google/bert_uncased_L-24_H-1024_A-16/1',
                               format='tar.gz',
                               architecture='Layers=24, Hidden = 1024, heads = 16',
-                              trained_data='BooksCorpus(800M) English Wikipedia (2500M) words'),
+                              trained_data='BooksCorpus(800M) English Wikipedia (2500M) words',
+                              language='en'),
                     Embedding(name=u'bert_large_uncased',
                               dimensions=1024,
                               corpus_size='3300M',
@@ -49,7 +53,8 @@ EMBEDDING_MODELS : List[Embedding] = [
                               download_url='https://tfhub.dev/google/bert_uncased_L-24_H-1024_A-16/1',
                               format='tar.gz',
                               architecture='Layers=24, Hidden = 1024, heads = 16',
-                              trained_data='BooksCorpus(800M) English Wikipedia (2500M) words')
+                              trained_data='BooksCorpus(800M) English Wikipedia (2500M) words',
+                              language='en')
                                 ]
 
 EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
