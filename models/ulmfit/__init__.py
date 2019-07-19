@@ -10,7 +10,8 @@ EMBEDDING_MODELS : List[Embedding] = [
                               download_url='http://files.fast.ai/models/wt103/',
                               format='.h5',
                               architecture='cbow',
-                              trained_data='Stephen Merity’s Wikitext 103 dataset')
+                              trained_data='Stephen Merity’s Wikitext 103 dataset',
+                              language='en')
                                 ]
 
 EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
