@@ -62,7 +62,7 @@ class Embeddings(object):
 
     @classmethod
     def encode(cls, text: str, pooling: str = 'mean', tfidf_dict: Optional[Dict[str, float]] = None) -> np.array:
-        result = np.zeros(cls.EMBEDDING_MODELS[cls.model_name].dimensions, dtype="float32")
+        result = np.zeros(cls.EMBEDDING_MODELS[cls.model].dimensions, dtype="float32")
         tokens = cls._tokens(text)
         vectors = np.array([cls.word_vectors[token] for token in tokens if token in cls.vocab])
 
