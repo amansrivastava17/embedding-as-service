@@ -1,4 +1,4 @@
-from utils import home_directory, get_hashed_name, download_from_url, unzip
+from utils import home_directory, get_hashed_name, download_from_url, extract_file
 from models import MODELS_DIR
 
 from typing import Union, Optional, List, Dict
@@ -78,7 +78,7 @@ class Encoder(object):
             model_download_url = self.embedding_cls.EMBEDDING_MODELS[self.model_name].download_url
             print(f"Model does not exists, Downloading model: {self.model_name}")
             download_from_url(model_download_url, model_download_path)
-            unzip(model_download_path, model_path)
+            extract_file(model_download_path, model_path)
             os.remove(model_download_path)
 
         return model_path
