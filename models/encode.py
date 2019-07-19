@@ -34,6 +34,7 @@ class Encoder(object):
         self.model_path = self._get_or_download_model(download)
         if not self.model_path:
             print(f"Model does not exits, pass download param as True")
+            return
 
         self._load_model()
 
@@ -78,7 +79,7 @@ class Encoder(object):
             model_download_url = self.embedding_cls.EMBEDDING_MODELS[self.model_name].download_url
             print(f"Model does not exists, Downloading model: {self.model_name}")
             download_from_url(model_download_url, model_download_path)
-            extract_file(model_download_path, model_path)
+            extract_file(model_download_path, model_path, self.model_name)
             os.remove(model_download_path)
 
         return model_path
@@ -87,5 +88,5 @@ class Encoder(object):
         self.embedding_cls.load_model(self.model_name, self.model_path)
         return
 
-    def encode(self, text: str, pool_method: str, tfidf_dict: Optional[Dict[str, float]] = None):
-        return self.embedding_cls.encode(text, pool_method, tfidf_dict)
+    def encode(self, text: str, pooling: str, tfidf_dict: Optional[Dict[str, float]] = None):
+        return self.embedding_cls.encode(text, pooling, tfidf_dict)

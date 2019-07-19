@@ -3,6 +3,7 @@ from typing import List, Dict, Set, Optional, Union, Any
 from models import Embedding
 from utils import tokenizer
 import numpy as np
+import os
 
 
 class Embeddings(object):
@@ -120,7 +121,7 @@ class Embeddings(object):
     def load_model(cls, model_name: str, model_path: str):
         try:
             if cls.EMBEDDING_MODELS[model_name].format == 'txt':
-                f = open(model_path, 'r')
+                f = open(os.path.join(model_path, model_name), 'r')
                 for line in f:
                     split_line = line.split()
                     word = split_line[0]
@@ -135,21 +136,21 @@ class Embeddings(object):
         return cls
 
     @classmethod
-    def encode(cls, text: str, pool_method: str = 'mean', tfidf_dict: Optional[Dict[str, float]] = None) -> np.array:
+    def encode(cls, text: str, pooling: str = 'mean', tfidf_dict: Optional[Dict[str, float]] = None) -> np.array:
         result = np.zeros(cls.EMBEDDING_MODELS[cls.model_name].dimensions, dtype="float32")
         tokens = cls._tokens(text)
         vectors = np.array([cls.word_vectors[token] for token in tokens if token in cls.vocab])
 
-        if pool_method == 'mean':
+        if pooling == 'mean':
             result = np.mean(vectors, axis=0)
 
-        elif pool_method == 'max':
+        elif pooling == 'max':
             result = np.max(vectors, axis=0)
 
-        elif pool_method == 'sum':
+        elif pooling == 'sum':
             result = np.sum(vectors, axis=0)
 
-        elif pool_method == 'tf-idf-sum':
+        elif pooling == 'tf-idf-sum':
             if not tfidf_dict:
                 print('Must provide tfidf dict')
                 return result
@@ -158,6 +159,6 @@ class Embeddings(object):
                                          for token in tokens if token in cls.vocab and token in tfidf_dict])
             result = np.mean(weighted_vectors, axis=0)
         else:
-            print(f'Given pool method "{pool_method}" not supported')
+            print(f'Given pooling method "{pooling}" not implemented')
         return result
 

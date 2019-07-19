@@ -1,0 +1,10 @@
+version: '3.5'
+
+services:
+  embedding-as-service:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    hostname: python
+    restart: always
+    tty: true
