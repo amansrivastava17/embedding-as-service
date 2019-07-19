@@ -45,7 +45,7 @@ class Embeddings(object):
     def load_model(cls, model_name: str, model_path: str):
         try:
             if cls.EMBEDDING_MODELS[model_name].format == 'vec':
-                f = open(model_path, 'r')
+                f = open(os.path.join(model_path, model), 'r')
                 next(f)
                 for line in f:
                     word = line.split()[0]

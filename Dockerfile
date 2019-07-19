@@ -21,4 +21,4 @@ RUN adduser --disabled-password --gecos '' myuser
 COPY requirements.txt /embedding-as-service/requirements.txt
 RUN pip install --no-cache-dir -r /embedding-as-service/requirements.txt
 
-ADD . /embedding-as-service
+ADD . /embedding-as-service/
