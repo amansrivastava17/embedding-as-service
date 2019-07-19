@@ -7,9 +7,9 @@ import os
 
 
 class Encoder(object):
-    def __init__(self, embedding: str, model_name: str, download: bool = False):
+    def __init__(self, embedding: str, model: str, download: bool = False):
         self.embedding = embedding
-        self.model_name = model_name
+        self.model = model
         self.embedding_model_dict = None
         self.model_path = None
 
@@ -26,8 +26,8 @@ class Encoder(object):
 
         # check if given model exits for embedding
         model_names = list(self.embedding_cls.EMBEDDING_MODELS.keys())
-        if model_name not in model_names:
-            print(f"Given embedding \"{embedding}\" does not have any model \"{model_name}\", here are the supported "
+        if model not in model_names:
+            print(f"Given embedding \"{embedding}\" does not have any model \"{model}\", here are the supported "
                   f"models: {model_names}")
             return
 
@@ -36,6 +36,7 @@ class Encoder(object):
             print(f"Model does not exits, pass download param as True")
             return
 
+        print('Loading Model (this might take few minutes).....')
         self._load_model()
 
     @staticmethod
@@ -68,7 +69,7 @@ class Encoder(object):
         if not os.path.exists(downloaded_models_dir):
             os.makedirs(downloaded_models_dir)
 
-        model_hashed_name = get_hashed_name(self.embedding + self.model_name)
+        model_hashed_name = get_hashed_name(self.embedding + self.model)
         model_path = os.path.join(downloaded_models_dir,  model_hashed_name)
 
         if not os.path.exists(model_path):
@@ -76,16 +77,16 @@ class Encoder(object):
                 return
 
             model_download_path = model_path + '.zip'
-            model_download_url = self.embedding_cls.EMBEDDING_MODELS[self.model_name].download_url
-            print(f"Model does not exists, Downloading model: {self.model_name}")
+            model_download_url = self.embedding_cls.EMBEDDING_MODELS[self.model].download_url
+            print(f"Model does not exists, Downloading model: {self.model}")
             download_from_url(model_download_url, model_download_path)
-            extract_file(model_download_path, model_path, self.model_name)
+            extract_file(model_download_path, model_path, self.model)
             os.remove(model_download_path)
-
+            print(f"Model downloaded successfully!")
         return model_path
 
     def _load_model(self):
-        self.embedding_cls.load_model(self.model_name, self.model_path)
+        self.embedding_cls.load_model(self.model, self.model_path)
         return
 
     def encode(self, text: str, pooling: str, tfidf_dict: Optional[Dict[str, float]] = None):
