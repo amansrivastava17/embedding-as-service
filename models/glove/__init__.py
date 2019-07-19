@@ -3,6 +3,7 @@ from typing import List, Dict, Set, Optional, Union, Any
 from models import Embedding
 from utils import tokenizer
 import numpy as np
+import os
 
 
 class Embeddings(object):
@@ -120,7 +121,7 @@ class Embeddings(object):
     def load_model(cls, model_name: str, model_path: str):
         try:
             if cls.EMBEDDING_MODELS[model_name].format == 'txt':
-                f = open(model_path, 'r')
+                f = open(os.path.join(model_path, model_name), 'r')
                 for line in f:
                     split_line = line.split()
                     word = split_line[0]
