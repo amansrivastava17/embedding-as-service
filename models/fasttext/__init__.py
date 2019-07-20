@@ -49,9 +49,9 @@ class Embeddings(object):
                 f = open(os.path.join(model_path, model), 'r')
                 next(f)
                 for line in f:
-                    word = line.split()[0]
-                    embedding = np.asarray(line.split()[1:])
-                    cls.word_vectors[word] = embedding
+                    split_line = line.split()
+                    word = split_line[0]
+                    cls.word_vectors[word] = np.array([float(val) for val in split_line[1:]])
                     cls.vocab.add(word)
                 print("Model loaded Successfully !")
                 cls.model = model
