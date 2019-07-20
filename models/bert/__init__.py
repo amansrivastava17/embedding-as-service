@@ -21,7 +21,7 @@ class Embeddings(object):
                                   download_url='https://storage.googleapis.com/tfhub-modules/'
                                                'google/bert_uncased_L-12_H-768_A-12/1.tar.gz',
                                   format='tar.gz',
-                                  architecture='Layers=12, Hidden = 768, heads = 12',
+                                  architecture='Transformer, Layers=12, Hidden = 768, heads = 12',
                                   trained_data='BooksCorpus(800M) English Wikipedia (2500M) words',
                                   language='en'),
 
@@ -32,7 +32,7 @@ class Embeddings(object):
                                   download_url='https://storage.googleapis.com/tfhub-modules/google/'
                                                'bert_cased_L-12_H-768_A-12/1.tar.gz',
                                   format='tar.gz',
-                                  architecture='Layers=12, Hidden = 768, heads = 12',
+                                  architecture='Transformer Layers=12, Hidden = 768, heads = 12',
                                   trained_data='BooksCorpus(800M) English Wikipedia (2500M) words',
                                   language='en'),
 
@@ -43,7 +43,7 @@ class Embeddings(object):
                                   download_url='https://storage.googleapis.com/tfhub-modules/google/'
                                                'bert_multi_cased_L-12_H-768_A-12/1.tar.gz',
                                   format='tar.gz',
-                                  architecture='Layers=12, Hidden = 768, heads = 12',
+                                  architecture='Transformer Layers=12, Hidden = 768, heads = 12',
                                   trained_data='BooksCorpus(800M) English Wikipedia (2500M) words',
                                   language='en'),
 
@@ -54,7 +54,7 @@ class Embeddings(object):
                                   download_url='https://storage.googleapis.com/tfhub-modules/google/'
                                                'bert_uncased_L-24_H-1024_A-16/1.tar.gz',
                                   format='tar.gz',
-                                  architecture='Layers=24, Hidden = 1024, heads = 16',
+                                  architecture='Transformer Layers=24, Hidden = 1024, heads = 16',
                                   trained_data='BooksCorpus(800M) English Wikipedia (2500M) words',
                                   language='en'),
 
@@ -65,7 +65,7 @@ class Embeddings(object):
                                   download_url='https://storage.googleapis.com/tfhub-modules/google/'
                                                'bert_uncased_L-24_H-1024_A-16/1.tar.gz',
                                   format='tar.gz',
-                                  architecture='Layers=24, Hidden = 1024, heads = 16',
+                                  architecture='Transformer Layers=24, Hidden = 1024, heads = 16',
                                   trained_data='BooksCorpus(800M) English Wikipedia (2500M) words',
                                   language='en')
                         ]
