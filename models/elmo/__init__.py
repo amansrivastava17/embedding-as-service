@@ -10,7 +10,8 @@ EMBEDDING_MODELS : List[Embedding] = [
                               download_url='https://tfhub.dev/google/elmo/2',
                               format='tar.gz',
                               architecture='embedding_layer,cnn_layer_with_maxpool,2 lstm layers',
-                              trained_data='One Billion Word Benchmark')
+                              trained_data='One Billion Word Benchmark',
+                              language='en')
                                 ]
 
 EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}

@@ -8,3 +8,4 @@ To do
 4. User will have the option for specifying their trained model path.
 5. Make a function to create embedding matrix.
 6. add functionality for sentence similarity.
+7. add bin file for fasttext

@@ -54,7 +54,7 @@ class Embeddings(object):
                     cls.word_vectors[word] = embedding
                     cls.vocab.add(word)
                 print("Model loaded Successfully !")
-                cls.model_name = model
+                cls.model = model
                 return cls
         except Exception as e:
             print('Error loading Model, ', str(e))
