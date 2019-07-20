@@ -1,5 +1,6 @@
 from typing import List, Dict, Any, Set, Optional
 import numpy as np
+from tqdm import tqdm
 import os
 
 from models import Embedding
@@ -47,7 +48,7 @@ class Embeddings(object):
             if cls.EMBEDDING_MODELS[model].format == 'vec':
                 f = open(os.path.join(model_path, model), 'r')
                 next(f)
-                for line in f:
+                for line in tqdm(f):
                     split_line = line.split()
                     word = split_line[0]
                     cls.word_vectors[word] = np.array([float(val) for val in split_line[1:]])

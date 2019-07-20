@@ -2,6 +2,7 @@ from typing import List, Dict, Set, Optional, Union, Any
 
 from models import Embedding
 from utils import tokenizer
+from tqdm import tqdm
 import numpy as np
 import os
 
@@ -121,7 +122,7 @@ class Embeddings(object):
         try:
             if cls.EMBEDDING_MODELS[model].format == 'txt':
                 f = open(os.path.join(model_path, model), 'r')
-                for line in f:
+                for line in tqdm(f):
                     split_line = line.split()
                     word = split_line[0]
                     cls.word_vectors[word] = np.array([float(val) for val in split_line[1:]])

@@ -1,7 +1,14 @@
-from typing import List, Dict
+from typing import List, Dict, Tuple, Any, Optional
 import numpy as np
 
 from models import Embedding
+import tensorflow as tf
+import tensorflow_hub as hub
+from tqdm import tqdm
+from bert.tokenization import FullTokenizer
+
+tf.enable_eager_execution()
+sess = tf.Session()
 
 
 class Embeddings(object):
@@ -65,14 +72,97 @@ class Embeddings(object):
 
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
 
-    @classmethod
-    def _tokens(cls, text: str) -> List[str]:
-        pass
+    tokenizer: FullTokenizer = None
+    max_seq_length: int = 128
+    bert_module = None
+    model: str
 
     @classmethod
-    def load_model(cls, model_name: str, model_path: str):
-        pass
+    def create_tokenizer_from_hub_module(cls, model_path: str):
+        """Get the vocab file and casing info from the Hub module."""
+        tokenization_info = cls.bert_module(signature="tokenization_info", as_dict=True)
+        vocab_file, do_lower_case = sess.run(
+            [
+                tokenization_info["vocab_file"],
+                tokenization_info["do_lower_case"],
+            ]
+        )
+
+        cls.tokenizer = FullTokenizer(vocab_file=vocab_file, do_lower_case=do_lower_case)
 
     @classmethod
-    def encode(cls, text: str, pooling: str = 'mean') -> np.array:
-        pass
+    def _model_single_input(cls, text: str) -> Tuple[List[int], List[int], List[int]]:
+        tokens_a = cls.tokenizer.tokenize(text)
+        if len(tokens_a) > cls.max_seq_length - 2:
+            tokens_a = tokens_a[0: (cls.max_seq_length - 2)]
+
+        tokens = []
+        segment_ids = []
+        tokens.append("[CLS]")
+        segment_ids.append(0)
+        for token in tokens_a:
+            tokens.append(token)
+            segment_ids.append(0)
+        tokens.append("[SEP]")
+        segment_ids.append(0)
+
+        input_ids = cls.tokenizer.convert_tokens_to_ids(tokens)
+
+        # The mask has 1 for real tokens and 0 for padding tokens. Only real
+        # tokens are attended to.
+        input_mask = [1] * len(input_ids)
+
+        # Zero-pad up to the sequence length.
+        while len(input_ids) < cls.max_seq_length :
+            input_ids.append(0)
+            input_mask.append(0)
+            segment_ids.append(0)
+
+        assert len(input_ids) == cls.max_seq_length
+        assert len(input_mask) == cls.max_seq_length
+        assert len(segment_ids) == cls.max_seq_length
+
+        return input_ids, input_mask, segment_ids
+
+    @classmethod
+    def load_model(cls, model: str, model_path: str):
+        cls.bert_module = hub.Module(model_path)
+        cls.create_tokenizer_from_hub_module(model_path)
+
+    @classmethod
+    def encode(cls, texts: List[str], pooling: str = 'mean', max_seq_length: int = 128) -> Optional[np.array]:
+        result = np.zeros(cls.EMBEDDING_MODELS[cls.model].dimensions)
+
+        cls.max_seq_length = max_seq_length
+        input_ids, input_masks, segment_ids = [], [], []
+        for text in tqdm(texts, desc="Converting examples to features"):
+            input_id, input_mask, segment_id = cls._model_single_input(text)
+            input_ids.append(input_id)
+            input_masks.append(input_mask)
+            segment_ids.append(segment_id)
+
+        bert_inputs = dict(
+            input_ids=np.array(input_ids),
+            input_mask=np.array(input_masks),
+            segment_ids=np.array(segment_ids))
+
+        bert_outputs = cls.bert_module(bert_inputs, signature="tokens", as_dict=True)
+        sequence_output = bert_outputs["sequence_output"]
+
+        if not pooling:
+            return sequence_output
+
+        if pooling == 'mean':
+            return tf.reduce_min(sequence_output, 0)
+
+        elif pooling == 'max':
+            return tf.reduce_max(sequence_output, 0)
+
+        elif pooling == 'min':
+            return tf.reduce_min(sequence_output, 0)
+
+        elif pooling == 'mean_max':
+            return tf.concat(tf.reduce_mean(sequence_output, 0), tf.reduce_max(sequence_output, 0))
+        else:
+            print(f"Pooling method \"{pooling}\" not implemented")
+            return None
