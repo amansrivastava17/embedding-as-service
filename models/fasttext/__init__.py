@@ -35,7 +35,6 @@ class Embeddings(object):
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
 
     word_vectors: Dict[Any, Any] = {}
-    vocab: Set[str] = set()
     model: str
 
     @classmethod
@@ -52,7 +51,6 @@ class Embeddings(object):
                     split_line = line.split()
                     word = split_line[0]
                     cls.word_vectors[word] = np.array([float(val) for val in split_line[1:]])
-                    cls.vocab.add(word)
                 print("Model loaded Successfully !")
                 cls.model = model
                 return cls
