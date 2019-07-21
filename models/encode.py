@@ -76,11 +76,11 @@ class Encoder(object):
             if not download:
                 return
 
-            model_download_path = model_path + '.zip'
+            model_download_path = model_path + '.' + self.embedding_cls.EMBEDDING_MODELS[self.model].format
             model_download_url = self.embedding_cls.EMBEDDING_MODELS[self.model].download_url
             print(f"Model does not exists, Downloading model: {self.model}")
             download_from_url(model_download_url, model_download_path)
-            extract_file(model_download_path, model_path, self.model)
+            extract_file(model_download_path, model_path)
             os.remove(model_download_path)
             print(f"Model downloaded successfully!")
         return model_path

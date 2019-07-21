@@ -9,3 +9,5 @@ To do
 5. Make a function to create embedding matrix.
 6. add functionality for sentence similarity.
 7. add bin file for fasttext
+8. create tokenizer inside class only
+9. Optimize vocab lookup in word vectors

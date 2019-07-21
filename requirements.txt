@@ -1,6 +1,5 @@
 tqdm
 numpy
-gensim==3.7.2
 requests==2.20.0
 bert-tensorflow==1.0.1
 tensorflow_hub==0.4.0

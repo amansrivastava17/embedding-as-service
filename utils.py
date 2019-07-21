@@ -6,14 +6,13 @@ import requests
 from pathlib import Path
 import tarfile
 import gzip
-import os
 
 
-def extract_file(zip_path: str, target_path: str = '.', extracted_filename: Optional[str] = None) -> None:
+def extract_file(zip_path: str, target_path: str = '.') -> None:
     """
     Unzip file at zip_path to target_path
     Args:
-        extracted_filename:
+        extract_filename:
         zip_path:
         target_path:
     Returns:
@@ -31,13 +30,7 @@ def extract_file(zip_path: str, target_path: str = '.', extracted_filename: Opti
         raise(ValueError, f"Could not extract `{zip_path}` as no appropriate extractor is found")
 
     with opener(zip_path, mode) as zipObj:
-        if not extracted_filename:
-            zipObj.extractall(target_path)
-        else:
-            files = zipObj.namelist()
-            for file in files:
-                zipObj.extract(file, target_path)
-                os.rename(os.path.join(target_path, file), os.path.join(target_path, extracted_filename))
+        zipObj.extractall(target_path)
 
 
 def tokenizer(text: str, language: str) -> List[str]:

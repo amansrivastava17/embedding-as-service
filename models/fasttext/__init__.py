@@ -16,7 +16,7 @@ class Embeddings(object):
                   vocabulary_size='1M',
                   download_url='https://dl.fbaipublicfiles.com/fasttext/vectors-english/'
                                'wiki-news-300d-1M.vec.zip',
-                  format='vec',
+                  format='zip',
                   architecture='CBOW',
                   trained_data='Wikipedia 2017',
                   language='en'),
@@ -27,7 +27,7 @@ class Embeddings(object):
                   vocabulary_size='2M',
                   download_url='https://dl.fbaipublicfiles.com/fasttext/vectors-english/'
                                'crawl-300d-2M.vec.zip',
-                  format='vec',
+                  format='zip',
                   architecture='CBOW',
                   trained_data='Common Crawl (600B tokens)',
                   language='en'),
@@ -45,16 +45,16 @@ class Embeddings(object):
     @classmethod
     def load_model(cls, model: str, model_path: str):
         try:
-            if cls.EMBEDDING_MODELS[model].format == 'vec':
-                f = open(os.path.join(model_path, model), 'r')
-                next(f)
-                for line in tqdm(f):
-                    split_line = line.split()
-                    word = split_line[0]
-                    cls.word_vectors[word] = np.array([float(val) for val in split_line[1:]])
-                print("Model loaded Successfully !")
-                cls.model = model
-                return cls
+            model_file = [f for f in os.listdir(model_path) if os.path.isfile(os.path.join(model_path, f))]
+            f = open(os.path.join(model_path, model_file[0]), 'r')
+            next(f)
+            for line in tqdm(f):
+                split_line = line.split()
+                word = split_line[0]
+                cls.word_vectors[word] = np.array([float(val) for val in split_line[1:]])
+            print("Model loaded Successfully !")
+            cls.model = model
+            return cls
         except Exception as e:
             print('Error loading Model, ', str(e))
         return cls
@@ -63,7 +63,7 @@ class Embeddings(object):
     def encode(cls, text: str, pooling: str = 'mean', tfidf_dict: Optional[Dict[str, float]] = None) -> np.array:
         result = np.zeros(cls.EMBEDDING_MODELS[cls.model].dimensions, dtype="float32")
         tokens = cls._tokens(text)
-        vectors = np.array([cls.word_vectors[token] for token in tokens if token in cls.vocab])
+        vectors = np.array([cls.word_vectors[token] for token in tokens if token in cls.word_vectors.keys()])
 
         if pooling == 'mean':
             result = np.mean(vectors, axis=0)
@@ -80,7 +80,8 @@ class Embeddings(object):
                 return result
 
             weighted_vectors = np.array([tfidf_dict.get(token) * cls.word_vectors.get(token)
-                                         for token in tokens if token in cls.vocab and token in tfidf_dict])
+                                         for token in tokens if token in cls.word_vectors.keys()
+                                         and token in tfidf_dict])
             result = np.mean(weighted_vectors, axis=0)
         else:
             print(f'Given pooling method "{pooling}" not implemented')
