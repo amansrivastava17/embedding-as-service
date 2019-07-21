@@ -161,7 +161,7 @@ class Embeddings(object):
             return tf.reduce_min(sequence_output, 0)
 
         elif pooling == 'mean_max':
-            return tf.concat(tf.reduce_mean(sequence_output, 0), tf.reduce_max(sequence_output, 0))
+            return tf.concat(values=[tf.reduce_mean(sequence_output, 0), tf.reduce_max(sequence_output, 0)], axis=0)
         else:
             print(f"Pooling method \"{pooling}\" not implemented")
             return None
