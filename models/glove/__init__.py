@@ -134,7 +134,7 @@ class Embeddings(object):
         return cls
 
     @classmethod
-    def encode(cls, text: str, pooling: str = 'mean', tfidf_dict: Optional[Dict[str, float]] = None) -> np.array:
+    def encode(cls, text: str, pooling: str = 'mean', **kwargs) -> np.array:
         result = np.zeros(cls.EMBEDDING_MODELS[cls.model].dimensions, dtype="float32")
         tokens = cls._tokens(text)
 
@@ -150,10 +150,11 @@ class Embeddings(object):
             result = np.sum(vectors, axis=0)
 
         elif pooling == 'tf-idf-sum':
-            if not tfidf_dict:
+            if not kwargs.get('tfidf_dict'):
                 print('Must provide tfidf dict')
                 return result
 
+            tfidf_dict = kwargs.get('tfidf_dict')
             weighted_vectors = np.array([tfidf_dict.get(token) * cls.word_vectors.get(token)
                                          for token in tokens if token in cls.word_vectors.keys()
                                          and token in tfidf_dict])

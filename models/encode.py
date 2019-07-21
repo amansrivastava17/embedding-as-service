@@ -89,5 +89,5 @@ class Encoder(object):
         self.embedding_cls.load_model(self.model, self.model_path)
         return
 
-    def encode(self, text: list, pooling: str, tfidf_dict: Optional[Dict[str, float]] = None):
-        return self.embedding_cls.encode(text, pooling, tfidf_dict)
+    def encode(self, text: list, pooling: str, **kwargs):
+        return self.embedding_cls.encode(text, pooling, kwargs)

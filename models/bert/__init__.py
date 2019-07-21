@@ -130,8 +130,9 @@ class Embeddings(object):
         cls.model = model
 
     @classmethod
-    def encode(cls, text: str, pooling: str = 'mean', max_seq_length: int = 128) -> Optional[np.array]:
+    def encode(cls, text: str, pooling: str = 'mean', **kwargs) -> Optional[np.array]:
         texts = [text]
+        max_seq_length = kwargs.get('max_seq_length', 128)
         input_ids, input_masks, segment_ids = [], [], []
         for text in tqdm(texts, desc="Converting texts to features"):
             input_id, input_mask, segment_id = cls._model_single_input(text, max_seq_length)
