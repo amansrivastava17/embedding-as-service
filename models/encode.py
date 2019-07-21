@@ -90,4 +90,4 @@ class Encoder(object):
         return
 
     def encode(self, text: list, pooling: str, **kwargs):
-        return self.embedding_cls.encode(text, pooling, kwargs)
+        return self.embedding_cls.encode(text, pooling, **kwargs)
