@@ -73,7 +73,6 @@ class Embeddings(object):
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
 
     tokenizer: FullTokenizer = None
-    max_seq_length: int = 128
     bert_module = None
     model: str
 
@@ -91,10 +90,10 @@ class Embeddings(object):
         cls.tokenizer = FullTokenizer(vocab_file=vocab_file, do_lower_case=do_lower_case)
 
     @classmethod
-    def _model_single_input(cls, text: str) -> Tuple[List[int], List[int], List[int]]:
+    def _model_single_input(cls, text: str, max_seq_length: int) -> Tuple[List[int], List[int], List[int]]:
         tokens_a = cls.tokenizer.tokenize(text)
-        if len(tokens_a) > cls.max_seq_length - 2:
-            tokens_a = tokens_a[0: (cls.max_seq_length - 2)]
+        if len(tokens_a) > max_seq_length - 2:
+            tokens_a = tokens_a[0: (max_seq_length - 2)]
 
         tokens = []
         segment_ids = []
@@ -113,14 +112,14 @@ class Embeddings(object):
         input_mask = [1] * len(input_ids)
 
         # Zero-pad up to the sequence length.
-        while len(input_ids) < cls.max_seq_length :
+        while len(input_ids) < max_seq_length :
             input_ids.append(0)
             input_mask.append(0)
             segment_ids.append(0)
 
-        assert len(input_ids) == cls.max_seq_length
-        assert len(input_mask) == cls.max_seq_length
-        assert len(segment_ids) == cls.max_seq_length
+        assert len(input_ids) == max_seq_length
+        assert len(input_mask) == max_seq_length
+        assert len(segment_ids) == max_seq_length
 
         return input_ids, input_mask, segment_ids
 
@@ -133,10 +132,9 @@ class Embeddings(object):
     @classmethod
     def encode(cls, text: str, pooling: str = 'mean', max_seq_length: int = 128) -> Optional[np.array]:
         texts = [text]
-        cls.max_seq_length = max_seq_length
         input_ids, input_masks, segment_ids = [], [], []
-        for text in tqdm(texts, desc="Converting examples to features"):
-            input_id, input_mask, segment_id = cls._model_single_input(text)
+        for text in tqdm(texts, desc="Converting texts to features"):
+            input_id, input_mask, segment_id = cls._model_single_input(text, max_seq_length)
             input_ids.append(input_id)
             input_masks.append(input_mask)
             segment_ids.append(segment_id)
