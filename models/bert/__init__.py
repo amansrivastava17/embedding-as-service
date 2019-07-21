@@ -128,11 +128,10 @@ class Embeddings(object):
     def load_model(cls, model: str, model_path: str):
         cls.bert_module = hub.Module(model_path)
         cls.create_tokenizer_from_hub_module(model_path)
+        cls.model = model
 
     @classmethod
     def encode(cls, texts: List[str], pooling: str = 'mean', max_seq_length: int = 128) -> Optional[np.array]:
-        result = np.zeros(cls.EMBEDDING_MODELS[cls.model].dimensions)
-
         cls.max_seq_length = max_seq_length
         input_ids, input_masks, segment_ids = [], [], []
         for text in tqdm(texts, desc="Converting examples to features"):
