@@ -6,15 +6,12 @@ import numpy as np
 import os
 
 from models.xlnet.config import Flags
-from models import Embedding
+from models import Embedding, TF_SESS
 
 from xlnet.prepro_utils import preprocess_text, encode_ids
 from xlnet.data_utils import SEP_ID, CLS_ID
 from xlnet import xlnet
 
-
-# tf.enable_eager_execution()
-sess = tf.Session()
 
 SEG_ID_A = 0
 SEG_ID_B = 1

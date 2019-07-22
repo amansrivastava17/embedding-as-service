@@ -6,6 +6,7 @@ import importlib
 import os
 
 
+
 class Encoder(object):
     def __init__(self, embedding: str, model: str, download: bool = False):
         self.embedding = embedding
