@@ -7,7 +7,6 @@ import tensorflow_hub as hub
 
 
 sess = tf.Session()
-sess.run([tf.global_variables_initializer(), tf.tables_initializer()])
 
 class Embeddings(object):
     EMBEDDING_MODELS: List[Embedding] = [
@@ -54,6 +53,7 @@ class Embeddings(object):
         cls.model = model
 
     @classmethod
-    def encode(cls, text: str, pooling: str = None, **kwargs) -> Optional[np.array]:
-        embeddings = cls.use_module(text)
+    def encode(cls, text: str, pooling: str = None) -> Optional[np.array]:
+        sess.run([tf.global_variables_initializer(), tf.tables_initializer()])
+        embeddings = sess.run(cls.use_module(text))
         return embeddings
