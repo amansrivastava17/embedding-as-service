@@ -110,7 +110,7 @@ class Embeddings(object):
 
     @classmethod
     def load_model(cls, model: str, model_path: str):
-        model_path = os.path.join(model_path, next(os.walk(model_path))[1])
+        model_path = os.path.join(model_path, next(os.walk(model_path))[1][0])
         Flags.model_config_path = os.path.join(model_path, cls.mode_config_path)
         cls.xlnet_config = xlnet.XLNetConfig(json_path=Flags.model_config_path)
         cls.run_config = xlnet.create_run_config(is_training=True, is_finetune=True, FLAGS=Flags)
