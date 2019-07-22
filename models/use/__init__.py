@@ -11,7 +11,7 @@ sess.run([tf.global_variables_initializer(), tf.tables_initializer()])
 
 class Embeddings(object):
     EMBEDDING_MODELS: List[Embedding] = [
-                        Embedding(name=u'use',
+                        Embedding(name=u'use_dan',
                                   dimensions=512,
                                   corpus_size='na',
                                   vocabulary_size='230k',
