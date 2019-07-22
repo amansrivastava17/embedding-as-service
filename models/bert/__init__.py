@@ -152,7 +152,7 @@ class Embeddings(object):
             return sequence_output
 
         if pooling == 'mean':
-            return tf.reduce_min(sequence_output, 0)
+            return tf.reduce_mean(sequence_output, 0)
 
         elif pooling == 'max':
             return tf.reduce_max(sequence_output, 0)
