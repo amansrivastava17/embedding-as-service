@@ -54,6 +54,7 @@ class Embeddings(object):
 
     @classmethod
     def encode(cls, text: str, pooling: str = None) -> Optional[np.array]:
+        text = [text]
         sess.run([tf.global_variables_initializer(), tf.tables_initializer()])
         embeddings = sess.run(cls.use_module(text))
         return embeddings
