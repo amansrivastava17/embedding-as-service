@@ -129,6 +129,7 @@ class Embeddings(object):
         cls.bert_module = hub.Module(model_path)
         cls.create_tokenizer_from_hub_module(model_path)
         cls.model = model
+        print("Model loaded Successfully !")
 
     @classmethod
     def encode(cls, text: str, pooling: str = 'mean', **kwargs) -> Optional[np.array]:

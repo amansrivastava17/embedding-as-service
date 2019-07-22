@@ -111,12 +111,12 @@ class Embeddings(object):
     @classmethod
     def load_model(cls, model: str, model_path: str):
         model_path = os.path.join(model_path, next(os.walk(model_path))[1][0])
-        Flags.model_config_path = os.path.join(model_path, cls.mode_config_path)
-        cls.xlnet_config = xlnet.XLNetConfig(json_path=Flags.model_config_path)
+        cls.xlnet_config = xlnet.XLNetConfig(json_path=os.path.join(model_path, cls.mode_config_path))
         cls.run_config = xlnet.create_run_config(is_training=True, is_finetune=True, FLAGS=Flags)
 
         cls.load_tokenizer(model_path)
         cls.model = model
+        print("Model loaded Successfully !")
 
     @classmethod
     def encode(cls, text: str, pooling: str = 'mean', **kwargs) -> Optional[np.array]:
@@ -135,7 +135,7 @@ class Embeddings(object):
             run_config=cls.run_config,
             input_ids=np.array(input_ids, dtype=np.int32),
             seg_ids=np.array(segment_ids, dtype=np.int32),
-            input_mask=np.array(input_masks, dtype=np.int32))
+            input_mask=np.array(input_masks, dtype=np.float32))
 
         # Get a sequence output
         sequence_output = xlnet_model.get_sequence_output()
