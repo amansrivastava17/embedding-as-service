@@ -55,5 +55,5 @@ class Embeddings(object):
 
     @classmethod
     def encode(cls, text: str, pooling: str = None, **kwargs) -> Optional[np.array]:
-        embeddings = sess.run(cls.use_module(text))
+        embeddings = cls.use_module(text)
         return embeddings
