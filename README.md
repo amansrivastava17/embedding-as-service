@@ -11,3 +11,4 @@ To do
 7. add bin file for fasttext
 8. create tokenizer inside class only
 9. Optimize vocab lookup in word vectors
+10. Add batch size prediction
