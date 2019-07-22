@@ -1,12 +1,3 @@
-from enum import Enum
-
-
-class initEnum(Enum):
-    normal = 0
-    uniform = 1
-    default = normal
-
-
 class Flags:
 
     # Model
@@ -19,7 +10,7 @@ class Flags:
     use_bfloat16: bool = False  # Whether to use bfloat16.
 
     # Parameter initialization
-    init: Enum = initEnum
+    init: str = "normal"
     init_std: float = 0.2   # Initialization std when init is normal.
     init_range: float = 0.1  # Initialization std when init is uniform.
 
