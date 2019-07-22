@@ -91,3 +91,14 @@ class Encoder(object):
 
     def encode(self, text: str, pooling: str, **kwargs):
         return self.embedding_cls.encode(text, pooling, **kwargs)
+
+    def encode_batch(self, text_list: list, batch_size: int, pooling: str, **kwargs):
+        batch_opt = []
+        batch_tem = []
+        for i, text in enumerate(text_list):
+            batch_tem.append(self.encode(text, pooling, **kwargs))
+            if i % batch_size == 0:
+                batch_opt.append(batch_tem)
+                batch_tem = []
+        batch_opt.append(batch_tem)
+        return batch_opt
