@@ -16,7 +16,7 @@ class Embeddings(object):
                                   corpus_size='na',
                                   vocabulary_size='230k',
                                   download_url='https://storage.googleapis.com/tfhub-modules/'
-                                               'google/universal-sentence-encoder/2',
+                                               'google/universal-sentence-encoder/2.tar.gz',
                                   format='tar.gz',
                                   architecture='DAN',
                                   trained_data='wikipedia and other sources',
@@ -26,7 +26,7 @@ class Embeddings(object):
                                   corpus_size='na',
                                   vocabulary_size='230k',
                                   download_url='https://storage.googleapis.com/tfhub-modules/'
-                                               'google/universal-sentence-encoder-large/3',
+                                               'google/universal-sentence-encoder-large/3.tar.gz',
                                   format='tar.gz',
                                   architecture='Transformer',
                                   trained_data='wikipedia and other sources',
@@ -36,7 +36,7 @@ class Embeddings(object):
                                   corpus_size='na',
                                   vocabulary_size='na',
                                   download_url='https://storage.googleapis.com/tfhub-modules/'
-                                               'google/universal-sentence-encoder-lite/2',
+                                               'google/universal-sentence-encoder-lite/2.tar.gz',
                                   format='tar.gz',
                                   architecture='Transformer',
                                   trained_data='wikipedia and other sources',
