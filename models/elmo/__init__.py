@@ -56,9 +56,11 @@ class Embeddings(object):
         max_seq_length = kwargs.get('max_seq_length')
         if max_seq_length:
             text_tokens = [cls.padded_tokens(tokens, max_seq_length) for tokens in text_tokens]
+            seq_length = [max_seq_length] * len(texts)
+        else:
+            seq_length = [len(tokens) for tokens in text_tokens]
 
-        max_seq_length = max([len(tokens) for tokens in text_tokens])
-        embeddings = cls.elmo_module(inputs={"tokens": text_tokens, "sequence_len": max_seq_length},
+        embeddings = cls.elmo_module(inputs={"tokens": text_tokens, "sequence_len": seq_length},
                                      signature="tokens", as_dict=True)["elmo"]
 
         if not pooling:
