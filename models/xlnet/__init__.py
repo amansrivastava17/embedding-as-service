@@ -135,7 +135,7 @@ class Embeddings(object):
             run_config=cls.run_config,
             input_ids=np.array(input_ids),
             seg_ids=np.array(segment_ids),
-            input_mask=np.array(input_masks))
+            input_mask=np.array(input_masks, dtype=np.int64))
 
         # Get a sequence output
         sequence_output = xlnet_model.get_sequence_output()
