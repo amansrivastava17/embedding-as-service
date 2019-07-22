@@ -3,4 +3,6 @@ numpy
 requests==2.21.0
 bert-tensorflow==1.0.1
 tensorflow_hub==0.4.0
+sentencepiece==0.1.82
 tf-nightly
+git+https://github.com/amansrivastava17/xlnet.git

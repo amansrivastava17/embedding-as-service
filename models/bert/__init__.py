@@ -7,6 +7,7 @@ import tensorflow_hub as hub
 from tqdm import tqdm
 from bert.tokenization import FullTokenizer
 
+
 # tf.enable_eager_execution()
 sess = tf.Session()
 
