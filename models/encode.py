@@ -89,17 +89,14 @@ class Encoder(object):
         self.embedding_cls.load_model(self.model, self.model_path)
         return
 
-    def encode_op(self, text: str, pooling: str, **kwargs):
-        return self.embedding_cls.encode(text, pooling, **kwargs)
-
     def encode(self, text_list: list or str, batch_size: int, pooling: str, **kwargs):
         if type(text_list) == str:
-            return self.encode_op(text, pooling, **kwargs)
+            return self.embedding_cls.encode(text_list, pooling, **kwargs)
         else:
             batch_opt = []
             batch_tem = []
             for i, text in enumerate(text_list):
-                batch_tem.append(self.encode_op(text, pooling, **kwargs))
+                batch_tem.append(self.embedding_cls.encode(text, pooling, **kwargs))
                 if i % batch_size == 0:
                     batch_opt.append(batch_tem)
                     batch_tem = []
