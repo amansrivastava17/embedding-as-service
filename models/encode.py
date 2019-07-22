@@ -89,5 +89,5 @@ class Encoder(object):
         self.embedding_cls.load_model(self.model, self.model_path)
         return
 
-    def encode(self, text: list, pooling: str, **kwargs):
+    def encode(self, text: str, pooling: str, **kwargs):
         return self.embedding_cls.encode(text, pooling, **kwargs)
