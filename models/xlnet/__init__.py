@@ -5,7 +5,7 @@ from tqdm import tqdm
 import numpy as np
 import os
 
-from models.xlnet.config import FLAGS
+from models.xlnet.config import Flags
 from models import Embedding
 
 from xlnet.prepro_utils import preprocess_text, encode_ids
@@ -110,9 +110,9 @@ class Embeddings(object):
 
     @classmethod
     def load_model(cls, model: str, model_path: str):
-        FLAGS.model_config_path = os.path.join(model_path, cls.mode_config_path)
-        cls.xlnet_config = xlnet.XLNetConfig(json_path=FLAGS.model_config_path)
-        cls.run_config = xlnet.create_run_config(is_training=True, is_finetune=True, FLAGS=FLAGS)
+        Flags.model_config_path = os.path.join(model_path, cls.mode_config_path)
+        cls.xlnet_config = xlnet.XLNetConfig(json_path=Flags.model_config_path)
+        cls.run_config = xlnet.create_run_config(is_training=True, is_finetune=True, FLAGS=Flags)
 
         cls.load_tokenizer(model_path)
         cls.model = model
