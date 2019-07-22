@@ -1,7 +1,7 @@
 from utils import home_directory, get_hashed_name, download_from_url, extract_file
 from models import MODELS_DIR
 
-from typing import Union, Optional, List, Dict
+from typing import Union, Optional, List, Dict, Any
 import importlib
 import os
 
@@ -89,7 +89,7 @@ class Encoder(object):
         self.embedding_cls.load_model(self.model, self.model_path)
         return
 
-    def encode(self, text_list: list or str, batch_size: int, pooling: str, **kwargs):
+    def encode(self, text_list: Any[list, str], batch_size: int, pooling: str, **kwargs):
         if type(text_list) == str:
             return self.embedding_cls.encode(text_list, pooling, **kwargs)
         else:
