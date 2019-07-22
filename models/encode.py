@@ -89,14 +89,14 @@ class Encoder(object):
         self.embedding_cls.load_model(self.model, self.model_path)
         return
 
-    def encode(self, text_list: Union[list, str], batch_size: int, pooling: str, **kwargs):
-        if type(text_list) == str:
-            return self.embedding_cls.encode(text_list, pooling, **kwargs)
+    def encode(self, texts: Union[list, str], batch_size: int, pooling: str, **kwargs):
+        if type(texts) == str:
+            return self.embedding_cls.encode([texts], pooling, **kwargs)
         else:
             batch_opt = []
             batch_tem = []
-            for i, text in enumerate(text_list):
-                batch_tem.append(self.embedding_cls.encode(text, pooling, **kwargs))
+            for i, text in enumerate(texts):
+                batch_tem.append(self.embedding_cls.encode([text], pooling, **kwargs))
                 if i % batch_size == 0:
                     batch_opt.append(batch_tem)
                     batch_tem = []
