@@ -1,14 +1,11 @@
 from typing import List, Dict, Tuple, Any, Optional
 import numpy as np
 
-from models import Embedding
+from models import Embedding, TF_SESS
 import tensorflow as tf
 import tensorflow_hub as hub
 from tqdm import tqdm
 from bert.tokenization import FullTokenizer
-
-# tf.enable_eager_execution()
-sess = tf.Session()
 
 
 class Embeddings(object):
@@ -80,7 +77,7 @@ class Embeddings(object):
     def create_tokenizer_from_hub_module(cls, model_path: str):
         """Get the vocab file and casing info from the Hub module."""
         tokenization_info = cls.bert_module(signature="tokenization_info", as_dict=True)
-        vocab_file, do_lower_case = sess.run(
+        vocab_file, do_lower_case = TF_SESS.run(
             [
                 tokenization_info["vocab_file"],
                 tokenization_info["do_lower_case"],
@@ -128,6 +125,7 @@ class Embeddings(object):
         cls.bert_module = hub.Module(model_path)
         cls.create_tokenizer_from_hub_module(model_path)
         cls.model = model
+        print("Model loaded Successfully !")
 
     @classmethod
     def encode(cls, text: str, pooling: str = 'mean', **kwargs) -> Optional[np.array]:
