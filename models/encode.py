@@ -4,7 +4,7 @@ from models import MODELS_DIR
 from typing import Union, Optional, List, Dict
 import importlib
 import os
-
+import numpy as np
 
 class Encoder(object):
     def __init__(self, embedding: str, model: str, download: bool = False):
@@ -89,16 +89,24 @@ class Encoder(object):
         self.embedding_cls.load_model(self.model, self.model_path)
         return
 
-    def encode(self, texts: Union[list, str], batch_size: int, pooling: str, **kwargs):
+    # def encode_vectorize(self, texts: Union[List[str], str], batch_size: int, pooling: str, **kwargs):
+    #     vectorized_encode = np.vectorize(lambda x: self.embedding_cls.encode([x], pooling, **kwargs))
+    #     if type(texts) == str:
+    #         return self.embedding_cls.encode([texts], pooling, **kwargs)
+    #     else:
+    #         batch_opt = []
+    #         for i in range(0, len(texts), batch_size):
+    #             inputs = texts[-i*batch_size:i+1*batch_size]
+    #             batch_opt.append(vectorized_encode(inputs))
+    #         return batch_opt
+
+    def encode(self, texts: Union[List[str], str], batch_size: int, pooling: str, **kwargs) -> np.array:
         if type(texts) == str:
-            return self.embedding_cls.encode([texts], pooling, **kwargs)
+            embeddings = self.embedding_cls.encode([texts], pooling, **kwargs)
         else:
-            batch_opt = []
-            batch_tem = []
-            for i, text in enumerate(texts):
-                batch_tem.append(self.embedding_cls.encode([text], pooling, **kwargs))
-                if i % batch_size == 0:
-                    batch_opt.append(batch_tem)
-                    batch_tem = []
-            batch_opt.append(batch_tem)
-            return batch_opt
+            embeddings = []
+            for i in range(0, len(texts), batch_size):
+                vectors = self.embedding_cls.encode(texts[i: i + batch_size], pooling, **kwargs)
+                embeddings.append(vectors)
+            embeddings = np.vstack(embeddings)
+        return embeddings
