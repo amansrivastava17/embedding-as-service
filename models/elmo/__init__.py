@@ -1,14 +1,11 @@
 from typing import List, Dict, Tuple, Any, Optional
 import numpy as np
 
-from models import Embedding
+from models import Embedding, TF_SESS
 import tensorflow as tf
 import tensorflow_hub as hub
 from tqdm import tqdm
 from bert.tokenization import FullTokenizer
-
-# tf.enable_eager_execution()
-sess = tf.Session()
 
 
 class Embeddings(object):
