@@ -72,13 +72,14 @@ class Embeddings(object):
     tokenizer: FullTokenizer = None
 
     def __init__(self):
+        self.sess = tf.Session()
         self.bert_module = None
         self.model = None
 
     def create_tokenizer_from_hub_module(self, model_path: str):
         """Get the vocab file and casing info from the Hub module."""
         tokenization_info = self.bert_module(signature="tokenization_info", as_dict=True)
-        vocab_file, do_lower_case = TF_SESS.run(
+        vocab_file, do_lower_case = self.sess.run(
             [
                 tokenization_info["vocab_file"],
                 tokenization_info["do_lower_case"],
