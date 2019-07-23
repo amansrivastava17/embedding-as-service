@@ -8,7 +8,6 @@ from tqdm import tqdm
 from bert.tokenization import FullTokenizer
 
 
-
 class Embeddings(object):
 
     EMBEDDING_MODELS: List[Embedding] = [
