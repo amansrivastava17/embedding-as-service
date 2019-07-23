@@ -70,13 +70,14 @@ class Embeddings(object):
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
 
     tokenizer: FullTokenizer = None
-    bert_module = None
-    model: str
 
-    @classmethod
-    def create_tokenizer_from_hub_module(cls, model_path: str):
+    def __init__(self):
+        self.bert_module = None
+        self.model = None
+
+    def create_tokenizer_from_hub_module(self, model_path: str):
         """Get the vocab file and casing info from the Hub module."""
-        tokenization_info = cls.bert_module(signature="tokenization_info", as_dict=True)
+        tokenization_info = self.bert_module(signature="tokenization_info", as_dict=True)
         vocab_file, do_lower_case = TF_SESS.run(
             [
                 tokenization_info["vocab_file"],
@@ -84,11 +85,11 @@ class Embeddings(object):
             ]
         )
 
-        cls.tokenizer = FullTokenizer(vocab_file=vocab_file, do_lower_case=do_lower_case)
+        Embeddings.tokenizer = FullTokenizer(vocab_file=vocab_file, do_lower_case=do_lower_case)
 
-    @classmethod
-    def _model_single_input(cls, text: str, max_seq_length: int) -> Tuple[List[int], List[int], List[int]]:
-        tokens_a = cls.tokenizer.tokenize(text)
+    @staticmethod
+    def _model_single_input(text: str, max_seq_length: int) -> Tuple[List[int], List[int], List[int]]:
+        tokens_a = Embeddings.tokenizer.tokenize(text)
         if len(tokens_a) > max_seq_length - 2:
             tokens_a = tokens_a[0: (max_seq_length - 2)]
 
@@ -102,14 +103,14 @@ class Embeddings(object):
         tokens.append("[SEP]")
         segment_ids.append(0)
 
-        input_ids = cls.tokenizer.convert_tokens_to_ids(tokens)
+        input_ids = Embeddings.tokenizer.convert_tokens_to_ids(tokens)
 
         # The mask has 1 for real tokens and 0 for padding tokens. Only real
         # tokens are attended to.
         input_mask = [1] * len(input_ids)
 
         # Zero-pad up to the sequence length.
-        while len(input_ids) < max_seq_length :
+        while len(input_ids) < max_seq_length:
             input_ids.append(0)
             input_mask.append(0)
             segment_ids.append(0)
@@ -120,20 +121,17 @@ class Embeddings(object):
 
         return input_ids, input_mask, segment_ids
 
-    @classmethod
-    def load_model(cls, model: str, model_path: str):
-        cls.bert_module = hub.Module(model_path)
-        cls.create_tokenizer_from_hub_module(model_path)
-        cls.model = model
+    def load_model(self, model: str, model_path: str):
+        self.bert_module = hub.Module(model_path)
+        self.create_tokenizer_from_hub_module(model_path)
+        self.model = model
         print("Model loaded Successfully !")
 
-    @classmethod
-    def encode(cls, text: str, pooling: str = 'mean', **kwargs) -> Optional[np.array]:
-        texts = [text]
+    def encode(self, texts: list, pooling: str = 'mean', **kwargs) -> Optional[np.array]:
         max_seq_length = kwargs.get('max_seq_length', 128)
         input_ids, input_masks, segment_ids = [], [], []
         for text in tqdm(texts, desc="Converting texts to features"):
-            input_id, input_mask, segment_id = cls._model_single_input(text, max_seq_length)
+            input_id, input_mask, segment_id = self._model_single_input(text, max_seq_length)
             input_ids.append(input_id)
             input_masks.append(input_mask)
             segment_ids.append(segment_id)
@@ -143,7 +141,7 @@ class Embeddings(object):
             input_mask=np.array(input_masks),
             segment_ids=np.array(segment_ids))
 
-        bert_outputs = cls.bert_module(bert_inputs, signature="tokens", as_dict=True)
+        bert_outputs = self.bert_module(bert_inputs, signature="tokens", as_dict=True)
         sequence_output = bert_outputs["sequence_output"]
 
         if not pooling:
@@ -162,4 +160,4 @@ class Embeddings(object):
             return tf.concat(values=[tf.reduce_mean(sequence_output, 0), tf.reduce_max(sequence_output, 0)], axis=0)
         else:
             print(f"Pooling method \"{pooling}\" not implemented")
-            return None
+        return None

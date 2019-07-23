@@ -1,11 +1,9 @@
 from typing import List, Dict, Tuple, Any, Optional
 import numpy as np
 
-from models import Embedding, TF_SESS
+from models import Embedding
 import tensorflow as tf
 import tensorflow_hub as hub
-from tqdm import tqdm
-from bert.tokenization import FullTokenizer
 
 
 class Embeddings(object):
@@ -23,18 +21,13 @@ class Embeddings(object):
 
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
 
-    tokenizer: FullTokenizer = None
-    elmo_module = None
-    model: str
+    def __init__(self):
+        self.elmo_module = None
+        self.model = None
 
     @classmethod
     def tokenize(cls, text: str):
         return [word.strip() for word in text.lower().strip().split()]
-
-    @classmethod
-    def load_model(cls, model: str, model_path: str):
-        cls.elmo_module = hub.Module(model_path)
-        cls.model = model
 
     @classmethod
     def padded_tokens(cls, tokens: List[str], max_seq_length: int):
@@ -46,19 +39,21 @@ class Embeddings(object):
             padded_len = max_seq_length - len_tokens
             return tokens + [padded_token] * padded_len
 
-    @classmethod
-    def encode(cls, text: str, pooling: str = 'mean', **kwargs) -> Optional[np.array]:
-        texts = [text]
-        text_tokens = [cls.tokenize(text) for text in texts]
+    def load_model(self, model: str, model_path: str):
+        self.elmo_module = hub.Module(model_path)
+        self.model = model
+
+    def encode(self, texts: list, pooling: str = 'mean', **kwargs) -> Optional[np.array]:
+        text_tokens = [Embeddings.tokenize(text) for text in texts]
         max_seq_length = kwargs.get('max_seq_length')
         if max_seq_length:
-            text_tokens = [cls.padded_tokens(tokens, max_seq_length) for tokens in text_tokens]
+            text_tokens = [Embeddings.padded_tokens(tokens, max_seq_length) for tokens in text_tokens]
             seq_length = [max_seq_length] * len(texts)
         else:
             seq_length = [len(tokens) for tokens in text_tokens]
 
-        embeddings = cls.elmo_module(inputs={"tokens": text_tokens, "sequence_len": seq_length},
-                                     signature="tokens", as_dict=True)["elmo"]
+        embeddings = self.elmo_module(inputs={"tokens": text_tokens, "sequence_len": seq_length},
+                                      signature="tokens", as_dict=True)["elmo"]
 
         if not pooling:
             return embeddings
@@ -77,4 +72,4 @@ class Embeddings(object):
 
         else:
             print(f"Pooling method \"{pooling}\" not implemented")
-            return None
+        return None

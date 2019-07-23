@@ -6,7 +6,7 @@ import numpy as np
 import os
 
 from models.xlnet.config import Flags
-from models import Embedding, TF_SESS
+from models import Embedding
 
 from xlnet.prepro_utils import preprocess_text, encode_ids
 from xlnet.data_utils import SEP_ID, CLS_ID
@@ -50,27 +50,29 @@ class Embeddings(object):
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
 
     tokenizer: spm.SentencePieceProcessor = None
-    xlnet_config = None
-    run_config = None
-    model: str
     mode_config_path: str = 'xlnet_config.json'
     sentence_piece_model_path: str = 'spiece.model'
 
-    @classmethod
-    def load_tokenizer(cls, model_path: str):
+    def __init__(self):
+        self.xlnet_config = None
+        self.run_config = None
+        self.model = None
+
+    @staticmethod
+    def load_tokenizer(self, model_path: str):
         """Get the vocab file and casing info from the Hub module."""
         sp_model = spm.SentencePieceProcessor()
-        sp_model.Load(os.path.join(model_path, cls.sentence_piece_model_path))
-        cls.tokenizer = sp_model
+        sp_model.Load(os.path.join(model_path, Embeddings.sentence_piece_model_path))
+        Embeddings.tokenizer = sp_model
 
     @classmethod
     def tokenize_fn(cls, text):
         text = preprocess_text(text, lower=False)
         return encode_ids(cls.tokenizer, text)
 
-    @classmethod
-    def _model_single_input(cls, text: str, max_seq_length: int) -> Tuple[List[int], List[int], List[int]]:
-        tokens_a = cls.tokenize_fn(text)
+    @staticmethod
+    def _model_single_input(text: str, max_seq_length: int) -> Tuple[List[int], List[int], List[int]]:
+        tokens_a = Embeddings.tokenize_fn(text)
 
         if len(tokens_a) > max_seq_length - 2:
             tokens_a = tokens_a[0: (max_seq_length - 2)]
@@ -105,31 +107,28 @@ class Embeddings(object):
 
         return input_ids, input_mask, segment_ids
 
-    @classmethod
-    def load_model(cls, model: str, model_path: str):
+    def load_model(self, model: str, model_path: str):
         model_path = os.path.join(model_path, next(os.walk(model_path))[1][0])
-        cls.xlnet_config = xlnet.XLNetConfig(json_path=os.path.join(model_path, cls.mode_config_path))
-        cls.run_config = xlnet.create_run_config(is_training=True, is_finetune=True, FLAGS=Flags)
+        self.xlnet_config = xlnet.XLNetConfig(json_path=os.path.join(model_path, Embeddings.mode_config_path))
+        self.run_config = xlnet.create_run_config(is_training=True, is_finetune=True, FLAGS=Flags)
 
-        cls.load_tokenizer(model_path)
-        cls.model = model
+        self.load_tokenizer(model_path)
+        self.model = model
         print("Model loaded Successfully !")
 
-    @classmethod
-    def encode(cls, text: str, pooling: str = 'mean', **kwargs) -> Optional[np.array]:
-        texts = [text]
+    def encode(self, texts: list, pooling: str = 'mean', **kwargs) -> Optional[np.array]:
         max_seq_length = kwargs.get('max_seq_length', 128)
         input_ids, input_masks, segment_ids = [], [], []
         for text in tqdm(texts, desc="Converting texts to features"):
-            input_id, input_mask, segment_id = cls._model_single_input(text, max_seq_length)
+            input_id, input_mask, segment_id = self._model_single_input(text, max_seq_length)
             input_ids.append(input_id)
             input_masks.append(input_mask)
             segment_ids.append(segment_id)
 
         # Construct an XLNet model
         xlnet_model = xlnet.XLNetModel(
-            xlnet_config=cls.xlnet_config,
-            run_config=cls.run_config,
+            xlnet_config=self.xlnet_config,
+            run_config=self.run_config,
             input_ids=np.array(input_ids, dtype=np.int32),
             seg_ids=np.array(segment_ids, dtype=np.int32),
             input_mask=np.array(input_masks, dtype=np.float32))
@@ -153,4 +152,4 @@ class Embeddings(object):
             return tf.concat(values=[tf.reduce_mean(sequence_output, 0), tf.reduce_max(sequence_output, 0)], axis=0)
         else:
             print(f"Pooling method \"{pooling}\" not implemented")
-            return None
+        return None
