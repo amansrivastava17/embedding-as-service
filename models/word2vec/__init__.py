@@ -1,7 +1,8 @@
 from typing import List, Dict, Set, Optional, Union, Any
 
 from models import Embedding
-from utils import tokenizer
+from utils import tokenizer, to_unicode
+from smart_open import open
 from tqdm import tqdm
 import numpy as np
 import os
@@ -10,28 +11,6 @@ import numpy as np
 from numpy import zeros, dtype, float32 as REAL, fromstring
 import warnings
 
-
-def any2unicode(text, encoding='utf8', errors='strict'):
-    """Convert `text` (bytestring in given encoding or unicode) to unicode.
-    Parameters
-    ----------
-    text : str
-        Input text.
-    errors : str, optional
-        Error handling behaviour if `text` is a bytestring.
-    encoding : str, optional
-        Encoding of `text` if it is a bytestring.
-    Returns
-    -------
-    str
-        Unicode version of `text`.
-    """
-    if isinstance(text, str):
-        return text
-    return text.decode('utf-8')
-
-
-to_unicode = any2unicode
 
 class Embeddings(object):
 
@@ -48,6 +27,7 @@ class Embeddings(object):
     ]
 
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
+
 
     word_vectors: Dict[Any, Any] = {}
     model: str

@@ -8,6 +8,29 @@ import tarfile
 import gzip
 
 
+def any2unicode(text, encoding='utf8', errors='strict'):
+    """Convert `text` (bytestring in given encoding or unicode) to unicode.
+    Parameters
+    ----------
+    text : str
+        Input text.
+    errors : str, optional
+        Error handling behaviour if `text` is a bytestring.
+    encoding : str, optional
+        Encoding of `text` if it is a bytestring.
+    Returns
+    -------
+    str
+        Unicode version of `text`.
+    """
+    if isinstance(text, str):
+        return text
+    return text.decode('utf-8')
+
+
+to_unicode = any2unicode
+
+
 def extract_file(zip_path: str, target_path: str = '.') -> None:
     """
     Unzip file at zip_path to target_path

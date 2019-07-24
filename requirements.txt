@@ -4,3 +4,4 @@ requests==2.21.0
 bert-tensorflow==1.0.1
 tensorflow_hub==0.4.0
 tf-nightly
+smart_open
