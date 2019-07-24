@@ -2,7 +2,7 @@ from typing import List, Dict
 
 from models import Embedding
 
-EMBEDDING_MODELS : List[Embedding] = [
+EMBEDDING_MODELS: List[Embedding] = [
                     Embedding(name=u'umlfit',
                               dimensions=300,
                               corpus_size='570k human-generated English sentence pairs',

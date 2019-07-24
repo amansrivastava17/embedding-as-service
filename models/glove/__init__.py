@@ -1,7 +1,6 @@
-from typing import List, Dict, Set, Optional, Union, Any
+from typing import List, Dict, Any
 
 from models import Embedding
-from utils import tokenizer
 from tqdm import tqdm
 import numpy as np
 import os
@@ -110,35 +109,34 @@ class Embeddings(object):
 
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
 
-    word_vectors: Dict[Any, Any] = {}
-    model: str
+    def __init__(self):
+        self.word_vectors: Dict[Any, Any] = {}
+        self.model = None
 
     @classmethod
     def _tokens(cls, text: str) -> List[str]:
-        return tokenizer(text, cls.EMBEDDING_MODELS[cls.model].language)
+        return [x.lower().strip() for x in text.split()]
 
-    @classmethod
-    def load_model(cls, model: str, model_path: str):
+    def load_model(self, model: str, model_path: str):
         try:
             model_file = [f for f in os.listdir(model_path) if os.path.isfile(os.path.join(model_path, f))]
             f = open(os.path.join(model_path, model_file[0]), 'r')
             for line in tqdm(f):
                 split_line = line.split()
                 word = split_line[0]
-                cls.word_vectors[word] = np.array([float(val) for val in split_line[1:]])
+                self.word_vectors[word] = np.array([float(val) for val in split_line[1:]])
             print("Model loaded Successfully !")
-            cls.model = model
-            return cls
+            self.model = model
+            return self
         except Exception as e:
             print('Error loading Model, ', str(e))
-        return cls
+        return self
 
-    @classmethod
-    def encode(cls, text: str, pooling: str = 'mean', **kwargs) -> np.array:
-        result = np.zeros(cls.EMBEDDING_MODELS[cls.model].dimensions, dtype="float32")
-        tokens = cls._tokens(text)
+    def encode(self, text: str, pooling: str = 'mean', **kwargs) -> np.array:
+        result = np.zeros(Embeddings.EMBEDDING_MODELS[self.model].dimensions, dtype="float32")
+        tokens = Embeddings._tokens(text)
 
-        vectors = np.array([cls.word_vectors[token] for token in tokens if token in cls.word_vectors.keys()])
+        vectors = np.array([self.word_vectors[token] for token in tokens if token in self.word_vectors.keys()])
 
         if pooling == 'mean':
             result = np.mean(vectors, axis=0)
@@ -155,11 +153,11 @@ class Embeddings(object):
                 return result
 
             tfidf_dict = kwargs.get('tfidf_dict')
-            weighted_vectors = np.array([tfidf_dict.get(token) * cls.word_vectors.get(token)
-                                         for token in tokens if token in cls.word_vectors.keys()
+            weighted_vectors = np.array([tfidf_dict.get(token) * self.word_vectors.get(token)
+                                         for token in tokens if token in self.word_vectors.keys()
                                          and token in tfidf_dict])
             result = np.mean(weighted_vectors, axis=0)
         else:
-            print(f'Given pooling method "{pooling}" not implemented in "{cls.embedding}"')
+            print(f'Given pooling method "{pooling}" not implemented in "{self.model}"')
         return result
 

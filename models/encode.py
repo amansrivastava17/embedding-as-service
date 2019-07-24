@@ -1,7 +1,7 @@
 from utils import home_directory, get_hashed_name, download_from_url, extract_file
 from models import MODELS_DIR
 
-from typing import Union, Optional, List, Dict
+from typing import Optional, List
 import importlib
 import os
 
