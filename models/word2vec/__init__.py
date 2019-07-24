@@ -1,15 +1,12 @@
-from typing import List, Dict, Set, Optional, Union, Any
+from typing import List, Dict, Any
 
 from models import Embedding
-from utils import tokenizer, to_unicode
+from utils import to_unicode
 from smart_open import open
 from tqdm import tqdm
-import numpy as np
 import os
-import gzip
 import numpy as np
-from numpy import zeros, dtype, float32 as REAL, fromstring
-import warnings
+from numpy import dtype, float32 as real, fromstring
 
 
 class Embeddings(object):
@@ -28,16 +25,15 @@ class Embeddings(object):
 
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
 
-
-    word_vectors: Dict[Any, Any] = {}
-    model: str
+    def __init__(self):
+        self.word_vectors: Dict[Any, Any] = {}
+        self.model = None
 
     @classmethod
     def _tokens(cls, text: str) -> List[str]:
-        return tokenizer(text, cls.EMBEDDING_MODELS[cls.model].language)
+        return [x.lower().strip() for x in text.split()]
 
-    @classmethod
-    def load_model(cls, model: str, model_path: str):
+    def load_model(self, model: str, model_path: str):
         try:
             limit = False
             encoding = 'utf-8'
@@ -51,8 +47,8 @@ class Embeddings(object):
             if limit:
                 vocab_size = min(vocab_size, limit)
 
-            binary_len = dtype(REAL).itemsize * vector_size
-            for _ in range(vocab_size):
+            binary_len = dtype(real).itemsize * vector_size
+            for _ in tqdm(range(vocab_size)):
                 word = []
                 while True:
                     ch = f.read(1)
@@ -64,23 +60,23 @@ class Embeddings(object):
                         word.append(ch)
                 word = to_unicode(b''.join(word), encoding=encoding, errors=unicode_errors)
 
-                weights = fromstring(f.read(binary_len), dtype=REAL).astype(REAL)
+                weights = fromstring(f.read(binary_len), dtype=real).astype(real)
 
-                cls.word_vectors[word] = weights
+                self.word_vectors[word] = weights
 
             print("Model loaded Successfully !")
-            cls.model = model
+            self.model = model
 
-            return cls
+            return self
 
         except Exception as e:
             print('Error loading Model, ', str(e))
 
-    def encode(cls, text: str, pooling: str = 'mean', **kwargs) -> np.array:
-        result = np.zeros(cls.EMBEDDING_MODELS[cls.model].dimensions, dtype="float32")
-        tokens = cls._tokens(text)
+    def encode(self, text: str, pooling: str = 'mean', **kwargs) -> np.array:
+        result = np.zeros(Embeddings.EMBEDDING_MODELS[self.model].dimensions, dtype="float32")
+        tokens = Embeddings._tokens(text)
 
-        vectors = np.array([cls.word_vectors[token] for token in tokens if token in cls.word_vectors.keys()])
+        vectors = np.array([self.word_vectors[token] for token in tokens if token in self.word_vectors.keys()])
 
         if pooling == 'mean':
             result = np.mean(vectors, axis=0)
@@ -97,10 +93,10 @@ class Embeddings(object):
                 return result
 
             tfidf_dict = kwargs.get('tfidf_dict')
-            weighted_vectors = np.array([tfidf_dict.get(token) * cls.word_vectors.get(token)
-                                         for token in tokens if token in cls.word_vectors.keys()
+            weighted_vectors = np.array([tfidf_dict.get(token) * self.word_vectors.get(token)
+                                         for token in tokens if token in self.word_vectors.keys()
                                          and token in tfidf_dict])
             result = np.mean(weighted_vectors, axis=0)
         else:
-            print(f'Given pooling method "{pooling}" not implemented in "{cls.embedding}"')
+            print(f'Given pooling method "{pooling}" not implemented in "{self.model}"')
         return result
