@@ -34,8 +34,9 @@ class Embeddings(object):
         return [x.lower().strip() for x in text.split()]
 
     def load_model(self, model: str, model_path: str):
-        try:
-            limit = False
+
+        # try:
+        if 1==1
             encoding = 'utf-8'
             unicode_errors = 'strict'
 
@@ -44,8 +45,6 @@ class Embeddings(object):
 
             header = to_unicode(f.readline(), encoding=encoding)
             vocab_size, vector_size = (int(x) for x in header.split())  # throws for invalid file format
-            if limit:
-                vocab_size = min(vocab_size, limit)
 
             binary_len = dtype(real).itemsize * vector_size
             for _ in tqdm(range(vocab_size)):
@@ -63,14 +62,11 @@ class Embeddings(object):
                 weights = fromstring(f.read(binary_len), dtype=real).astype(real)
 
                 self.word_vectors[word] = weights
-
-            print("Model loaded Successfully !")
             self.model = model
-
+            print("Model loaded Successfully !")
             return self
-
-        except Exception as e:
-            print('Error loading Model, ', str(e))
+        # except Exception as e:
+        #     print('Error loading Model, ', str(e))
 
     def encode(self, text: str, pooling: str = 'mean', **kwargs) -> np.array:
         result = np.zeros(Embeddings.EMBEDDING_MODELS[self.model].dimensions, dtype="float32")
