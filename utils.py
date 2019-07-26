@@ -54,9 +54,10 @@ def extract_file(zip_path: str, target_path: str = '.') -> None:
 
     with opener(zip_path, mode) as zipObj:
         if opener is gzip.open:
+            os.mkdir(target_path)
             filename = zip_path.split('.gz')[0]
-            with open(os.path.join(target_path, filename), 'wb') as f:
-                f.write(zipObj.read())
+            with open(os.path.join(target_path, filename), 'wb') as fin:
+                fin.write(zipObj.read())
         else:
             zipObj.extractall(target_path)
 
