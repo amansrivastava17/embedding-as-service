@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 import sys
 import zipfile
 import hashlib
@@ -6,6 +6,7 @@ import requests
 from pathlib import Path
 import tarfile
 import gzip
+import os
 
 
 def any2unicode(text, encoding='utf8', errors='strict'):
@@ -40,22 +41,24 @@ def extract_file(zip_path: str, target_path: str = '.') -> None:
     Returns:
 
     """
-    if zip_path.endswith('.gz'):
-        file = gzip.open(zip_path, 'rb')
-        file.write(target_path)
-        return
-
-    elif zip_path.endswith('.zip'):
+    if zip_path.endswith('.zip'):
         opener, mode = zipfile.ZipFile, 'r'
     elif zip_path.endswith('.tar.gz') or zip_path.endswith('.tgz'):
         opener, mode = tarfile.open, 'r:gz'
     elif zip_path.endswith('.tar.bz2') or zip_path.endswith('.tbz'):
         opener, mode = tarfile.open, 'r:bz2'
+    elif zip_path.endswith('.gz'):
+        opener, mode = gzip.open, 'rb'
     else:
         raise(ValueError, f"Could not extract `{zip_path}` as no appropriate extractor is found")
 
     with opener(zip_path, mode) as zipObj:
-        zipObj.extractall(target_path)
+        if opener is gzip.open:
+            filename = zip_path.split('.gz')[0]
+            with open(os.path.join(target_path, filename), 'wb') as f:
+                f.write(zipObj)
+        else:
+            zipObj.extractall(target_path)
 
 
 def tokenizer(text: str, language: str) -> List[str]:
