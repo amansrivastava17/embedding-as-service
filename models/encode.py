@@ -1,9 +1,11 @@
 from utils import home_directory, get_hashed_name, download_from_url, extract_file
 from models import MODELS_DIR
 
-from typing import Optional, List
+from typing import Union, Optional, List
+
 import importlib
 import os
+import numpy as np
 
 
 class Encoder(object):
@@ -12,6 +14,7 @@ class Encoder(object):
         self.model = model
         self.embedding_model_dict = None
         self.model_path = None
+        self.batch_size = 128
 
         supported_embeddings = self.get_supported_embeddings()
 
@@ -90,5 +93,13 @@ class Encoder(object):
         self.embedding_cls.load_model(self.model, self.model_path)
         return
 
-    def encode(self, text: str, pooling: str, **kwargs):
-        return self.embedding_cls.encode(text, pooling, **kwargs)
+    def encode(self, texts: Union[List[str], str], pooling: str, **kwargs) -> np.array:
+        if type(texts) == str:
+            embeddings = self.embedding_cls.encode([texts], pooling, **kwargs)
+        else:
+            embeddings = []
+            for i in range(0, len(texts), self.batch_size):
+                vectors = self.embedding_cls.encode(texts[i: i + self.batch_size], pooling, **kwargs)
+                embeddings.append(vectors)
+            embeddings = np.vstack(embeddings)
+        return embeddings
