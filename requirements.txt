@@ -3,5 +3,6 @@ numpy==1.16.4
 requests==2.21.0
 bert-tensorflow==1.0.1
 tensorflow_hub==0.4.0
+smart_open==1.8.4
 sentencepiece==0.1.82
 git+https://github.com/amansrivastava17/xlnet.git
