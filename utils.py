@@ -17,14 +17,17 @@ def extract_file(zip_path: str, target_path: str = '.') -> None:
     Returns:
 
     """
-    if zip_path.endswith('.zip'):
+    if zip_path.endswith('.gz'):
+        file = gzip.open(zip_path, 'rb')
+        file.write(target_path)
+        return
+
+    elif zip_path.endswith('.zip'):
         opener, mode = zipfile.ZipFile, 'r'
     elif zip_path.endswith('.tar.gz') or zip_path.endswith('.tgz'):
         opener, mode = tarfile.open, 'r:gz'
     elif zip_path.endswith('.tar.bz2') or zip_path.endswith('.tbz'):
         opener, mode = tarfile.open, 'r:bz2'
-    elif zip_path.endswith('.gz'):
-        opener, mode = gzip.open, 'rb'
     else:
         raise(ValueError, f"Could not extract `{zip_path}` as no appropriate extractor is found")
 
