@@ -1,4 +1,4 @@
-from typing import List, Dict, Tuple, Any, Optional
+from typing import List, Dict, Optional
 import numpy as np
 
 from models import Embedding
@@ -40,18 +40,16 @@ class Embeddings(object):
                                   language='en')
                         ]
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
-    use_module = None
-    model: str
 
-    sess = tf.Session()
-    sess.run([tf.global_variables_initializer(), tf.tables_initializer()])
+    def __init__(self):
+        self.sess = tf.Session()
+        self.sess.run([tf.global_variables_initializer(), tf.tables_initializer()])
+        self.use_module = None
+        self.model = None
 
-    @classmethod
-    def load_model(cls, model: str, model_path: str):
-        cls.use_module = hub.Module(model_path)
-        cls.model = model
+    def load_model(self, model: str, model_path: str):
+        self.use_module = hub.Module(model_path)
+        self.model = model
 
-    @classmethod
-    def encode(cls, texts: list, pooling: str = None) -> Optional[np.array]:
-        embeddings = Embeddings.sess.run(cls.use_module(texts))
-        return embeddings
+    def encode(self, texts: list, pooling: str = None) -> Optional[np.array]:
+        return self.use_module(texts)
