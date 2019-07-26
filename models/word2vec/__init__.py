@@ -36,7 +36,7 @@ class Embeddings(object):
     def load_model(self, model: str, model_path: str):
 
         # try:
-        if 1==1
+        if 1==1:
             encoding = 'utf-8'
             unicode_errors = 'strict'
 
