@@ -2,6 +2,7 @@ from utils import home_directory, get_hashed_name, download_from_url, extract_fi
 from models import MODELS_DIR
 
 from typing import Union, Optional, List
+
 import importlib
 import os
 import numpy as np
@@ -83,7 +84,8 @@ class Encoder(object):
             print(f"Model does not exists, Downloading model: {self.model}")
             download_from_url(model_download_url, model_download_path)
             extract_file(model_download_path, model_path)
-            os.remove(model_download_path)
+            if os.path.exists(model_download_path):
+                os.remove(model_download_path)
             print(f"Model downloaded successfully!")
         return model_path
 
