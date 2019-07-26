@@ -1,7 +1,7 @@
 from typing import List, Dict, Tuple, Any, Optional
 import numpy as np
 
-from models import Embedding, TF_SESS
+from models import Embedding
 import tensorflow as tf
 import tensorflow_hub as hub
 from tqdm import tqdm
