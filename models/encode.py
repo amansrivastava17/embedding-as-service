@@ -94,12 +94,15 @@ class Encoder(object):
         return
 
     def encode(self, texts: Union[List[str], str], pooling: str, **kwargs) -> np.array:
-        if type(texts) == str:
+        embeddings = None
+        if isinstance(texts, str):
             embeddings = self.embedding_cls.encode([texts], pooling, **kwargs)
-        else:
+        elif isinstance(texts, list):
             embeddings = []
             for i in range(0, len(texts), self.batch_size):
                 vectors = self.embedding_cls.encode(texts[i: i + self.batch_size], pooling, **kwargs)
                 embeddings.append(vectors)
             embeddings = np.vstack(embeddings)
+        else:
+            print('Wrong input format!')
         return embeddings
