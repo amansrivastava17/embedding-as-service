@@ -12,3 +12,4 @@ To do
 8. create tokenizer inside class only
 9. Optimize vocab lookup in word vectors
 10. Add batch size prediction
+11. Add vocab size in xlnet using vocab size of sentencepiece
