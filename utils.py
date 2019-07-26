@@ -12,7 +12,6 @@ def extract_file(zip_path: str, target_path: str = '.') -> None:
     """
     Unzip file at zip_path to target_path
     Args:
-        extract_filename:
         zip_path:
         target_path:
     Returns:
