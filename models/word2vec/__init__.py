@@ -67,7 +67,8 @@ class Embeddings(object):
         except Exception as e:
             print('Error loading Model, ', str(e))
 
-    def encode(self, text: str, pooling: str = 'mean', **kwargs) -> np.array:
+    def encode(self, texts: list, pooling: str = 'mean', **kwargs) -> np.array:
+        text = texts[0]
         result = np.zeros(Embeddings.EMBEDDING_MODELS[self.model].dimensions, dtype="float32")
         tokens = Embeddings._tokens(text)
 
