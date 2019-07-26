@@ -42,23 +42,22 @@ def extract_file(zip_path: str, target_path: str = '.') -> None:
     Returns:
 
     """
+    if zip_path.endswith('.gz'):
+        os.mkdir(target_path)
+        shutil.move(zip_path, os.path.join(target_path, zip_path.split('.gz')[0]))
+        return
+
     if zip_path.endswith('.zip'):
         opener, mode = zipfile.ZipFile, 'r'
     elif zip_path.endswith('.tar.gz') or zip_path.endswith('.tgz'):
         opener, mode = tarfile.open, 'r:gz'
     elif zip_path.endswith('.tar.bz2') or zip_path.endswith('.tbz'):
         opener, mode = tarfile.open, 'r:bz2'
-    elif zip_path.endswith('.gz'):
-        opener, mode = gzip.open, 'rb'
     else:
         raise(ValueError, f"Could not extract `{zip_path}` as no appropriate extractor is found")
 
     with opener(zip_path, mode) as zipObj:
-        if zip_path.endswith('.gz'):
-            os.mkdir(target_path)
-            shutil.move(zip_path, os.path.join(target_path, zip_path))
-        else:
-            zipObj.extractall(target_path)
+        zipObj.extractall(target_path)
 
 
 def tokenizer(text: str, language: str) -> List[str]:
