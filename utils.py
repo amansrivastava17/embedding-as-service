@@ -54,7 +54,7 @@ def extract_file(zip_path: str, target_path: str = '.') -> None:
         raise(ValueError, f"Could not extract `{zip_path}` as no appropriate extractor is found")
 
     with opener(zip_path, mode) as zipObj:
-        if opener is gzip.open:
+        if zip_path.endswith('.gz'):
             os.mkdir(target_path)
             shutil.move(zip_path, os.path.join(target_path, zip_path))
         else:
