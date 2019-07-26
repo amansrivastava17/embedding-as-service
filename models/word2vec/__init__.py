@@ -35,8 +35,7 @@ class Embeddings(object):
 
     def load_model(self, model: str, model_path: str):
 
-        # try:
-        if 1==1:
+        try:
             encoding = 'utf-8'
             unicode_errors = 'strict'
 
@@ -65,8 +64,8 @@ class Embeddings(object):
             self.model = model
             print("Model loaded Successfully !")
             return self
-        # except Exception as e:
-        #     print('Error loading Model, ', str(e))
+        except Exception as e:
+            print('Error loading Model, ', str(e))
 
     def encode(self, text: str, pooling: str = 'mean', **kwargs) -> np.array:
         result = np.zeros(Embeddings.EMBEDDING_MODELS[self.model].dimensions, dtype="float32")
