@@ -59,7 +59,7 @@ class Embeddings(object):
         self.model = None
 
     @staticmethod
-    def load_tokenizer(self, model_path: str):
+    def load_tokenizer(model_path: str):
         """Get the vocab file and casing info from the Hub module."""
         sp_model = spm.SentencePieceProcessor()
         sp_model.Load(os.path.join(model_path, Embeddings.sentence_piece_model_path))
