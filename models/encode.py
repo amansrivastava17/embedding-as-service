@@ -96,7 +96,7 @@ class Encoder(object):
     #     else:
     #         batch_opt = []
     #         for i in range(0, len(texts), batch_size):
-    #             inputs = texts[-i*batch_size:i+1*batch_size]
+    #             inputs = texts[i*batch_size:i+1*batch_size]
     #             batch_opt.append(vectorized_encode(inputs))
     #         return batch_opt
 
