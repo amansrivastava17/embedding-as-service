@@ -1,10 +1,11 @@
 from utils import home_directory, get_hashed_name, download_from_url, extract_file
 from models import MODELS_DIR
 
-from typing import Union, Optional, List, Dict
+from typing import Union, Optional, List
 import importlib
 import os
 import numpy as np
+
 
 class Encoder(object):
     def __init__(self, embedding: str, model: str, download: bool = False):
@@ -12,6 +13,7 @@ class Encoder(object):
         self.model = model
         self.embedding_model_dict = None
         self.model_path = None
+        self.batch_size = 128
 
         supported_embeddings = self.get_supported_embeddings()
 
@@ -89,24 +91,13 @@ class Encoder(object):
         self.embedding_cls.load_model(self.model, self.model_path)
         return
 
-    # def encode_vectorize(self, texts: Union[List[str], str], batch_size: int, pooling: str, **kwargs):
-    #     vectorized_encode = np.vectorize(lambda x: self.embedding_cls.encode([x], pooling, **kwargs))
-    #     if type(texts) == str:
-    #         return self.embedding_cls.encode([texts], pooling, **kwargs)
-    #     else:
-    #         batch_opt = []
-    #         for i in range(0, len(texts), batch_size):
-    #             inputs = texts[-i*batch_size:i+1*batch_size]
-    #             batch_opt.append(vectorized_encode(inputs))
-    #         return batch_opt
-
-    def encode(self, texts: Union[List[str], str], batch_size: int, pooling: str, **kwargs) -> np.array:
+    def encode(self, texts: Union[List[str], str], pooling: str, **kwargs) -> np.array:
         if type(texts) == str:
             embeddings = self.embedding_cls.encode([texts], pooling, **kwargs)
         else:
             embeddings = []
-            for i in range(0, len(texts), batch_size):
-                vectors = self.embedding_cls.encode(texts[i: i + batch_size], pooling, **kwargs)
+            for i in range(0, len(texts), self.batch_size):
+                vectors = self.embedding_cls.encode(texts[i: i + self.batch_size], pooling, **kwargs)
                 embeddings.append(vectors)
             embeddings = np.vstack(embeddings)
         return embeddings

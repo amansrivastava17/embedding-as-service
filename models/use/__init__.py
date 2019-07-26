@@ -6,8 +6,6 @@ import tensorflow as tf
 import tensorflow_hub as hub
 
 
-sess = tf.Session()
-
 class Embeddings(object):
     EMBEDDING_MODELS: List[Embedding] = [
                         Embedding(name=u'use_dan',
@@ -40,12 +38,13 @@ class Embeddings(object):
                                   architecture='Transformer',
                                   trained_data='wikipedia and other sources',
                                   language='en')
-                                    ]
-
+                        ]
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
-
     use_module = None
     model: str
+
+    sess = tf.Session()
+    sess.run([tf.global_variables_initializer(), tf.tables_initializer()])
 
     @classmethod
     def load_model(cls, model: str, model_path: str):
@@ -54,6 +53,5 @@ class Embeddings(object):
 
     @classmethod
     def encode(cls, texts: list, pooling: str = None) -> Optional[np.array]:
-        sess.run([tf.global_variables_initializer(), tf.tables_initializer()])
-        embeddings = sess.run(cls.use_module(texts))
+        embeddings = Embeddings.sess.run(cls.use_module(texts))
         return embeddings
