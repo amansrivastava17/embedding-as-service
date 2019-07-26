@@ -7,6 +7,7 @@ from pathlib import Path
 import tarfile
 import gzip
 import os
+import shutil
 
 
 def any2unicode(text, encoding='utf8', errors='strict'):
@@ -55,9 +56,7 @@ def extract_file(zip_path: str, target_path: str = '.') -> None:
     with opener(zip_path, mode) as zipObj:
         if opener is gzip.open:
             os.mkdir(target_path)
-            filename = zip_path.split('.gz')[0]
-            with open(os.path.join(target_path, filename), 'wb') as fin:
-                fin.write(zipObj.read())
+            shutil.move(zip_path, os.path.join(target_path, zip_path))
         else:
             zipObj.extractall(target_path)
 
