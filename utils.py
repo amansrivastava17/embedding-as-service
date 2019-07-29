@@ -42,7 +42,7 @@ def extract_file(zip_path: str, target_path: str = '.') -> None:
     Returns:
 
     """
-    if zip_path.endswith('.gz'):
+    if zip_path.endswith('.gz') and not zip_path.contains('.tar.gz'):
         os.mkdir(target_path)
         shutil.move(zip_path, os.path.join(target_path, zip_path.split('.gz')[0]))
         return
