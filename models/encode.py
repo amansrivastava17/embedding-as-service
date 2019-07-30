@@ -1,10 +1,12 @@
 from utils import home_directory, get_hashed_name, download_from_url, extract_file
 from models import MODELS_DIR
 
-from typing import Optional, List
+from typing import Union, Optional, List
+
 import importlib
 import os
 import numpy as np
+
 
 class Encoder(object):
     def __init__(self, embedding: str, model: str, download: bool = False):
@@ -12,6 +14,7 @@ class Encoder(object):
         self.model = model
         self.embedding_model_dict = None
         self.model_path = None
+        self.batch_size = 128
 
         supported_embeddings = self.get_supported_embeddings()
 
@@ -81,7 +84,8 @@ class Encoder(object):
             print(f"Model does not exists, Downloading model: {self.model}")
             download_from_url(model_download_url, model_download_path)
             extract_file(model_download_path, model_path)
-            os.remove(model_download_path)
+            if os.path.exists(model_download_path):
+                os.remove(model_download_path)
             print(f"Model downloaded successfully!")
         return model_path
 
@@ -89,6 +93,7 @@ class Encoder(object):
         self.embedding_cls.load_model(self.model, self.model_path)
         return
 
+<<<<<<< HEAD
     # def encode_vectorize(self, texts: Union[List[str], str], batch_size: int, pooling: str, **kwargs):
     #     vectorized_encode = np.vectorize(lambda x: self.embedding_cls.encode([x], pooling, **kwargs))
     #     if type(texts) == str:
@@ -102,11 +107,18 @@ class Encoder(object):
 
     def encode(self, texts: Union[List[str], str], batch_size: int, pooling: str, **kwargs) -> np.array:
         if type(texts) == str:
+=======
+    def encode(self, texts: Union[List[str], str], pooling: str, **kwargs) -> np.array:
+        embeddings = None
+        if isinstance(texts, str):
+>>>>>>> f2af2b1cec2ca89a4e1bde9a06eb2feb0113e298
             embeddings = self.embedding_cls.encode([texts], pooling, **kwargs)
-        else:
+        elif isinstance(texts, list):
             embeddings = []
-            for i in range(0, len(texts), batch_size):
-                vectors = self.embedding_cls.encode(texts[i: i + batch_size], pooling, **kwargs)
+            for i in range(0, len(texts), self.batch_size):
+                vectors = self.embedding_cls.encode(texts[i: i + self.batch_size], pooling, **kwargs)
                 embeddings.append(vectors)
             embeddings = np.vstack(embeddings)
+        else:
+            print('Wrong input format!')
         return embeddings

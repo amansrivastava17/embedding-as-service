@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 import sys
 import zipfile
 import hashlib
@@ -6,6 +6,31 @@ import requests
 from pathlib import Path
 import tarfile
 import gzip
+import os
+import shutil
+
+
+def any2unicode(text, encoding='utf8', errors='strict'):
+    """Convert `text` (bytestring in given encoding or unicode) to unicode.
+    Parameters
+    ----------
+    text : str
+        Input text.
+    errors : str, optional
+        Error handling behaviour if `text` is a bytestring.
+    encoding : str, optional
+        Encoding of `text` if it is a bytestring.
+    Returns
+    -------
+    str
+        Unicode version of `text`.
+    """
+    if isinstance(text, str):
+        return text
+    return text.decode('utf-8')
+
+
+to_unicode = any2unicode
 
 
 def extract_file(zip_path: str, target_path: str = '.') -> None:
@@ -17,14 +42,17 @@ def extract_file(zip_path: str, target_path: str = '.') -> None:
     Returns:
 
     """
+    if zip_path.endswith('.gz') and not zip_path.contains('.tar.gz'):
+        os.mkdir(target_path)
+        shutil.move(zip_path, os.path.join(target_path, zip_path.split('.gz')[0]))
+        return
+
     if zip_path.endswith('.zip'):
         opener, mode = zipfile.ZipFile, 'r'
     elif zip_path.endswith('.tar.gz') or zip_path.endswith('.tgz'):
         opener, mode = tarfile.open, 'r:gz'
     elif zip_path.endswith('.tar.bz2') or zip_path.endswith('.tbz'):
         opener, mode = tarfile.open, 'r:bz2'
-    elif zip_path.endswith('.gz'):
-        opener, mode = gzip.open, 'rb'
     else:
         raise(ValueError, f"Could not extract `{zip_path}` as no appropriate extractor is found")
 

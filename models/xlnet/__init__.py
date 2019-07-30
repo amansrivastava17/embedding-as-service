@@ -26,7 +26,7 @@ class Embeddings(object):
                         Embedding(name=u'xlnet_large_cased',
                                   dimensions=1024,
                                   corpus_size='32.89B',
-                                  vocabulary_size='na',
+                                  vocabulary_size='32000',
                                   download_url='https://storage.googleapis.com/xlnet/released_models/'
                                                'cased_L-24_H-1024_A-16.zip',
                                   format='zip',
@@ -38,7 +38,7 @@ class Embeddings(object):
                         Embedding(name=u'xlnet_base_cased',
                                   dimensions=768,
                                   corpus_size='3.86B',
-                                  vocabulary_size='na',
+                                  vocabulary_size='32000',
                                   download_url='https://storage.googleapis.com/xlnet/released_models/'
                                                'cased_L-12_H-768_A-12.zip',
                                   format='zip',
@@ -59,7 +59,7 @@ class Embeddings(object):
         self.model = None
 
     @staticmethod
-    def load_tokenizer(self, model_path: str):
+    def load_tokenizer(model_path: str):
         """Get the vocab file and casing info from the Hub module."""
         sp_model = spm.SentencePieceProcessor()
         sp_model.Load(os.path.join(model_path, Embeddings.sentence_piece_model_path))

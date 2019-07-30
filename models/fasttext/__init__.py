@@ -20,6 +20,17 @@ class Embeddings(object):
                   trained_data='Wikipedia 2017',
                   language='en'),
 
+        Embedding(name=u'wiki_news_300_sub',
+                  dimensions=300,
+                  corpus_size='16B',
+                  vocabulary_size='1M',
+                  download_url='https://dl.fbaipublicfiles.com/fasttext/vectors-english/'
+                               'wiki-news-300d-1M-subword.vec.zip',
+                  format='zip',
+                  architecture='CBOW',
+                  trained_data='Wikipedia 2017',
+                  language='en'),
+
         Embedding(name=u'common_crawl_300',
                   dimensions=300,
                   corpus_size='600B',
@@ -30,6 +41,18 @@ class Embeddings(object):
                   architecture='CBOW',
                   trained_data='Common Crawl (600B tokens)',
                   language='en'),
+
+        Embedding(name=u'common_crawl_300_sub',
+                  dimensions=300,
+                  corpus_size='600B',
+                  vocabulary_size='2M',
+                  download_url='https://dl.fbaipublicfiles.com/fasttext/vectors-english/'
+                               'crawl-300d-2M-subword.zip',
+                  format='zip',
+                  architecture='CBOW',
+                  trained_data='Common Crawl (600B tokens)',
+                  language='en'),
+
     ]
 
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
