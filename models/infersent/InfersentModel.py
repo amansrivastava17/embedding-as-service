@@ -60,19 +60,19 @@ class InferSent(nn.Module):
         sent_output = sent_output.index_select(1, idx_unsort)
 
         # Pooling
-        if self.pool_type == "mean":
-            sent_len = torch.FloatTensor(sent_len.copy()).unsqueeze(1).cuda()
-            emb = torch.sum(sent_output, 0).squeeze(0)
-            emb = emb / sent_len.expand_as(emb)
-        elif self.pool_type == "max":
-            if not self.max_pad:
-                sent_output[sent_output == 0] = -1e9
-            emb = torch.max(sent_output, 0)[0]
-            if emb.ndimension() == 3:
-                emb = emb.squeeze(0)
-                assert emb.ndimension() == 2
+        #         if self.pool_type == "mean":
+        #             sent_len = torch.FloatTensor(sent_len.copy()).unsqueeze(1).cuda()
+        #             emb = torch.sum(sent_output, 0).squeeze(0)
+        #             emb = emb / sent_len.expand_as(emb)
+        #         elif self.pool_type == "max":
+        #             if not self.max_pad:
+        #                 sent_output[sent_output == 0] = -1e9
+        #             emb = torch.max(sent_output, 0)[0]
+        #             if emb.ndimension() == 3:
+        #                 emb = emb.squeeze(0)
+        #                 assert emb.ndimension() == 2
 
-        return emb
+        return sent_output
 
     def set_w2v_path(self, w2v_path):
         self.w2v_path = w2v_path
@@ -148,7 +148,7 @@ class InferSent(nn.Module):
             self.word_vec.update(new_word_vec)
         else:
             new_word_vec = []
-        print('New vocab size : %s (added %s words)'% (len(self.word_vec), len(new_word_vec)))
+        print('New vocab size : %s (added %s words)' % (len(self.word_vec), len(new_word_vec)))
 
     def get_batch(self, batch):
         # sent in batch in decreasing order of lengths
@@ -189,7 +189,7 @@ class InferSent(nn.Module):
         n_wk = np.sum(lengths)
         if verbose:
             print('Nb words kept : %s/%s (%.1f%s)' % (
-                        n_wk, n_w, 100.0 * n_wk / n_w, '%'))
+                n_wk, n_w, 100.0 * n_wk / n_w, '%'))
 
         # sort by decreasing length
         lengths, idx_sort = np.sort(lengths)[::-1], np.argsort(-lengths)
@@ -200,7 +200,7 @@ class InferSent(nn.Module):
     def encode(self, sentences, bsize=64, tokenize=True, verbose=False):
         tic = time.time()
         sentences, lengths, idx_sort = self.prepare_samples(
-                        sentences, bsize, tokenize, verbose)
+            sentences, bsize, tokenize, verbose)
 
         embeddings = []
         for stidx in range(0, len(sentences), bsize):
@@ -210,16 +210,7 @@ class InferSent(nn.Module):
             with torch.no_grad():
                 batch = self.forward((batch, lengths[stidx:stidx + bsize])).data.cpu().numpy()
             embeddings.append(batch)
-        embeddings = np.vstack(embeddings)
 
-        # unsort
-        idx_unsort = np.argsort(idx_sort)
-        embeddings = embeddings[idx_unsort]
-
-        if verbose:
-            print('Speed : %.1f sentences/s (%s mode, bsize=%s)' % (
-                    len(embeddings)/(time.time()-tic),
-                    'gpu' if self.is_cuda() else 'cpu', bsize))
         return embeddings
 
     def visualize(self, sent, tokenize=True):

@@ -1,12 +1,12 @@
 from typing import List, Dict, Tuple, Any, Optional
 import numpy as np
 
-from models import Embedding
-import tensorflow as tf
+from models import Embedding, TF_SESS
+
 import tensorflow_hub as hub
 
 
-sess = tf.Session()
+sess = TF_SESS
 
 class Embeddings(object):
     EMBEDDING_MODELS: List[Embedding] = [
@@ -54,6 +54,5 @@ class Embeddings(object):
 
     @classmethod
     def encode(cls, texts: list, pooling: str = None) -> Optional[np.array]:
-        sess.run([tf.global_variables_initializer(), tf.tables_initializer()])
         embeddings = sess.run(cls.use_module(texts))
         return embeddings
