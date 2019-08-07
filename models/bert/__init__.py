@@ -7,6 +7,8 @@ import tensorflow_hub as hub
 from tqdm import tqdm
 from bert.tokenization import FullTokenizer
 
+from utils import POOL_FUNC_MAP
+
 
 class Embeddings(object):
 
@@ -147,18 +149,10 @@ class Embeddings(object):
 
         if not pooling:
             return sequence_output
-
-        if pooling == 'mean':
-            return tf.reduce_mean(sequence_output, 0)
-
-        elif pooling == 'max':
-            return tf.reduce_max(sequence_output, 0)
-
-        elif pooling == 'min':
-            return tf.reduce_min(sequence_output, 0)
-
-        elif pooling == 'mean_max':
-            return tf.concat(values=[tf.reduce_mean(sequence_output, 0), tf.reduce_max(sequence_output, 0)], axis=0)
         else:
-            print(f"Pooling method \"{pooling}\" not implemented")
-        return None
+            if pooling not in ["mean", "max", "mean_max", "min"]:
+                print(f"Pooling method \"{pooling}\" not implemented")
+                return None
+            pooling_func = POOL_FUNC_MAP[pooling]
+            pooled = self.sess.run([pooling_func(word_embeddings, 0) for word_embeddings in sequence_output])
+            return pooled
