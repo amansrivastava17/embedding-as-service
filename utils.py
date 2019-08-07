@@ -126,7 +126,7 @@ def download_from_url(url: str, download_path: str) -> None:
 
 
 def reduce_mean_max(vectors: np.ndarray):
-    return np.hstack(np.mean(vectors, 0), np.max(vectors, 0), axis=0)
+    return np.hstack(np.mean(vectors, 0), np.max(vectors, 0))
 
 
 POOL_FUNC_MAP = {
