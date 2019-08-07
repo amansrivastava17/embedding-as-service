@@ -44,6 +44,7 @@ class Embeddings(object):
 
     def load_model(self, model: str, model_path: str):
         self.elmo_module = hub.Module(model_path)
+        self.sess.run(tf.initializers.global_variables())
         self.model = model
 
     def encode(self, texts: list, pooling: Optional[str] = None, **kwargs) -> Optional[np.array]:

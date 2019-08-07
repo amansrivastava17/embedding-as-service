@@ -113,7 +113,6 @@ class Embeddings(object):
         model_path = os.path.join(model_path, next(os.walk(model_path))[1][0])
         self.xlnet_config = xlnet.XLNetConfig(json_path=os.path.join(model_path, Embeddings.mode_config_path))
         self.run_config = xlnet.create_run_config(is_training=True, is_finetune=True, FLAGS=Flags)
-
         self.load_tokenizer(model_path)
         self.model = model
         print("Model loaded Successfully !")
@@ -133,17 +132,21 @@ class Embeddings(object):
             run_config=self.run_config,
             input_ids=np.array(input_ids, dtype=np.int32),
             seg_ids=np.array(segment_ids, dtype=np.int32),
-            input_mask=np.array(input_masks, dtype=np.float32))
+            input_mask=np.array(input_masks, dtype=np.float32)
+        )
+
+        self.sess.run(tf.initializers.global_variables())
 
         # Get a sequence output
         sequence_output = xlnet_model.get_sequence_output()
+        token_embeddings = self.sess.run(sequence_output)
+
         if not pooling:
-            self.sess.run(tf.initializers.global_variables())
-            return self.sess.run(sequence_output)
+            return token_embeddings
         else:
             if pooling not in ["mean", "max", "mean_max", "min"]:
                 print(f"Pooling method \"{pooling}\" not implemented")
                 return None
             pooling_func = POOL_FUNC_MAP[pooling]
-            pooled = self.sess.run([pooling_func(word_embeddings, 0) for word_embeddings in sequence_output])
+            pooled = self.sess.run(tf.squeeze(pooling_func(token_embeddings, axis=1), axis=1))
             return pooled

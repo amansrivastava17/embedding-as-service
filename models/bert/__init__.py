@@ -126,6 +126,7 @@ class Embeddings(object):
 
     def load_model(self, model: str, model_path: str):
         self.bert_module = hub.Module(model_path)
+        self.sess.run(tf.initializers.global_variables())
         self.create_tokenizer_from_hub_module(model_path)
         self.model = model
         print("Model loaded Successfully !")
@@ -147,12 +148,14 @@ class Embeddings(object):
         bert_outputs = self.bert_module(bert_inputs, signature="tokens", as_dict=True)
         sequence_output = bert_outputs["sequence_output"]
 
+        token_embeddings = self.sess.run(sequence_output)
+
         if not pooling:
-            return self.sess.run(sequence_output)
+            return token_embeddings
         else:
             if pooling not in ["mean", "max", "mean_max", "min"]:
                 print(f"Pooling method \"{pooling}\" not implemented")
                 return None
             pooling_func = POOL_FUNC_MAP[pooling]
-            pooled = self.sess.run([pooling_func(word_embeddings, 0) for word_embeddings in sequence_output])
+            pooled = self.sess.run(tf.squeeze(pooling_func(token_embeddings, axis=1), axis=1))
             return pooled
