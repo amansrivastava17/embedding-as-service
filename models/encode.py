@@ -59,7 +59,7 @@ class Encoder(object):
 
     def _get_or_download_model(self, download: bool) -> Optional[str]:
         """
-        Return downloaded model path, if model path does not exits and download is true, it will download
+        Return downloaded model path, if model path does not exist and download is true, it will download
         and return the path
         Args:
             download: flag to decide whether to download model in case it not exists

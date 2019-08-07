@@ -5,7 +5,8 @@ import hashlib
 import requests
 from pathlib import Path
 import tarfile
-import gzip
+import numpy as np
+import tensorflow as tf
 import os
 import shutil
 
@@ -123,3 +124,16 @@ def download_from_url(url: str, download_path: str) -> None:
                                         int(downloaded/1024), total_kb))
                 sys.stdout.flush()
     sys.stdout.write('\n')
+
+
+def reduce_mean_max(vectors: np.ndarray):
+    return tf.concat(values=[tf.reduce_mean(vectors, 0), tf.reduce_max(vectors, 0)], axis=0)
+
+
+POOL_FUNC_MAP = {
+    "mean": tf.reduce_mean,
+    "max": tf.reduce_max,
+    "min": tf.reduce_min,
+    "mean_max": reduce_mean_max,
+}
+

@@ -5,6 +5,8 @@ from models import Embedding
 import tensorflow as tf
 import tensorflow_hub as hub
 
+from utils import POOL_FUNC_MAP
+
 
 class Embeddings(object):
     EMBEDDING_MODELS: List[Embedding] = [
@@ -24,6 +26,7 @@ class Embeddings(object):
     def __init__(self):
         self.elmo_module = None
         self.model = None
+        self.sess = tf.Session()
 
     @classmethod
     def tokenize(cls, text: str):
@@ -57,19 +60,10 @@ class Embeddings(object):
 
         if not pooling:
             return embeddings
-
-        if pooling == 'mean':
-            return tf.reduce_mean(embeddings, 0)
-
-        elif pooling == 'max':
-            return tf.reduce_max(embeddings, 0)
-
-        elif pooling == 'min':
-            return tf.reduce_min(embeddings, 0)
-
-        elif pooling == 'mean_max':
-            return tf.concat(values=[tf.reduce_mean(embeddings, 0), tf.reduce_max(embeddings, 0)], axis=0)
-
         else:
-            print(f"Pooling method \"{pooling}\" not implemented")
-        return None
+            if pooling not in ["mean", "max", "mean_max", "min"]:
+                print(f"Pooling method \"{pooling}\" not implemented")
+                return None
+            pooling_func = POOL_FUNC_MAP[pooling]
+            pooled = self.sess.run([pooling_func(word_embeddings, 0) for word_embeddings in embeddings])
+            return pooled
