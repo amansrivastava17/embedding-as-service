@@ -137,8 +137,8 @@ class Embeddings(object):
 
         # Get a sequence output
         sequence_output = xlnet_model.get_sequence_output()
-        tf.initializers.global_variables()
         if not pooling:
+            self.sess.run(tf.initializers.global_variables())
             return self.sess.run(sequence_output)
         else:
             if pooling not in ["mean", "max", "mean_max", "min"]:
