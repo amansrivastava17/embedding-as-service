@@ -145,5 +145,5 @@ class Embeddings(object):
                 print(f"Pooling method \"{pooling}\" not implemented")
                 return None
             pooling_func = POOL_FUNC_MAP[pooling]
-            pooled = self.sess.run([pooling_func(word_embeddings, 0) for word_embeddings in embeddings])
+            pooled = self.sess.run([pooling_func(word_embeddings, 0) for word_embeddings in sequence_output])
             return pooled
