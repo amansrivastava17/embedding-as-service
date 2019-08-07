@@ -93,7 +93,7 @@ class Encoder(object):
         self.embedding_cls.load_model(self.model, self.model_path)
         return
 
-    def encode(self, texts: Union[List[str], str], pooling: str, **kwargs) -> np.array:
+    def encode(self, texts: Union[List[str], str], pooling: Optional[str] = None, **kwargs) -> np.array:
         embeddings = None
         if isinstance(texts, str):
             embeddings = self.embedding_cls.encode([texts], pooling, **kwargs)

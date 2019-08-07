@@ -46,7 +46,7 @@ class Embeddings(object):
         self.elmo_module = hub.Module(model_path)
         self.model = model
 
-    def encode(self, texts: list, pooling: str = 'mean', **kwargs) -> Optional[np.array]:
+    def encode(self, texts: list, pooling: Optional[str] = None, **kwargs) -> Optional[np.array]:
         text_tokens = [Embeddings.tokenize(text) for text in texts]
         max_seq_length = kwargs.get('max_seq_length')
         if max_seq_length:
@@ -59,7 +59,7 @@ class Embeddings(object):
                                       signature="tokens", as_dict=True)["elmo"]
 
         if not pooling:
-            return embeddings
+            return self.sess.run(embeddings)
         else:
             if pooling not in ["mean", "max", "mean_max", "min"]:
                 print(f"Pooling method \"{pooling}\" not implemented")
