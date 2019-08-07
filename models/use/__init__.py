@@ -51,5 +51,5 @@ class Embeddings(object):
         self.use_module = hub.Module(model_path)
         self.model = model
 
-    def encode(self, texts: list, pooling: str = None) -> Optional[np.array]:
+    def encode(self, texts: list, pooling: Optional[str] = None) -> Optional[np.array]:
         return self.use_module(texts)

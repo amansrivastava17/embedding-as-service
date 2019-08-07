@@ -118,7 +118,7 @@ class Embeddings(object):
         self.model = model
         print("Model loaded Successfully !")
 
-    def encode(self, texts: list, pooling: str = 'mean', **kwargs) -> Optional[np.array]:
+    def encode(self, texts: list, pooling: Optional[str] = None, **kwargs) -> Optional[np.array]:
         max_seq_length = kwargs.get('max_seq_length', 128)
         input_ids, input_masks, segment_ids = [], [], []
         for text in tqdm(texts, desc="Converting texts to features"):
@@ -139,7 +139,7 @@ class Embeddings(object):
         sequence_output = xlnet_model.get_sequence_output()
 
         if not pooling:
-            return sequence_output
+            return self.sess.run(sequence_output)
         else:
             if pooling not in ["mean", "max", "mean_max", "min"]:
                 print(f"Pooling method \"{pooling}\" not implemented")
