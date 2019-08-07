@@ -56,15 +56,17 @@ class Embeddings(object):
         else:
             seq_length = [len(tokens) for tokens in text_tokens]
 
-        embeddings = self.elmo_module(inputs={"tokens": text_tokens, "sequence_len": seq_length},
-                                      signature="tokens", as_dict=True)["elmo"]
+        sequence_output = self.elmo_module(inputs={"tokens": text_tokens, "sequence_len": seq_length},
+                                           signature="tokens", as_dict=True)["elmo"]
+
+        token_embeddings = self.sess.run(sequence_output)
 
         if not pooling:
-            return self.sess.run(embeddings)
+            return token_embeddings
         else:
             if pooling not in ["mean", "max", "mean_max", "min"]:
                 print(f"Pooling method \"{pooling}\" not implemented")
                 return None
             pooling_func = POOL_FUNC_MAP[pooling]
-            pooled = self.sess.run([pooling_func(word_embeddings, 0) for word_embeddings in embeddings])
+            pooled = pooling_func(token_embeddings, axis=1)
             return pooled

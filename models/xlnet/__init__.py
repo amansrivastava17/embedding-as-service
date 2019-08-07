@@ -148,5 +148,5 @@ class Embeddings(object):
                 print(f"Pooling method \"{pooling}\" not implemented")
                 return None
             pooling_func = POOL_FUNC_MAP[pooling]
-            pooled = self.sess.run(tf.squeeze(pooling_func(token_embeddings, axis=1), axis=1))
+            pooled = pooling_func(token_embeddings, axis=1)
             return pooled

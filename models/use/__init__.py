@@ -49,7 +49,8 @@ class Embeddings(object):
 
     def load_model(self, model: str, model_path: str):
         self.use_module = hub.Module(model_path)
+        self.sess.run(tf.initializers.global_variables())
         self.model = model
 
     def encode(self, texts: list, pooling: Optional[str] = None) -> Optional[np.array]:
-        return self.use_module(texts)
+        return self.sess.run(self.use_module(texts))
