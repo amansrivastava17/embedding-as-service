@@ -147,6 +147,7 @@ class Embeddings(object):
         bert_outputs = self.bert_module(bert_inputs, signature="tokens", as_dict=True)
         sequence_output = bert_outputs["sequence_output"]
 
+        tf.initializers.global_variables()
         if not pooling:
             return self.sess.run(sequence_output)
         else:
