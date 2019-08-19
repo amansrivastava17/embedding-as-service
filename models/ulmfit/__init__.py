@@ -1,31 +1,39 @@
 from typing import List, Dict, Optional
 import pickle
-import tensorflow as tf
 
 from models.ulmfit.model import *
-
 from models import Embedding
 from utils import POOL_FUNC_MAP
 
 
 class Embeddings(object):
     EMBEDDING_MODELS: List[Embedding] = [
-                        Embedding(name=u'umlfit',
-                                  dimensions=300,
-                                  corpus_size='570k human-generated English sentence pairs',
-                                  vocabulary_size='230k',
-                                  download_url='http://files.fast.ai/models/wt103/',
-                                  format='zip',
-                                  architecture='Transformer',
-                                  trained_data='Stephen Merity’s Wikitext 103 dataset',
-                                  language='en')
-                        ]
+        Embedding(name=u'umlfit_forward',
+                  dimensions=300,
+                  corpus_size='570k human-generated English sentence pairs',
+                  vocabulary_size='230k',
+                  download_url='https://www.dropbox.com/s/2x9fkn5khxuazme/forward_ulmfit.zip?dl=1',
+                  format='zip',
+                  architecture='Transformer',
+                  trained_data='Stephen Merity’s Wikitext 103 dataset',
+                  language='en'),
+
+        Embedding(name=u'umlfit_backward',
+                  dimensions=300,
+                  corpus_size='570k human-generated English sentence pairs',
+                  vocabulary_size='230k',
+                  download_url='https://www.dropbox.com/s/wqmq7siwr2yoxs5/backward_ulfmit.zip?dl=1',
+                  format='zip',
+                  architecture='Transformer',
+                  trained_data='Stephen Merity’s Wikitext 103 dataset',
+                  language='en')
+    ]
 
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
 
     def __init__(self):
         self.ulmfit_model = None
-        self.model = None
+        self.model_name = None
         self.word2idx = None
         self.idx2word = None
 
@@ -40,14 +48,9 @@ class Embeddings(object):
                 model: Name of the model
                 model_path: directory path of saved model and architecture file.
         """
-        weights_path = None
-        id2word_path = None
-        model_files = [f for f in os.listdir(model_path) if os.path.isfile(os.path.join(model_path, f))]
-        for file in model_files:
-            if file.endswith(".h5"):
-                weights_path = os.path.join(model_path, file)
-            elif file == "itos_wt103.pkl":
-                id2word_path = os.path.join(model_path, file)
+
+        weights_path = os.path.join(model_path,  'model.h5')
+        id2word_path = os.path.join(model_path, 'itos_wt103.pkl')
 
         with open(id2word_path, 'rb') as f:
             idx2word = pickle.load(f)
@@ -57,11 +60,7 @@ class Embeddings(object):
 
         self.ulmfit_model = build_language_model()
         self.ulmfit_model.load_weights(weights_path)
-        self.model = model
-
-    @staticmethod
-    def reduce_mean_max(word_embeddings: np.ndarray):
-        return tf.concat(values=[tf.reduce_mean(word_embeddings, 0), tf.reduce_max(word_embeddings, 0)], axis=0)
+        self.model_name = model
 
     def encode(self, texts: list, pooling: Optional[str] = None, **kwargs) -> Optional[List[np.array]]:
         tokenized_texts = [Embeddings.tokenize(text) for text in texts]

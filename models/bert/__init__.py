@@ -76,7 +76,7 @@ class Embeddings(object):
     def __init__(self):
         self.sess = tf.Session()
         self.bert_module = None
-        self.model = None
+        self.model_name = None
 
     def create_tokenizer_from_hub_module(self, model_path: str):
         """Get the vocab file and casing info from the Hub module."""
@@ -90,9 +90,13 @@ class Embeddings(object):
 
         Embeddings.tokenizer = FullTokenizer(vocab_file=vocab_file, do_lower_case=do_lower_case)
 
+    @classmethod
+    def tokenize(cls, text):
+        return cls.tokenizer.tokenize()
+
     @staticmethod
     def _model_single_input(text: str, max_seq_length: int) -> Tuple[List[int], List[int], List[int]]:
-        tokens_a = Embeddings.tokenizer.tokenize(text)
+        tokens_a = Embeddings.tokenize(text)
         if len(tokens_a) > max_seq_length - 2:
             tokens_a = tokens_a[0: (max_seq_length - 2)]
 
@@ -128,7 +132,7 @@ class Embeddings(object):
         self.bert_module = hub.Module(model_path)
         self.sess.run(tf.initializers.global_variables())
         self.create_tokenizer_from_hub_module(model_path)
-        self.model = model
+        self.model_name = model
         print("Model loaded Successfully !")
 
     def encode(self, texts: list, pooling: Optional[str] = None, **kwargs) -> Optional[np.array]:

@@ -59,10 +59,10 @@ class Embeddings(object):
 
     def __init__(self):
         self.word_vectors: Dict[Any, Any] = {}
-        self.model = None
+        self.model_name = None
 
     @classmethod
-    def _tokens(cls, text):
+    def tokenize(cls, text):
         return [x.lower().strip() for x in text.split()]
 
     def load_model(self, model: str, model_path: str):
@@ -75,7 +75,7 @@ class Embeddings(object):
                 word = split_line[0]
                 self.word_vectors[word] = np.array([float(val) for val in split_line[1:]])
             print("Model loaded Successfully !")
-            self.model = model
+            self.model_name = model
             return self
         except Exception as e:
             print('Error loading Model, ', str(e))
@@ -83,8 +83,8 @@ class Embeddings(object):
 
     def encode(self, texts: list, pooling: str = 'mean', **kwargs) -> np.array:
         text = texts[0]
-        result = np.zeros(Embeddings.EMBEDDING_MODELS[self.model].dimensions, dtype="float32")
-        tokens = Embeddings._tokens(text)
+        result = np.zeros(Embeddings.EMBEDDING_MODELS[self.model_name].dimensions, dtype="float32")
+        tokens = Embeddings.tokenize(text)
         vectors = np.array([self.word_vectors[token] for token in tokens if token in self.word_vectors.keys()])
 
         if pooling == 'mean':
