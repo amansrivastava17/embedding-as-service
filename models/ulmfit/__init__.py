@@ -8,21 +8,21 @@ from utils import POOL_FUNC_MAP
 
 class Embeddings(object):
     EMBEDDING_MODELS: List[Embedding] = [
-        Embedding(name=u'umlfit_forward',
+        Embedding(name=u'ulmfit_forward',
                   dimensions=300,
                   corpus_size='570k human-generated English sentence pairs',
                   vocabulary_size='230k',
-                  download_url='https://www.dropbox.com/s/2x9fkn5khxuazme/forward_ulmfit.zip?dl=1',
+                  download_url='https://www.dropbox.com/s/j7oer3dlfeykb2n/forward_ulmfit.zip?dl=1',
                   format='zip',
                   architecture='Transformer',
                   trained_data='Stephen Merity’s Wikitext 103 dataset',
                   language='en'),
 
-        Embedding(name=u'umlfit_backward',
+        Embedding(name=u'ulmfit_backward',
                   dimensions=300,
                   corpus_size='570k human-generated English sentence pairs',
                   vocabulary_size='230k',
-                  download_url='https://www.dropbox.com/s/wqmq7siwr2yoxs5/backward_ulfmit.zip?dl=1',
+                  download_url='https://www.dropbox.com/s/jn1zbvjwie2m9fj/backward_ulfmit.zip?dl=1',
                   format='zip',
                   architecture='Transformer',
                   trained_data='Stephen Merity’s Wikitext 103 dataset',
