@@ -12,7 +12,7 @@ class Embeddings(object):
                   dimensions=300,
                   corpus_size='570k human-generated English sentence pairs',
                   vocabulary_size='230k',
-                  download_url='https://www.dropbox.com/s/j7oer3dlfeykb2n/forward_ulmfit.zip?dl=1',
+                  download_url='https://www.dropbox.com/s/4k5zwvmqdhwql8t/ulmfit_forward.zip?dl=1',
                   format='zip',
                   architecture='Transformer',
                   trained_data='Stephen Merity’s Wikitext 103 dataset',
@@ -22,7 +22,7 @@ class Embeddings(object):
                   dimensions=300,
                   corpus_size='570k human-generated English sentence pairs',
                   vocabulary_size='230k',
-                  download_url='https://www.dropbox.com/s/jn1zbvjwie2m9fj/backward_ulfmit.zip?dl=1',
+                  download_url='https://www.dropbox.com/s/152w8wtv3hxmazp/ulmfit_backword.zip?dl=1',
                   format='zip',
                   architecture='Transformer',
                   trained_data='Stephen Merity’s Wikitext 103 dataset',
@@ -49,8 +49,8 @@ class Embeddings(object):
                 model_path: directory path of saved model and architecture file.
         """
 
-        weights_path = os.path.join(model_path, model,  'model.h5')
-        id2word_path = os.path.join(model_path, model, 'itos_wt103.pkl')
+        weights_path = os.path.join(model_path,  'model.h5')
+        id2word_path = os.path.join(model_path, 'itos_wt103.pkl')
 
         with open(id2word_path, 'rb') as f:
             idx2word = pickle.load(f)
