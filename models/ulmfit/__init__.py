@@ -49,8 +49,8 @@ class Embeddings(object):
                 model_path: directory path of saved model and architecture file.
         """
 
-        weights_path = os.path.join(model_path,  'model.h5')
-        id2word_path = os.path.join(model_path, 'itos_wt103.pkl')
+        weights_path = os.path.join(model_path, model,  'model.h5')
+        id2word_path = os.path.join(model_path, model, 'itos_wt103.pkl')
 
         with open(id2word_path, 'rb') as f:
             idx2word = pickle.load(f)
