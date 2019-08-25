@@ -27,10 +27,10 @@ class Embeddings(object):
 
     def __init__(self):
         self.word_vectors: Dict[Any, Any] = {}
-        self.model = None
+        self.model_name = None
 
     @classmethod
-    def _tokens(cls, text: str) -> List[str]:
+    def tokenize(cls, text: str) -> List[str]:
         return [x.lower().strip() for x in text.split()]
 
     def load_model(self, model: str, model_path: str):
@@ -61,7 +61,7 @@ class Embeddings(object):
                 weights = fromstring(f.read(binary_len), dtype=real).astype(real)
 
                 self.word_vectors[word] = weights
-            self.model = model
+            self.model_name = model
             print("Model loaded Successfully !")
             return self
         except Exception as e:
@@ -69,8 +69,8 @@ class Embeddings(object):
 
     def encode(self, texts: list, pooling: str = 'mean', **kwargs) -> np.array:
         text = texts[0]
-        result = np.zeros(Embeddings.EMBEDDING_MODELS[self.model].dimensions, dtype="float32")
-        tokens = Embeddings._tokens(text)
+        result = np.zeros(Embeddings.EMBEDDING_MODELS[self.model_name].dimensions, dtype="float32")
+        tokens = Embeddings.tokenize(text)
 
         vectors = np.array([self.word_vectors[token] for token in tokens if token in self.word_vectors.keys()])
 
@@ -94,5 +94,5 @@ class Embeddings(object):
                                          and token in tfidf_dict])
             result = np.mean(weighted_vectors, axis=0)
         else:
-            print(f'Given pooling method "{pooling}" not implemented in "{self.model}"')
+            print(f'Given pooling method "{pooling}" not implemented in "{self.model_name}"')
         return result

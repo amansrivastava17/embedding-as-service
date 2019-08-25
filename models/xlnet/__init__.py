@@ -57,7 +57,7 @@ class Embeddings(object):
     def __init__(self):
         self.xlnet_config = None
         self.run_config = None
-        self.model = None
+        self.model_name = None
         self.sess = tf.Session()
 
     @staticmethod
@@ -68,13 +68,13 @@ class Embeddings(object):
         Embeddings.tokenizer = sp_model
 
     @classmethod
-    def tokenize_fn(cls, text):
+    def tokenize(cls, text):
         text = preprocess_text(text, lower=False)
         return encode_ids(cls.tokenizer, text)
 
     @staticmethod
     def _model_single_input(text: str, max_seq_length: int) -> Tuple[List[int], List[int], List[int]]:
-        tokens_a = Embeddings.tokenize_fn(text)
+        tokens_a = Embeddings.tokenize(text)
 
         if len(tokens_a) > max_seq_length - 2:
             tokens_a = tokens_a[0: (max_seq_length - 2)]
@@ -114,7 +114,7 @@ class Embeddings(object):
         self.xlnet_config = xlnet.XLNetConfig(json_path=os.path.join(model_path, Embeddings.mode_config_path))
         self.run_config = xlnet.create_run_config(is_training=True, is_finetune=True, FLAGS=Flags)
         self.load_tokenizer(model_path)
-        self.model = model
+        self.model_name = model
         print("Model loaded Successfully !")
 
     def encode(self, texts: list, pooling: Optional[str] = None, **kwargs) -> Optional[np.array]:

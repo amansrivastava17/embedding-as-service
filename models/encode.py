@@ -1,11 +1,11 @@
-from utils import home_directory, get_hashed_name, download_from_url, extract_file
-from models import MODELS_DIR
-
 from typing import Union, Optional, List
-
+import numpy as np
 import importlib
 import os
-import numpy as np
+
+
+from utils import home_directory, get_hashed_name, download_from_url, extract_file
+from models import MODELS_DIR
 
 
 class Encoder(object):

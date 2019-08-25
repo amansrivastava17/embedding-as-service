@@ -25,7 +25,7 @@ class Embeddings(object):
 
     def __init__(self):
         self.elmo_module = None
-        self.model = None
+        self.model_name = None
         self.sess = tf.Session()
 
     @classmethod
@@ -45,7 +45,7 @@ class Embeddings(object):
     def load_model(self, model: str, model_path: str):
         self.elmo_module = hub.Module(model_path)
         self.sess.run(tf.initializers.global_variables())
-        self.model = model
+        self.model_name = model
 
     def encode(self, texts: list, pooling: Optional[str] = None, **kwargs) -> Optional[np.array]:
         text_tokens = [Embeddings.tokenize(text) for text in texts]
