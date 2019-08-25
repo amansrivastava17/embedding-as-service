@@ -1,11 +1,4 @@
 import setuptools
-from os import path
-
-# setup metainfo
-libinfo_py = path.join('embedding_as_service', 'models', '__init__.py')
-libinfo_content = open(libinfo_py, 'r').readlines()
-version_line = [l.strip() for l in libinfo_content if l.startswith('__version__')][0]
-exec(version_line)  # produce __version__
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
