@@ -14,10 +14,10 @@ import absl.logging as _logging  # pylint: disable=unused-import
 
 import tensorflow as tf
 
-import data_utils
-import model_utils
-from gpu_utils import assign_to_gpu, average_grads_and_vars
-import function_builder
+from embedding_serving.text.xlnet.models import data_utils
+from embedding_serving.text.xlnet.models import model_utils
+from embedding_serving.text.xlnet.models.gpu_utils import assign_to_gpu, average_grads_and_vars
+from embedding_serving.text.xlnet.models import function_builder
 
 
 # GPU config
