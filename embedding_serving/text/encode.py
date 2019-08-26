@@ -25,7 +25,7 @@ class Encoder(object):
             return
 
         self.embedding_cls = importlib.import_module(
-            f'embedding_serving.models.{embedding}').Embeddings()
+            f'embedding_serving.text.{embedding}').Embeddings()
 
         # check if given model exits for embedding
         model_names = list(self.embedding_cls.EMBEDDING_MODELS.keys())
