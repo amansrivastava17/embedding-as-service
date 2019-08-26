@@ -5,7 +5,7 @@ from __future__ import print_function
 
 import os
 import tensorflow as tf
-from xlnet import modeling
+import modeling
 import xlnet
 
 
