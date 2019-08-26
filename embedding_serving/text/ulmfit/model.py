@@ -3,8 +3,7 @@ from keras.models import Model
 import os
 
 
-from models.ulmfit.custom_layers.tied_embeddings import *
-from models.ulmfit.custom_layers.qrnn import *
+from embedding_serving.text.ulmfit.custom_layers.tied_embeddings import *
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 

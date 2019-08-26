@@ -1,11 +1,11 @@
-from typing import List, Dict, Tuple, Any, Optional
+from typing import List, Dict, Optional
 import numpy as np
 
-from models import Embedding
+from embedding_serving.text import Embedding
 import tensorflow as tf
 import tensorflow_hub as hub
 
-from utils import POOL_FUNC_MAP
+from embedding_serving.utils import POOL_FUNC_MAP
 
 
 class Embeddings(object):

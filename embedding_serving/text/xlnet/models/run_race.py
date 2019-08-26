@@ -365,7 +365,7 @@ def get_model_fn():
     num_params = sum([np.prod(v.shape) for v in tf.trainable_variables()])
     tf.logging.info('#params: {}'.format(num_params))
 
-    #### load pretrained models
+    #### load pretrained text
     scaffold_fn = model_utils.init_from_checkpoint(FLAGS)
 
     #### Evaluation mode

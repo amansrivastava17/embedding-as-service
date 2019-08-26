@@ -1,7 +1,7 @@
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
-from models import Embedding
-from utils import to_unicode
+from embedding_serving.text import Embedding
+from embedding_serving.utils import to_unicode, POOL_FUNC_MAP
 from smart_open import open
 from tqdm import tqdm
 import os
@@ -34,7 +34,6 @@ class Embeddings(object):
         return [x.lower().strip() for x in text.split()]
 
     def load_model(self, model: str, model_path: str):
-
         try:
             encoding = 'utf-8'
             unicode_errors = 'strict'
@@ -67,32 +66,20 @@ class Embeddings(object):
         except Exception as e:
             print('Error loading Model, ', str(e))
 
-    def encode(self, texts: list, pooling: str = 'mean', **kwargs) -> np.array:
-        text = texts[0]
-        result = np.zeros(Embeddings.EMBEDDING_MODELS[self.model_name].dimensions, dtype="float32")
+    def _single_encode_text(self, text, oov_vector):
         tokens = Embeddings.tokenize(text)
+        return np.array([self.word_vectors.get(token, oov_vector) for token in tokens])
 
-        vectors = np.array([self.word_vectors[token] for token in tokens if token in self.word_vectors.keys()])
+    def encode(self, texts: list, pooling: Optional[str] = None, **kwargs) -> np.array:
+        oov_vector = np.zeros(Embeddings.EMBEDDING_MODELS[self.model_name].dimensions, dtype="float32")
+        token_embeddings = np.array([self._single_encode_text(text, oov_vector) for text in texts])
 
-        if pooling == 'mean':
-            result = np.mean(vectors, axis=0)
-
-        elif pooling == 'max':
-            result = np.max(vectors, axis=0)
-
-        elif pooling == 'sum':
-            result = np.sum(vectors, axis=0)
-
-        elif pooling == 'tf-idf-sum':
-            if not kwargs.get('tfidf_dict'):
-                print('Must provide tfidf dict')
-                return result
-
-            tfidf_dict = kwargs.get('tfidf_dict')
-            weighted_vectors = np.array([tfidf_dict.get(token) * self.word_vectors.get(token)
-                                         for token in tokens if token in self.word_vectors.keys()
-                                         and token in tfidf_dict])
-            result = np.mean(weighted_vectors, axis=0)
+        if not pooling:
+            return token_embeddings
         else:
-            print(f'Given pooling method "{pooling}" not implemented in "{self.model_name}"')
-        return result
+            if pooling not in ["mean", "max", "mean_max", "min"]:
+                raise NotImplementedError(f"Pooling method \"{pooling}\" not implemented")
+            pooling_func = POOL_FUNC_MAP[pooling]
+            pooled = pooling_func(token_embeddings, axis=1)
+            return pooled
+

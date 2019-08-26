@@ -4,8 +4,8 @@ import importlib
 import os
 
 
-from utils import home_directory, get_hashed_name, download_from_url, extract_file
-from models import MODELS_DIR
+from embedding_serving.utils import home_directory, get_hashed_name, download_from_url, extract_file
+from embedding_serving.text import MODELS_DIR
 
 
 class Encoder(object):
@@ -25,7 +25,7 @@ class Encoder(object):
             return
 
         self.embedding_cls = importlib.import_module(
-            f'models.{embedding}').Embeddings()
+            f'embedding_serving.models.{embedding}').Embeddings()
 
         # check if given model exits for embedding
         model_names = list(self.embedding_cls.EMBEDDING_MODELS.keys())

@@ -1,9 +1,12 @@
-from typing import List, Dict, Optional
-import pickle
+from embedding_serving.text.ulmfit import *
+from embedding_serving.text import Embedding
+from embedding_serving.text.ulmfit.model import build_language_model
+from embedding_serving.utils import POOL_FUNC_MAP
 
-from models.ulmfit.model import *
-from models import Embedding
-from utils import POOL_FUNC_MAP
+from typing import List, Dict, Optional
+import numpy as np
+import pickle
+import os
 
 
 class Embeddings(object):
@@ -74,8 +77,7 @@ class Embeddings(object):
             return embeddings
         else:
             if pooling not in ["mean", "max", "mean_max", "min"] :
-                print(f"Pooling method \"{pooling}\" not implemented")
-                return None
+                raise NotImplementedError(f"Pooling method \"{pooling}\" not implemented")
             pooling_func = POOL_FUNC_MAP[pooling]
             pooled = pooling_func(embeddings, axis=1)
             return pooled

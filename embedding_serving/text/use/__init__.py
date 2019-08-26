@@ -1,7 +1,7 @@
 from typing import List, Dict, Optional
 import numpy as np
 
-from models import Embedding
+from embedding_serving.text import Embedding
 import tensorflow as tf
 import tensorflow_hub as hub
 

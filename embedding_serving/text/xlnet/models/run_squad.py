@@ -1085,7 +1085,7 @@ def get_model_fn():
     monitor_dict = {}
     monitor_dict["lr"] = learning_rate
 
-    #### load pretrained models
+    #### load pretrained text
     scaffold_fn = model_utils.init_from_checkpoint(FLAGS)
 
     #### Constucting training TPUEstimatorSpec with new cache.

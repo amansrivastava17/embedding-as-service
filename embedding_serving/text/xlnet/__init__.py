@@ -1,18 +1,18 @@
-from typing import List, Dict, Tuple, Any, Optional
+from typing import List, Dict, Tuple, Optional
 import sentencepiece as spm
 import tensorflow as tf
 from tqdm import tqdm
 import numpy as np
 import os
 
-from models.xlnet.config import Flags
-from models import Embedding
+from embedding_serving.text.xlnet.config import Flags
+from embedding_serving.text import Embedding
 
-from models.xlnet.models.prepro_utils import preprocess_text, encode_ids
-from models.xlnet.models.data_utils import SEP_ID, CLS_ID
-from models.xlnet.models import xlnet
+from embedding_serving.text.xlnet.models.prepro_utils import preprocess_text, encode_ids
+from embedding_serving.text.xlnet.models.data_utils import SEP_ID, CLS_ID
+from embedding_serving.text.xlnet.models import xlnet
 
-from utils import POOL_FUNC_MAP
+from embedding_serving.utils import POOL_FUNC_MAP
 
 SEG_ID_A = 0
 SEG_ID_B = 1
@@ -145,8 +145,7 @@ class Embeddings(object):
             return token_embeddings
         else:
             if pooling not in ["mean", "max", "mean_max", "min"]:
-                print(f"Pooling method \"{pooling}\" not implemented")
-                return None
+                raise NotImplementedError(f"Pooling method \"{pooling}\" not implemented")
             pooling_func = POOL_FUNC_MAP[pooling]
             pooled = pooling_func(token_embeddings, axis=1)
             return pooled

@@ -92,8 +92,8 @@ _TPU_TRAIN_OP = '_tpu_train_op'
 _REWRITE_FOR_INFERENCE_MODE = '_rewrite_for_inference'
 
 # Ideally _USE_TPU_KEY should be reserved as well. However there are already
-# models that make use of this key, thus it can not be reserved now to prevent
-# breakage. In the long run, we would like to mitigate this by migrating models
+# text that make use of this key, thus it can not be reserved now to prevent
+# breakage. In the long run, we would like to mitigate this by migrating text
 # off of using _USE_TPU_KEY.
 _RESERVED_PARAMS_KEYS = [_BATCH_SIZE_KEY, _CTX_KEY]
 
@@ -1899,7 +1899,7 @@ class TPUEstimator(estimator_lib.Estimator):
   a separate `tf.estimator.Estimator`.
 
   TPUEstimator handles many of the details of running on TPU devices, such as
-  replicating inputs and models for each core, and returning to host
+  replicating inputs and text for each core, and returning to host
   periodically to run hooks.
 
   TPUEstimator transforms a global batch size in params to a per-shard batch
