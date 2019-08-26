@@ -100,7 +100,9 @@ class Encoder(object):
         elif isinstance(texts, list):
             embeddings = []
             for i in range(0, len(texts), self.batch_size):
-                vectors = self.embedding_cls.encode(texts[i: i + self.batch_size], pooling, **kwargs)
+                vectors = self.embedding_cls.encode(texts=texts[i: i + self.batch_size],
+                                                    pooling=pooling,
+                                                    **kwargs)
                 embeddings.append(vectors)
             embeddings = np.vstack(embeddings)
         else:
