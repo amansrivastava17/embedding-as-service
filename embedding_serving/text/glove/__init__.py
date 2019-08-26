@@ -134,13 +134,18 @@ class Embeddings(object):
             print('Error loading Model, ', str(e))
         return self
 
-    def _single_encode_text(self, text, oov_vector):
+    def _single_encode_text(self, text, oov_vector, max_seq_length):
         tokens = Embeddings.tokenize(text)
+        if len(tokens) > max_seq_length:
+            tokens = tokens[0: max_seq_length]
+        while len(tokens) < max_seq_length:
+            tokens.append('<pad>')
         return np.array([self.word_vectors.get(token, oov_vector) for token in tokens])
 
     def encode(self, texts: list, pooling: Optional[str] = None, **kwargs) -> np.array:
+        max_seq_length = kwargs.get('max_seq_length', 128)
         oov_vector = np.zeros(Embeddings.EMBEDDING_MODELS[self.model_name].dimensions, dtype="float32")
-        token_embeddings = np.array([self._single_encode_text(text, oov_vector) for text in texts])
+        token_embeddings = np.array([self._single_encode_text(text, oov_vector, max_seq_length) for text in texts])
 
         if not pooling:
             return token_embeddings
