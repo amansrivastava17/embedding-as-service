@@ -8,9 +8,9 @@ import os
 from models.xlnet.config import Flags
 from models import Embedding
 
-from xlnet.prepro_utils import preprocess_text, encode_ids
-from xlnet.data_utils import SEP_ID, CLS_ID
-from xlnet import xlnet
+from models.xlnet.models.prepro_utils import preprocess_text, encode_ids
+from models.xlnet.models.data_utils import SEP_ID, CLS_ID
+from models.xlnet.models import xlnet
 
 from utils import POOL_FUNC_MAP
 
