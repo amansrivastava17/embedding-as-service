@@ -43,7 +43,7 @@ pip install embedding-as-service
   
 <h2 align="center"> :zap: Getting Started</h2>  
   
-#### 1. **Intialise encoder using supported embedding** and models from <a href="#supported-embeddings-and-models">here</a>  
+#### 1. **Intialise encoder using supported embedding** and models from <a href="#-white_check_mark-supported-embeddings-and-models">here</a>  
 ```python  
 >>> from embedding_as_service.text.encode import Encoder  
 >>> en = Encoder(embedding='xlnet', model='xlnet_base_cased', download=True)  
@@ -97,8 +97,8 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 
   | Argument | Type | Default | Description |
 |--------------------|------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `embedding` | str | *Required* | embedding method to be used, check `Embedding` column <a href="#supported-embeddings-and-models">here</a>|
-| `model`| str |*Required*| Model to be used for mentioned embedding, check `Model` column <a href="#supported-embeddings-and-models">here</a>|
+| `embedding` | str | *Required* | embedding method to be used, check `Embedding` column <a href="#-white_check_mark-supported-embeddings-and-models">here</a>|
+| `model`| str |*Required*| Model to be used for mentioned embedding, check `Model` column <a href="#-white_check_mark-supported-embeddings-and-models">here</a>|
 | `download`| bool |`False`| Download model if model does not exists|
 
 #### 2.  Encoder.encode
