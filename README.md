@@ -24,7 +24,7 @@
   <a href="#installation">Installation</a> •  
   <a href="#getting-started">Getting Started</a> •  
   <a href="#supported-embeddings-and-models">Supported Embeddings</a> •  
-  <a href="##-encoder-api-docs-">API</a> •   
+  <a href="#-encoder-api-docs-">API</a> •   
 </p>  
   
 <h2 align="center">What is it ?</h3>  
@@ -91,7 +91,6 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 ```  
 <br>
 <h2 align="center"> Encoder API Docs </h2>  
-<br>
 
 #### 1.  Initialise Encoder
 
@@ -118,7 +117,6 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 <br>
 
 <h2 align="center" href="#supported-models">Supported Embeddings and Models</h2>  
-<br>
   
 Here are the list of supported embeddings and their respective models.  
   
