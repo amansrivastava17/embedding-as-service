@@ -90,8 +90,8 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 >>> vecs = en.encode(tokens, is_tokenized=True)  
 ```  
 <br>
-<br>
 <h2 align="center"> Encoder API Docs </h2>  
+<br>
 
 #### 1.  Initialise Encoder
 
@@ -116,9 +116,9 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 | `Texts` | List[str] | *Required* | List of sentences  
 
 <br>
-<br>
 
 <h2 align="center" href="#supported-models">Supported Embeddings and Models</h2>  
+<br>
   
 Here are the list of supported embeddings and their respective models.  
   
