@@ -1,5 +1,3 @@
-Welcome file
-Welcome file
 <h2 align="center">embedding-as-service</h2>
 <p align="center">One-Stop Solution to encode sentence to fixed length vectors from various embedding techniques 
 <br>• Inspired from <a href="[https://github.com/hanxiao/bert-as-service](https://github.com/hanxiao/bert-as-service)"> bert-as-service</a> </p>
