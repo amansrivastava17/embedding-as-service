@@ -58,7 +58,7 @@ array([[[ 1.7049843 ,  0.        ,  1.3486509 , ..., -1.3647075 ,
 ```  
 #### 3. Using **pooling strategy**, click <a href="#pooling strategy">here</a> for more.  
 ```python  
->>> vecs = en.encode(texts=['hello aman', 'how are you?'], pooling='mean')  
+>>> vecs = en.encode(texts=['hello aman', 'how are you?'], pooling='REDUCE_MEAN')  
 >>> vecs  
 array([[-0.33547154,  0.34566957,  1.1954105 , ...,  0.33702594,  
  1.0317835 , -0.785943  ], [-0.3439088 ,  0.36881036,  1.0612687 , ...,  0.28851607, 1.1107115 , -0.6253736 ]], dtype=float32)  
@@ -152,3 +152,16 @@ Here are the list of supported embeddings and their respective models.
 ||  |`wiki_50` | 50| |  
 ||  |`crawl_42B_300` | 300| |  
 ||  |`crawl_840B_300` | 300| |
+
+<h2 align="center">Pooling Strategies </h2>  
+ Here is a table summarizes all supported pooling strategies
+
+|Strategy|Description|
+|---|---|
+| `None` | no pooling at all, useful when you want to use word embedding instead of sentence embedding. This will results in a `[max_seq_len, embedding_size]` encode matrix for a sequence.|
+| `REDUCE_MEAN` | take the average of all token embeddings |
+| `REDUCE_MIN` | take the minumun of all token embeddings|
+| `REDUCE_MAX` | take the maximum of all token embeddings |
+| `REDUCE_MEAN_MAX` | do `REDUCE_MEAN` and `REDUCE_MAX` separately and then concat them together |
+| `FIRST_TOKEN` | get the token embedding of first token of a sentence |
+| `LAST_TOKEN` | get the token embedding of last token of a sentence |

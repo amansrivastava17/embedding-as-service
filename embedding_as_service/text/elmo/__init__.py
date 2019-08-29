@@ -64,7 +64,7 @@ class Embeddings(object):
         if not pooling:
             return token_embeddings
         else:
-            if pooling not in ["mean", "max", "mean_max", "min"]:
+            if pooling not in POOL_FUNC_MAP.keys():
                 print(f"Pooling method \"{pooling}\" not implemented")
                 return None
             pooling_func = POOL_FUNC_MAP[pooling]

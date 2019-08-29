@@ -129,10 +129,20 @@ def reduce_mean_max(vectors: np.ndarray):
     return np.hstack(np.mean(vectors, 0), np.max(vectors, 0))
 
 
+def np_first(vectors: np.ndarray):
+    return np.array(vectors)[0]
+
+
+def np_last(vectors: np.ndarray):
+    return np.array(vectors)[-1]
+
+
 POOL_FUNC_MAP = {
-    "mean": np.mean,
-    "max": np.max,
-    "min": np.min,
-    "mean_max": reduce_mean_max,
+    "REDUCE_MEAN": np.mean,
+    "REDUCE_MAX": np.max,
+    "REDUCE_MIN": np.min,
+    "REDUCE_MEAN_MAX": reduce_mean_max,
+    "FIRST_TOKEN": np_first,
+    "LAST_TOKEN": np_last
 }
 

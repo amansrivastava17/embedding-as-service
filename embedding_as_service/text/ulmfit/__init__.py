@@ -76,7 +76,7 @@ class Embeddings(object):
         if not pooling:
             return embeddings
         else:
-            if pooling not in ["mean", "max", "mean_max", "min"] :
+            if pooling not in POOL_FUNC_MAP.keys():
                 raise NotImplementedError(f"Pooling method \"{pooling}\" not implemented")
             pooling_func = POOL_FUNC_MAP[pooling]
             pooled = pooling_func(embeddings, axis=1)

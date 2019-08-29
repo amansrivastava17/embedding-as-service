@@ -8,7 +8,7 @@ import os
 from embedding_as_service.text.xlnet.config import Flags
 from embedding_as_service.text import Embedding
 
-from embedding_as_service.text.xlnet.models.prepro_utils import preprocess_text, encode_ids
+from embedding_as_service.text.xlnet.models.prepro_utils import preprocess_text, encode_ids, encode_pieces
 from embedding_as_service.text.xlnet.models.data_utils import SEP_ID, CLS_ID
 from embedding_as_service.text.xlnet.models import xlnet
 
@@ -70,7 +70,7 @@ class Embeddings(object):
     @classmethod
     def tokenize(cls, text):
         text = preprocess_text(text, lower=False)
-        return encode_ids(cls.tokenizer, text)
+        return encode_pieces(cls.tokenizer, text)
 
     @staticmethod
     def _model_single_input(text: str, max_seq_length: int) -> Tuple[List[int], List[int], List[int]]:
@@ -90,7 +90,7 @@ class Embeddings(object):
         tokens.append(CLS_ID)
         segment_ids.append(SEG_ID_CLS)
 
-        input_ids = tokens
+        input_ids = [Embeddings.tokenizer.PieceToId(token) for token in tokens]
 
         # The mask has 0 for real tokens and 1 for padding tokens. Only real
         # tokens are attended to.
@@ -143,7 +143,7 @@ class Embeddings(object):
         if not pooling:
             return token_embeddings
         else:
-            if pooling not in ["mean", "max", "mean_max", "min"]:
+            if pooling not in POOL_FUNC_MAP.keys():
                 raise NotImplementedError(f"Pooling method \"{pooling}\" not implemented")
             pooling_func = POOL_FUNC_MAP[pooling]
             pooled = pooling_func(token_embeddings, axis=1)

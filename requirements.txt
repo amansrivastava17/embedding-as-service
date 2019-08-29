@@ -6,3 +6,4 @@ bert-tensorflow==1.0.1
 tensorflow_hub==0.4.0
 smart_open==1.8.4
 sentencepiece==0.1.82
+tensorflow==1.14.0

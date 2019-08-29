@@ -91,8 +91,18 @@ class Encoder(object):
         self.embedding_cls.load_model(self.model, self.model_path)
         return
 
+    def tokenize(self, texts: Union[List[str], str]) -> np.array:
+        if isinstance(texts, str):
+            tokens = self.embedding_cls.tokenize(texts)
+        elif isinstance(texts, list):
+            tokens = []
+            for i in range(0, len(texts)):
+                tokens.append(self.embedding_cls.tokenize(texts[i]))
+        else:
+            raise ValueError('Wrong input format!')
+        return tokens
+
     def encode(self, texts: Union[List[str], str], pooling: Optional[str] = None, **kwargs) -> np.array:
-        embeddings = None
         if isinstance(texts, str):
             embeddings = self.embedding_cls.encode([texts], pooling, **kwargs)
         elif isinstance(texts, list):
@@ -102,5 +112,5 @@ class Encoder(object):
                 embeddings.append(vectors)
             embeddings = np.vstack(embeddings)
         else:
-            print('Wrong input format!')
+            raise ValueError('Wrong input format!')
         return embeddings
