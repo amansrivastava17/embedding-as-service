@@ -20,11 +20,11 @@
 </p>  
   
 <p align="center">  
- <a href="#what-is-it-">What is it</a> •  
-  <a href="#installation">Installation</a> •  
-  <a href="#getting-started">Getting Started</a> •  
-  <a href="#supported-embeddings-and-models">Supported Embeddings</a> •  
-  <a href="#-encoder-api-">API</a> •   
+ <a href="#what-is-it-question">What is it</a> •  
+  <a href="#floppy_disk-installation">Installation</a> •  
+  <a href="#-zap-getting-started">Getting Started</a> •  
+  <a href="#-white_check_mark-supported-embeddings-and-models">Supported Embeddings</a> •  
+  <a href="#-closed_book-encoder-api-">API</a> •   
 </p>  
   
 <h2 align="center">What is it :question:</h3>  
