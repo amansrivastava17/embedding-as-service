@@ -1,7 +1,7 @@
 
 <h1 align="center">embedding-as-service</h1>  
 <p align="center">One-Stop Solution to encode sentence to fixed length vectors from various embedding techniques   
-<br>• Inspired from <a href="[https://github.com/hanxiao/bert-as-service](https://github.com/hanxiao/bert-as-service)"> bert-as-service</a> </p>  
+<br>• Inspired from <a href="https://github.com/hanxiao/bert-as-service"> bert-as-service</a> </p>  
 <p align="center">  
   <a href="https://github.com/amansrivastava17/embedding-as-service/stargazers">  
     <img src="https://img.shields.io/github/stars/amansrivastava17/embedding-as-service.svg?colorA=orange&colorB=orange&logo=github"  
