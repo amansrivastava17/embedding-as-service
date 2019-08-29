@@ -73,7 +73,7 @@ array([[-0.33547154,  0.34566957,  1.1954105 , ...,  0.33702594,
 >>> vectors.shape
 (2, 768)
 ```
-#### 4. Use **custom `max_seq_length`** 
+#### 4. Use custom `max_seq_length`, default is 128
 ```python
 >>> vectors = en.encode(texts=['hello aman', 'how are you?'], max_seq_length=256)
 >>> vectors
