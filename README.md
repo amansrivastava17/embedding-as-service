@@ -24,8 +24,7 @@
   <a href="#installation">Installation</a> •  
   <a href="#getting-started">Getting Started</a> •  
   <a href="#supported-embeddings-and-models">Supported Embeddings</a> •  
-  <a href="#server-and-client-api">API</a> •  
-  <a href="#book-tutorial">Tutorials</a>     
+  <a href="##-encoder-api-docs-">API</a> •   
 </p>  
   
 <h2 align="center">What is it ?</h3>  
@@ -90,14 +89,16 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 >>> tokens = [s.split() for s in texts]  
 >>> vecs = en.encode(tokens, is_tokenized=True)  
 ```  
+<br>
+<br>
 <h2 align="center"> Encoder API Docs </h2>  
 
 #### 1.  Initialise Encoder
 
   | Argument | Type | Default | Description |
 |--------------------|------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `embedding` | str | *Required* | embedding method to be used see `Embedding` column <a href="#supported-embeddings-and-models">here</a>|
-| `model`| str |*Required*| Model to be used for mentioned embedding, see `Model` column <a href="#supported-embeddings-and-models">here</a>|
+| `embedding` | str | *Required* | embedding method to be used, check `Embedding` column <a href="#supported-embeddings-and-models">here</a>|
+| `model`| str |*Required*| Model to be used for mentioned embedding, check `Model` column <a href="#supported-embeddings-and-models">here</a>|
 
 #### 2.  Encoder.encode
 
@@ -113,6 +114,9 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
   | Argument | Type | Default | Description |
 |--------------------|------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Texts` | List[str] | *Required* | List of sentences  
+
+<br>
+<br>
 
 <h2 align="center" href="#supported-models">Supported Embeddings and Models</h2>  
   
