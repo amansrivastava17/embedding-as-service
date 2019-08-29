@@ -158,6 +158,7 @@ Here are the list of supported embeddings and their respective models.
 
  Here is a table summarizes all supported pooling strategies
 <br>
+
 |Strategy|Description|
 |---|---|
 | `None` | no pooling at all, useful when you want to use word embedding instead of sentence embedding. This will results in a `[max_seq_len, embedding_size]` encode matrix for a sequence.|
