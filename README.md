@@ -27,13 +27,13 @@
   <a href="#-encoder-api-">API</a> •   
 </p>  
   
-<h2 align="center">What is it ?</h3>  
+<h2 align="center">What is it :question:</h3>  
   
 **Encoding/Embedding** is a upstream task of encoding any inputs in the form of text, image, audio, video, transactional data to fixed length vector. Embeddings are quite popular in the field of NLP, there has been various Embeddings models being proposed in recent years by researchers, some of the famous one are bert, xlnet, word2vec etc. The goal of this repo is to build one stop solution for all embeddings techniques available, here we are starting with popular text embeddings for now and later on we aim  to add as much technique for image, audio, video input also.  
   
 **Finally**, **`embedding-as-service`** help you to encode any given text to fixed length vector from supported embeddings and models.  
   
-<h2 align="center">Installation</h2>  
+<h2 align="center">:floppy_disk: Installation</h2>  
   
 Install the embedding-as-servive via `pip`.   
 ```bash  
@@ -41,7 +41,7 @@ pip install embedding-as-service
 ```  
 > Note that the code MUST be running on **Python >= 3.6** with **Tensorflow >= 1.10** (_one-point-ten_). Again, this module does not support Python 2!  
   
-<h2 align="center">Getting Started</h2>  
+<h2 align="center"> :zap: Getting Started</h2>  
   
 #### 1. **Intialise encoder using supported embedding** and models from <a href="#supported-embeddings-and-models">here</a>  
 ```python  
@@ -91,7 +91,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 >>> vecs = en.encode(tokens, is_tokenized=True)  
 ```  
 <br>
-<h2 align="center"> Encoder API </h2>  
+<h2 align="center"> :closed_book: Encoder API </h2>  
 
 #### 1.  Initialise Encoder
 
@@ -118,31 +118,31 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 
 <br>
 
-<h2 align="center" href="#supported-models">Supported Embeddings and Models</h2>  
+<h2 align="center" href="#supported-models"> :white_check_mark: Supported Embeddings and Models</h2>  
   
 Here are the list of supported embeddings and their respective models.  
   
-| Index |Embedding  | Model  | Embedding dimensions | Paper |   
+|  |Embedding  | Model  | Embedding dimensions | Paper |   
 |:--|:--|:--:|:--:|--|  
-|1. |`xlnet` |`xlnet_large_cased` | 1024| <a href="https://arxiv.org/abs/1906.08237"> Read research  </a>|  
+|:one: |`xlnet` |`xlnet_large_cased` | 1024| <a href="https://arxiv.org/abs/1906.08237"> Read research  </a>|  
 ||  |`xlnet_base_cased` | 768| |  
-|2. |`bert` |`bert_base_uncased` | 768| <a href="https://arxiv.org/abs/1810.04805"> Read research </a>|  
+|:two: |`bert` |`bert_base_uncased` | 768| <a href="https://arxiv.org/abs/1810.04805"> Read research </a>|  
 |||`bert_base_cased` | 768| |  
 ||  |`bert_multi_cased` | 768||   
 ||  |`bert_large_uncased` | 1024||   
 ||  |`bert_large_cased` | 1024| |  
-|3. |`elmo` |`elmo_bi_lm` | 512| <a href="https://allennlp.org/elmo"> Read research </a>|  
-|4. |`ulmfit` |`ulmfit_forward` | 300|<a href="https://arxiv.org/abs/1801.06146"> Read research </a>|   
+|:three: |`elmo` |`elmo_bi_lm` | 512| <a href="https://allennlp.org/elmo"> Read research </a>|  
+|:four: |`ulmfit` |`ulmfit_forward` | 300|<a href="https://arxiv.org/abs/1801.06146"> Read research </a>|   
 |||`ulmfit_backward` | 300| |  
-|5. |`use`|`use_dan` | 512| <a href="https://arxiv.org/abs/1803.11175"> Read research </a>|  
+|:five: |`use`|`use_dan` | 512| <a href="https://arxiv.org/abs/1803.11175"> Read research </a>|  
 ||  |`use_transformer_large` | 512| |  
 ||  |`use_transformer_lite` | 512| |  
-|6. |`word2vec`|`google_news_300` | 300| <a href="https://arxiv.org/abs/1301.3781"> Read research </a>|  
-|7. |`fasttext`|`wiki_news_300` | 300| <a href="https://arxiv.org/abs/1607.01759"> Read research </a>|  
+|:six: |`word2vec`|`google_news_300` | 300| <a href="https://arxiv.org/abs/1301.3781"> Read research </a>|  
+|:seven: |`fasttext`|`wiki_news_300` | 300| <a href="https://arxiv.org/abs/1607.01759"> Read research </a>|  
 ||  |`wiki_news_300_sub` | 300| |  
 ||  |`common_crawl_300` | 300| |  
 ||  |`common_crawl_300_sub` | 300| |  
-|8. |`glove`|`twitter_200` | 200| <a href="https://nlp.stanford.edu/pubs/glove.pdf"> Read research </a>|  
+|:eight: |`glove`|`twitter_200` | 200| <a href="https://nlp.stanford.edu/pubs/glove.pdf"> Read research </a>|  
 ||  |`twitter_100` | 100| |  
 ||  |`twitter_50` | 50| |  
 ||  |`twitter_25` | 25| |  
