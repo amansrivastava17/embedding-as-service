@@ -24,7 +24,7 @@
   <a href="#floppy_disk-installation">Installation</a> •  
   <a href="#-zap-getting-started">Getting Started</a> •  
   <a href="#-white_check_mark-supported-embeddings-and-models">Supported Embeddings</a> •  
-  <a href="#-closed_book-encoder-api-">API</a> •   
+  <a href="#-clipboard-encoder-api-">API</a> •   
 </p>  
   
 <h2 align="center">What is it :question:</h3>  
@@ -91,7 +91,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 >>> vecs = en.encode(tokens, is_tokenized=True)  
 ```  
 <br>
-<h2 align="center"> :closed_book: Encoder API </h2>  
+<h2 align="center"> :clipboard: Encoder API </h2>  
 
 #### 1.  Initialise Encoder
 
