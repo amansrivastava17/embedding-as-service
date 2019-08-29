@@ -24,7 +24,7 @@
   <a href="#installation">Installation</a> •  
   <a href="#getting-started">Getting Started</a> •  
   <a href="#supported-embeddings-and-models">Supported Embeddings</a> •  
-  <a href="#-encoder-api-docs-">API</a> •   
+  <a href="#-encoder-api-">API</a> •   
 </p>  
   
 <h2 align="center">What is it ?</h3>  
