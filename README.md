@@ -53,8 +53,7 @@ from embedding_as_service.text.encode import Encoder
 2. Call encode class with list of sentences to get **tokens embedding**
 ```python 
 >>> vector = en.encode(texts=['hello aman', 'how are you?'])
-
-[Out] array([[[ 1.7049843 ,  0.        ,  1.3486509 , ..., -1.3647075 ,
+array([[[ 1.7049843 ,  0.        ,  1.3486509 , ..., -1.3647075 ,
           0.6958289 ,  1.8013777 ],
         [ 1.6232326 ,  0.07614848, -0.16540718, ..., -0.28085896,
           0.        ,  0.23663947],
@@ -69,31 +68,29 @@ from embedding_as_service.text.encode import Encoder
           0.8525057 ,  0.3080206 ]]], dtype=float32)
 
 >>> vector.shape
-[Out] (2, 128, 768)
+(2, 128, 768)
 ```
 3. To get **sentence embeddings** using pooled method using one of **pooling strategy** available <a href="#pooling strategy">here</a>
 ```python
 >>> vector = en.encode(texts=['hello aman', 'how are you?'], pooling='mean')
-
-[Out] array([[-0.33547154,  0.34566957,  1.1954105 , ...,  0.33702594,
+array([[-0.33547154,  0.34566957,  1.1954105 , ...,  0.33702594,
          1.0317835 , -0.785943  ],
        [-0.3439088 ,  0.36881036,  1.0612687 , ...,  0.28851607,
          1.1107115 , -0.6253736 ]], dtype=float32)
 
 >>> vector.shape
-[Out] (2, 768)
+(2, 768)
 ```
 4. Default `max_seq_length` is `128` , to assign **custom `max_seq_length`** as param
 ```python
 >>> vectors = en.encode(texts=['hello aman', 'how are you?'], max_seq_length=256)
-
-[Out] array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
+array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
         -0.5564591 ,  0.6454179 ],
        [ 0.53209245,  0.00526248, -0.71091074, ..., -0.5171917 ,
         -0.40458363,  0.6779779 ]], dtype=float32)
 
 >>> vectors.shape
-[Out] (2, 256, 768)
+(2, 256, 768)
 ```
 ### Using Tokenizer
 
