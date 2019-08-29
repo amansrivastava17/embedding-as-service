@@ -91,7 +91,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 >>> vecs = en.encode(tokens, is_tokenized=True)  
 ```  
 <br>
-<h2 align="center"> Encoder API Docs </h2>  
+<h2 align="center"> Encoder API </h2>  
 
 #### 1.  Initialise Encoder
 
@@ -106,7 +106,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 |--------------------|------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Texts` | List[str] or List[List[str]] | *Required* | List of sentences or list of list of sentence tokens in case of `is_tokenized=True`
 | `pooling_strategy`| str |(Optional)| Pooling methods to apply, here is available methods|
-| `max_seq_length`| str | `128` | Maximum Sequence Length, default is 128|
+| `max_seq_length`| int | `128` | Maximum Sequence Length, default is 128|
 | `is_tokenized` | bool | `False` | set as True in case of tokens are passed for encoding |  
 | `max_batch_size` | int | `128` | maximum number of sequences handled by encoder, larger batch will be partitioned into small batches. |
   
