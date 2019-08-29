@@ -43,14 +43,12 @@ Note that the code MUST be running on **Python >= 3.6** with **Tensorflow >= 1.1
 
 <h2 align="center">Getting Started</h2>
 
-### Using Embeddings
-
-1. **Intialise embedding** method and models from supported models from <a href="#pooling strategy">here</a>
+#####1.  **Intialise embedding** method and models from supported models from <a href="#pooling strategy">here</a>
 ```python
 from embedding_as_service.text.encode import Encoder
 >>> en = Encoder(embedding='xlnet', model='xlnet_base_cased', download=True)
 ```
-2. Call encode class with list of sentences to get **tokens embedding**
+##### 2. Get sentences **tokens embedding**
 ```python 
 >>> vector = en.encode(texts=['hello aman', 'how are you?'])
 array([[[ 1.7049843 ,  0.        ,  1.3486509 , ..., -1.3647075 ,
@@ -62,7 +60,7 @@ array([[[ 1.7049843 ,  0.        ,  1.3486509 , ..., -1.3647075 ,
 >>> vector.shape
 (2, 128, 768)
 ```
-3. To get **sentence embeddings** using pooled method using one of **pooling strategy** available <a href="#pooling strategy">here</a>
+##### 3. Using **pooling strategy**, click <a href="#pooling strategy">here</a> for more.
 ```python
 >>> vector = en.encode(texts=['hello aman', 'how are you?'], pooling='mean')
 array([[-0.33547154,  0.34566957,  1.1954105 , ...,  0.33702594,
@@ -73,7 +71,7 @@ array([[-0.33547154,  0.34566957,  1.1954105 , ...,  0.33702594,
 >>> vector.shape
 (2, 768)
 ```
-4. Default `max_seq_length` is `128` , to assign **custom `max_seq_length`** as param
+##### 4. Use **custom `max_seq_length`** 
 ```python
 >>> vectors = en.encode(texts=['hello aman', 'how are you?'], max_seq_length=256)
 array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
