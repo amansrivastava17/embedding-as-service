@@ -99,6 +99,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 |--------------------|------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `embedding` | str | *Required* | embedding method to be used, check `Embedding` column <a href="#supported-embeddings-and-models">here</a>|
 | `model`| str |*Required*| Model to be used for mentioned embedding, check `Model` column <a href="#supported-embeddings-and-models">here</a>|
+| `download`| bool |`False`| Download model if model does not exists|
 
 #### 2.  Encoder.encode
 
