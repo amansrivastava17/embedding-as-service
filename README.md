@@ -50,30 +50,33 @@ from embedding_as_service.text.encode import Encoder
 ```
 #### 2. Get sentences **tokens embedding**
 ```python 
->>> vector = en.encode(texts=['hello aman', 'how are you?'])
+>>> vectors = en.encode(texts=['hello aman', 'how are you?'])
+>>> vectors
 array([[[ 1.7049843 ,  0.        ,  1.3486509 , ..., -1.3647075 ,
           0.6958289 ,  1.8013777 ],
         ...
         [ 0.4913215 ,  0.60877025,  0.73050433, ..., -0.64490885,
           0.8525057 ,  0.3080206 ]]], dtype=float32)
 
->>> vector.shape
+>>> vectors.shape
 (2, 128, 768)
 ```
 #### 3. Using **pooling strategy**, click <a href="#pooling strategy">here</a> for more.
 ```python
->>> vector = en.encode(texts=['hello aman', 'how are you?'], pooling='mean')
+>>> vectors = en.encode(texts=['hello aman', 'how are you?'], pooling='mean')
+>>> vectors
 array([[-0.33547154,  0.34566957,  1.1954105 , ...,  0.33702594,
          1.0317835 , -0.785943  ],
        [-0.3439088 ,  0.36881036,  1.0612687 , ...,  0.28851607,
          1.1107115 , -0.6253736 ]], dtype=float32)
 
->>> vector.shape
+>>> vectors.shape
 (2, 768)
 ```
 #### 4. Use **custom `max_seq_length`** 
 ```python
 >>> vectors = en.encode(texts=['hello aman', 'how are you?'], max_seq_length=256)
+>>> vectors
 array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
         -0.5564591 ,  0.6454179 ],
        [ 0.53209245,  0.00526248, -0.71091074, ..., -0.5171917 ,
@@ -82,10 +85,11 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 >>> vectors.shape
 (2, 256, 768)
 ```
-### Using Tokenizer
-
-### Check Embedding Meta
-
+### 5. Using Tokenizer
+```python
+>>> en.tokenize(texts=['hello aman', 'how are you?'])
+[['_hello', '_aman'], ['_how', '_are', '_you', '?']]
+```
 
 
 <h2 align="center" href="#supported-models">Supported Embeddings and Models</h2>
