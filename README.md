@@ -85,7 +85,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 >>> vectors.shape
 (2, 256, 768)
 ```
-### 5. Using Tokenizer
+#### 5. Using Tokenizer
 ```python
 >>> en.tokenize(texts=['hello aman', 'how are you?'])
 [['_hello', '_aman'], ['_how', '_are', '_you', '?']]
