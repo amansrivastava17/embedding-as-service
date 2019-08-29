@@ -85,11 +85,21 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 >>> vectors.shape
 (2, 256, 768)
 ```
-#### 5. Using Tokenizer
+#### 5. Show embedding Tokens
 ```python
 >>> en.tokenize(texts=['hello aman', 'how are you?'])
 [['_hello', '_aman'], ['_how', '_are', '_you', '?']]
 ```
+
+#### 6. Using your own tokenizer
+```python
+>>> texts = ['hello aman!', 'how are you']
+
+# a naive whitespace tokenizer
+>>> tokens = [s.split() for s in texts]
+>>> vecs = en.encode(tokens, is_tokenized=True)
+```
+
 
 
 <h2 align="center" href="#supported-models">Supported Embeddings and Models</h2>
