@@ -19,10 +19,10 @@
 </p>
 
 <p align="center">
- <a href="#what-is-it">What is it</a> •
-  <a href="#install">Install</a> •
+ <a href="#what-is-it-">What is it</a> •
+  <a href="#installation">Installation</a> •
   <a href="#getting-started">Getting Started</a> •
-  <a href="#supported-models">Supported Embeddings</a> •
+  <a href="#supported-embeddings-and-models">Supported Embeddings</a> •
   <a href="#server-and-client-api">API</a> •
   <a href="#book-tutorial">Tutorials</a>   
 </p>
