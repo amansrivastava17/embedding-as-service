@@ -43,7 +43,7 @@ Note that the code MUST be running on **Python >= 3.6** with **Tensorflow >= 1.1
 
 <h2 align="center">Getting Started</h2>
 
-#### 1. **Intialise encoder using supported embedding** and models from <a href="#pooling strategy">here</a>
+#### 1. **Intialise encoder using supported embedding** and models from <a href="#supported-embeddings-and-models">here</a>
 ```python
 from embedding_as_service.text.encode import Encoder
 >>> en = Encoder(embedding='xlnet', model='xlnet_base_cased', download=True)
