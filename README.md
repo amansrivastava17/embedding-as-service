@@ -37,9 +37,9 @@
   
 Install the embedding-as-servive via `pip`.   
 ```bash  
-pip install embedding-as-service ```  
-Note that the code MUST be running on **Python >= 3.6** with **Tensorflow >= 1.10** (_one-point-ten_). Again, this module does not support Python 2!  
-```
+pip install embedding-as-service
+```  
+> Note that the code MUST be running on **Python >= 3.6** with **Tensorflow >= 1.10** (_one-point-ten_). Again, this module does not support Python 2!  
   
 <h2 align="center">Getting Started</h2>  
   
