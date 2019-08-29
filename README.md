@@ -56,7 +56,7 @@ array([[[ 1.7049843 ,  0.        ,  1.3486509 , ..., -1.3647075 ,
 >>> vecs.shape  
 (2, 128, 768) # batch x max_sequence_length x embedding_size  
 ```  
-#### 3. Using **pooling strategy**, click <a href="#pooling-strategies-">here</a> for more.  
+#### 3. Using **pooling strategy**, click <a href="#-heavy_plus_sign-pooling-strategies-">here</a> for more.  
 ```python  
 >>> vecs = en.encode(texts=['hello aman', 'how are you?'], pooling='REDUCE_MEAN')  
 >>> vecs  
@@ -154,7 +154,7 @@ Here are the list of supported embeddings and their respective models.
 ||  |`crawl_840B_300` | 300| |
 
 <br>
-<h2 align="center">Pooling Strategies </h2>  
+<h2 align="center">:heavy_plus_sign: Pooling Strategies </h2>  
 
  Here is a table summarizes all supported pooling strategies
 <br>
