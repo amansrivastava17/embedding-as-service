@@ -1,11 +1,11 @@
 from typing import List, Dict, Any, Optional
 
-from embedding_serving.text import Embedding
+from embedding_as_service.text import Embedding
 from tqdm import tqdm
 import numpy as np
 import os
 
-from embedding_serving.utils import POOL_FUNC_MAP
+from embedding_as_service.utils import POOL_FUNC_MAP
 
 
 class Embeddings(object):

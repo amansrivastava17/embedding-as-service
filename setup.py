@@ -7,8 +7,8 @@ with open('requirements.txt') as f:
     require_packages = [line[:-1] if line[-1] == '\n' else line for line in f]
 
 setuptools.setup(
-    name="embedding_serving",
-    version="0.1.1",
+    name="embedding_as_service",
+    version="0.0.6",
     author="Aman Srivastava",
     author_email="amans.rlx@gmail.com",
     description="embedding-as-service: one-stop solution to encode sentence to vectors using various embedding methods",

@@ -5,14 +5,14 @@ from tqdm import tqdm
 import numpy as np
 import os
 
-from embedding_serving.text.xlnet.config import Flags
-from embedding_serving.text import Embedding
+from embedding_as_service.text.xlnet.config import Flags
+from embedding_as_service.text import Embedding
 
-from embedding_serving.text.xlnet.models.prepro_utils import preprocess_text, encode_ids
-from embedding_serving.text.xlnet.models.data_utils import SEP_ID, CLS_ID
-from embedding_serving.text.xlnet.models import xlnet
+from embedding_as_service.text.xlnet.models.prepro_utils import preprocess_text, encode_ids
+from embedding_as_service.text.xlnet.models.data_utils import SEP_ID, CLS_ID
+from embedding_as_service.text.xlnet.models import xlnet
 
-from embedding_serving.utils import POOL_FUNC_MAP
+from embedding_as_service.utils import POOL_FUNC_MAP
 
 SEG_ID_A = 0
 SEG_ID_B = 1
@@ -134,7 +134,6 @@ class Embeddings(object):
             seg_ids=np.array(segment_ids, dtype=np.int32),
             input_mask=np.array(input_masks, dtype=np.float32)
         )
-
         self.sess.run(tf.initializers.global_variables())
 
         # Get a sequence output

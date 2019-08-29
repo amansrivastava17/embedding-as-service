@@ -5,7 +5,7 @@ from __future__ import print_function
 import json
 import os
 import tensorflow as tf
-from embedding_serving.text.xlnet.models import modeling
+from embedding_as_service.text.xlnet.models import modeling
 
 
 def _get_initializer(FLAGS):

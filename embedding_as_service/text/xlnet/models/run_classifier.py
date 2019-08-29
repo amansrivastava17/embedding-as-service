@@ -21,12 +21,12 @@ import tensorflow as tf
 
 import sentencepiece as spm
 
-from embedding_serving.text.xlnet.models.data_utils import SEP_ID, VOCAB_SIZE, CLS_ID
-from embedding_serving.text.xlnet.models import model_utils
-from embedding_serving.text.xlnet.models import function_builder
-from embedding_serving.text.xlnet.models.classifier_utils import PaddingInputExample
-from embedding_serving.text.xlnet.models.classifier_utils import convert_single_example
-from embedding_serving.text.xlnet.models.prepro_utils import preprocess_text, encode_ids
+from embedding_as_service.text.xlnet.models.data_utils import SEP_ID, VOCAB_SIZE, CLS_ID
+from embedding_as_service.text.xlnet.models import model_utils
+from embedding_as_service.text.xlnet.models import function_builder
+from embedding_as_service.text.xlnet.models.classifier_utils import PaddingInputExample
+from embedding_as_service.text.xlnet.models.classifier_utils import convert_single_example
+from embedding_as_service.text.xlnet.models.prepro_utils import preprocess_text, encode_ids
 
 
 # Model

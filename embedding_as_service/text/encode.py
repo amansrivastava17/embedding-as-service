@@ -4,8 +4,8 @@ import importlib
 import os
 
 
-from embedding_serving.utils import home_directory, get_hashed_name, download_from_url, extract_file
-from embedding_serving.text import MODELS_DIR
+from embedding_as_service.utils import home_directory, get_hashed_name, download_from_url, extract_file
+from embedding_as_service.text import MODELS_DIR
 
 
 class Encoder(object):
@@ -20,19 +20,17 @@ class Encoder(object):
 
         # check if embedding exits
         if embedding not in supported_embeddings:
-            print(f"Given embedding \"{embedding}\" is not supported, use below available embeddings:\n"
-                  f"{supported_embeddings}")
-            return
+            raise ValueError(f"Given embedding \"{embedding}\" is not supported, use from available embeddings:\n"
+                             f"{supported_embeddings}")
 
         self.embedding_cls = importlib.import_module(
-            f'embedding_serving.text.{embedding}').Embeddings()
+            f'embedding_as_service.text.{embedding}').Embeddings()
 
         # check if given model exits for embedding
         model_names = list(self.embedding_cls.EMBEDDING_MODELS.keys())
         if model not in model_names:
-            print(f"Given embedding \"{embedding}\" does not have any model \"{model}\", here are the supported "
-                  f"models: {model_names}")
-            return
+            raise ValueError(f"Given embedding \"{embedding}\" does not have support for model \"{model}\", "
+                             f"the supported models are: {model_names}")
 
         self.model_path = self._get_or_download_model(download)
         if not self.model_path:

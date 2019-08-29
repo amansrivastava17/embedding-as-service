@@ -23,11 +23,11 @@ else:
 
 import tensorflow as tf
 import sentencepiece as spm
-from embedding_serving.text.xlnet.models.prepro_utils import preprocess_text, encode_ids, encode_pieces, printable_text
-from embedding_serving.text.xlnet.models import function_builder
-from embedding_serving.text.xlnet.models import model_utils
-from embedding_serving.text.xlnet.models import squad_utils
-from embedding_serving.text.xlnet.models.data_utils import SEP_ID, CLS_ID
+from embedding_as_service.text.xlnet.models.prepro_utils import preprocess_text, encode_ids, encode_pieces, printable_text
+from embedding_as_service.text.xlnet.models import function_builder
+from embedding_as_service.text.xlnet.models import model_utils
+from embedding_as_service.text.xlnet.models import squad_utils
+from embedding_as_service.text.xlnet.models.data_utils import SEP_ID, CLS_ID
 
 SPIECE_UNDERLINE = u'▁'
 

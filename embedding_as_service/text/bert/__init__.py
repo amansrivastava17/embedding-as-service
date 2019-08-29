@@ -1,13 +1,13 @@
 from typing import List, Dict, Tuple, Optional
 import numpy as np
 
-from embedding_serving.text import Embedding
+from embedding_as_service.text import Embedding
 import tensorflow as tf
 import tensorflow_hub as hub
 from tqdm import tqdm
 from bert.tokenization import FullTokenizer
 
-from embedding_serving.utils import POOL_FUNC_MAP
+from embedding_as_service.utils import POOL_FUNC_MAP
 
 
 class Embeddings(object):
@@ -57,12 +57,12 @@ class Embeddings(object):
                                   trained_data='BooksCorpus(800M) English Wikipedia (2500M) words',
                                   language='en'),
 
-                        Embedding(name=u'bert_large_uncased',
+                        Embedding(name=u'bert_large_cased',
                                   dimensions=1024,
                                   corpus_size='3300M',
                                   vocabulary_size='30522 (sub-word)',
                                   download_url='https://storage.googleapis.com/tfhub-modules/google/'
-                                               'bert_uncased_L-24_H-1024_A-16/1.tar.gz',
+                                               'bert_cased_L-24_H-1024_A-16/1.tar.gz',
                                   format='tar.gz',
                                   architecture='Transformer Layers=24, Hidden = 1024, heads = 16',
                                   trained_data='BooksCorpus(800M) English Wikipedia (2500M) words',

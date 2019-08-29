@@ -3,8 +3,8 @@ import numpy as np
 from tqdm import tqdm
 import os
 
-from embedding_serving.text import Embedding
-from embedding_serving.utils import POOL_FUNC_MAP
+from embedding_as_service.text import Embedding
+from embedding_as_service.utils import POOL_FUNC_MAP
 
 
 class Embeddings(object):

@@ -1,7 +1,7 @@
 from typing import List, Dict, Any, Optional
 
-from embedding_serving.text import Embedding
-from embedding_serving.utils import to_unicode, POOL_FUNC_MAP
+from embedding_as_service.text import Embedding
+from embedding_as_service.utils import to_unicode, POOL_FUNC_MAP
 from smart_open import open
 from tqdm import tqdm
 import os

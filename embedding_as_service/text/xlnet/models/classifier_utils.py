@@ -4,7 +4,7 @@ import re
 import numpy as np
 
 import tensorflow as tf
-from embedding_serving.text.xlnet.models.data_utils import SEP_ID, CLS_ID
+from embedding_as_service.text.xlnet.models.data_utils import SEP_ID, CLS_ID
 
 FLAGS = flags.FLAGS
 
