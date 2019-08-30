@@ -49,7 +49,8 @@ pip install embedding-as-service
 >>> en = Encoder(embedding='xlnet', model='xlnet_base_cased', download=True)  
 ```  
 #### 2. Get sentences **tokens embedding**  
-```python >>> vecs = en.encode(texts=['hello aman', 'how are you?'])  
+```python 
+>>> vecs = en.encode(texts=['hello aman', 'how are you?'])  
 >>> vecs  
 array([[[ 1.7049843 ,  0.        ,  1.3486509 , ..., -1.3647075 ,  
  0.6958289 ,  1.8013777 ], ... [ 0.4913215 ,  0.60877025,  0.73050433, ..., -0.64490885, 0.8525057 ,  0.3080206 ]]], dtype=float32)  
