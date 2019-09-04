@@ -25,7 +25,7 @@
   
 <p align="center">  
  <a href="#what-is-it">What is it</a> •  
-  <a href="#floppy_disk-installation">Installation</a> •  
+  <a href="#installation">Installation</a> •  
   <a href="#-zap-getting-started">Getting Started</a> •  
   <a href="#-white_check_mark-supported-embeddings-and-models">Supported Embeddings</a> •  
   <a href="#-clipboard-api-">API</a> •   
@@ -42,7 +42,7 @@
   
 **Finally**, **`embedding-as-service`** help you to encode any given text to fixed length vector from supported embeddings and models.  
   
-<h2 align="center">:floppy_disk: Installation</h2>  
+<h2 align="center">💾 Installation</h2>  
   
 Install the embedding-as-servive via `pip`.   
 ```bash  
