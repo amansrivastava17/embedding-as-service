@@ -119,7 +119,7 @@ def download_from_url(url: str, download_path: str) -> None:
                 f.write(data)
                 done = int(50*downloaded/total)
                 sys.stdout.write('\r[{}{}] {} % [{}/{} kb]'.
-                                 format('█' * done, '.' * (50-done), int(done * 2),
+                                 format('|' * done, '.' * (50-done), int(done * 2),
                                         int(downloaded/1024), total_kb))
                 sys.stdout.flush()
     sys.stdout.write('\n')
