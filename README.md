@@ -20,7 +20,7 @@
 </p>  
   
 <p align="center">  
- <a href="#what-is-it-question">What is it</a> •  
+ <a href="#what-is-it">What is it</a> •  
   <a href="#floppy_disk-installation">Installation</a> •  
   <a href="#-zap-getting-started">Getting Started</a> •  
   <a href="#-white_check_mark-supported-embeddings-and-models">Supported Embeddings</a> •  
@@ -32,7 +32,7 @@
     <img src=".github/demo.gif?raw=true" width="600">
 </p>
   
-<h2 align="center">What is it :question:</h3>  
+<h2 align="center">What is it</h3>  
   
 **Encoding/Embedding** is a upstream task of encoding any inputs in the form of text, image, audio, video, transactional data to fixed length vector. Embeddings are quite popular in the field of NLP, there has been various Embeddings models being proposed in recent years by researchers, some of the famous one are bert, xlnet, word2vec etc. The goal of this repo is to build one stop solution for all embeddings techniques available, here we are starting with popular text embeddings for now and later on we aim  to add as much technique for image, audio, video input also.  
   
