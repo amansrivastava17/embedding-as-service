@@ -119,7 +119,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 | `pooling`| str |(Optional)| Pooling methods to apply, <a href="#heavy_plus_sign-pooling-strategies-">here</a> is available methods|
 | `max_seq_length`| int | `128` | Maximum Sequence Length, default is 128|
 | `is_tokenized` | bool | `False` | set as True in case of tokens are passed for encoding |  
-| `max_batch_size` | int | `128` | maximum number of sequences handled by encoder, larger batch will be partitioned into small batches. |
+| `batch_size` | int | `128` | maximum number of sequences handled by encoder, larger batch will be partitioned into small batches. |
   
   #### 2. def `embedding_as_service.text.encoder.Encoder.tokenize`
   | Argument | Type | Default | Description |

@@ -123,7 +123,8 @@ class Embeddings(object):
         self.model_name = model
         print("Model loaded Successfully !")
 
-    def encode(self, texts: Union[List[str], List[List[str]]],
+    def encode(self,
+               texts: Union[List[str], List[List[str]]],
                pooling: str,
                max_seq_length: int,
                is_tokenized: bool = False,

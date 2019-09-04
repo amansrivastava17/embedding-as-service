@@ -13,7 +13,6 @@ class Encoder(object):
         self.model = model
         self.embedding_model_dict = None
         self.model_path = None
-        self.batch_size = 128
 
         supported_embeddings = self.get_supported_embeddings()
 
@@ -105,18 +104,18 @@ class Encoder(object):
                texts: Union[List[str], List[List[str]]],
                pooling: Optional[str] = None,
                max_seq_length: Optional[int] = 128,
-               is_tokenized=False,
-               max_batch_size=128,
+               is_tokenized: bool = False,
+               batch_size: int = 128,
                ** kwargs
-        ) -> np.array:
+               ) -> np.array:
         if not isinstance(texts, list):
             raise ValueError('input expected to be list of str')
         if is_tokenized:
             if False in [isinstance(text, list) for text in texts]:
                 raise ValueError('Input expected to be list of tokens for `is_tokenized` = True')
         embeddings = []
-        for i in range(0, len(texts), self.batch_size):
-            vectors = self.embedding_cls.encode(text=texts[i: i + self.batch_size],
+        for i in range(0, len(texts), batch_size):
+            vectors = self.embedding_cls.encode(texts=texts[i: i + batch_size],
                                                 pooling=pooling,
                                                 max_seq_length=max_seq_length,
                                                 is_tokenized=is_tokenized)
