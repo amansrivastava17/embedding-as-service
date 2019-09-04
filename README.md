@@ -42,7 +42,7 @@
   
 Install the embedding-as-servive via `pip`.   
 ```bash  
-pip install embedding-as-service
+$ pip install embedding-as-service
 ```  
 > Note that the code MUST be running on **Python >= 3.6**. Again module does not support Python 2!  
   
