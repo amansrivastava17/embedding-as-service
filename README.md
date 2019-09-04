@@ -29,7 +29,7 @@
 </p>
 
 <p align="center">
-    <img src="https://imgflip.com/gif/39n8ch" width="700">
+    <img src=".github/demo.gif?raw=true" width="700">
 </p>
   
 <h2 align="center">What is it :question:</h3>  
