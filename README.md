@@ -55,7 +55,7 @@ $ pip install embedding-as-service
 #### 1. **Intialise encoder using supported embedding** and models from <a href="#-white_check_mark-supported-embeddings-and-models">here</a>  
 ```python  
 >>> from embedding_as_service.text.encode import Encoder  
->>> en = Encoder(embedding='xlnet', model='xlnet_base_cased', download=True)  
+>>> en = Encoder(embedding='bert', model='bert_base_cased', download=True)  
 ```  
 #### 2. Get sentences **tokens embedding**  
 ```python 
