@@ -50,7 +50,7 @@ $ pip install embedding-as-service
 ```  
 > Note that the code MUST be running on **Python >= 3.6**. Again module does not support Python 2!  
   
-<h2 align="center">⚡️Getting Started</h2>  
+<h2 align="center">⚡ ️Getting Started</h2>  
   
 #### 1. **Intialise encoder using supported embedding** and models from <a href="#-supported-embeddings-and-models">here</a>  
 ```python  
