@@ -13,6 +13,10 @@
   <a href="https://pypi.org/project/embedding-as-service/">  
       <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/embedding-as-service">  
   </a>  
+   <a href="https://github.com/amansrivastava17/embedding-as-service/issues">
+        <img src="https://img.shields.io/github/issues/amansrivastava17/embedding-as-service.svg"
+             alt="GitHub issues">
+  </a>
   <a href="https://github.com/amansrivastava/embedding-as-service/blob/master/LICENSE">  
         <img src="https://img.shields.io/github/license/amansrivastava17/embedding-as-service.svg"  
              alt="GitHub license">  
