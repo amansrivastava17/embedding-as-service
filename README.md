@@ -25,10 +25,10 @@
   
 <p align="center">  
  <a href="#what-is-it">What is it</a> •  
-  <a href="#installation">Installation</a> •  
-  <a href="#-zap-getting-started">Getting Started</a> •  
-  <a href="#-white_check_mark-supported-embeddings-and-models">Supported Embeddings</a> •  
-  <a href="#-clipboard-api-">API</a> •   
+  <a href="#-installation">Installation</a> •  
+  <a href="#-getting-started">Getting Started</a> •  
+  <a href="#-supported-embeddings-and-models">Supported Embeddings</a> •  
+  <a href="#-api-">API</a> •   
 </p>  
 </p>
 
@@ -50,9 +50,9 @@ $ pip install embedding-as-service
 ```  
 > Note that the code MUST be running on **Python >= 3.6**. Again module does not support Python 2!  
   
-<h2 align="center"> :zap: Getting Started</h2>  
+<h2 align="center">⚡️Getting Started</h2>  
   
-#### 1. **Intialise encoder using supported embedding** and models from <a href="#-white_check_mark-supported-embeddings-and-models">here</a>  
+#### 1. **Intialise encoder using supported embedding** and models from <a href="#-supported-embeddings-and-models">here</a>  
 ```python  
 >>> from embedding_as_service.text.encode import Encoder  
 >>> en = Encoder(embedding='bert', model='bert_base_cased', download=True)  
@@ -66,7 +66,7 @@ array([[[ 1.7049843 ,  0.        ,  1.3486509 , ..., -1.3647075 ,
 >>> vecs.shape  
 (2, 128, 768) # batch x max_sequence_length x embedding_size  
 ```  
-#### 3. Using **pooling strategy**, click <a href="#heavy_plus_sign-pooling-strategies-">here</a> for more.  
+#### 3. Using **pooling strategy**, click <a href="#-pooling-strategies-">here</a> for more.  
 ```python  
 >>> vecs = en.encode(texts=['hello aman', 'how are you?'], pooling='reduce_mean')  
 >>> vecs  
@@ -101,14 +101,14 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 >>> vecs = en.encode(tokens, is_tokenized=True)  
 ```  
 <br>
-<h2 align="center"> :clipboard: API </h2>  
+<h2 align="center">📋 API </h2>  
 
 #### 1. class `embedding_as_service.text.encoder.Encoder`
 
   | Argument | Type | Default | Description |
 |--------------------|------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `embedding` | str | *Required* | embedding method to be used, check `Embedding` column <a href="#-white_check_mark-supported-embeddings-and-models">here</a>|
-| `model`| str |*Required*| Model to be used for mentioned embedding, check `Model` column <a href="#-white_check_mark-supported-embeddings-and-models">here</a>|
+| `embedding` | str | *Required* | embedding method to be used, check `Embedding` column <a href="#-supported-embeddings-and-models">here</a>|
+| `model`| str |*Required*| Model to be used for mentioned embedding, check `Model` column <a href="#-supported-embeddings-and-models">here</a>|
 | `download`| bool |`False`| Download model if model does not exists|
 
 #### 2. def `embedding_as_service.text.encoder.Encoder.encode`
@@ -116,7 +116,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
   | Argument | Type | Default | Description |
 |--------------------|------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Texts` | List[str] or List[List[str]] | *Required* | List of sentences or list of list of sentence tokens in case of `is_tokenized=True`
-| `pooling`| str |(Optional)| Pooling methods to apply, <a href="#heavy_plus_sign-pooling-strategies-">here</a> is available methods|
+| `pooling`| str |(Optional)| Pooling methods to apply, <a href="#-pooling-strategies-">here</a> is available methods|
 | `max_seq_length`| int | `128` | Maximum Sequence Length, default is 128|
 | `is_tokenized` | bool | `False` | set as True in case of tokens are passed for encoding |  
 | `batch_size` | int | `128` | maximum number of sequences handled by encoder, larger batch will be partitioned into small batches. |
@@ -128,7 +128,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 
 <br>
 
-<h2 align="center" href="#supported-models"> :white_check_mark: Supported Embeddings and Models</h2>  
+<h2 align="center" href="#supported-models">✅ Supported Embeddings and Models</h2>  
   
 Here are the list of supported embeddings and their respective models.  
   
@@ -164,7 +164,7 @@ Here are the list of supported embeddings and their respective models.
 ||  |`crawl_840B_300` | 300| |
 
 <br>
-<h2 align="center">:heavy_plus_sign: Pooling Strategies </h2>  
+<h2 align="center">➕ Pooling Strategies </h2>  
 
  Here is a table summarizes all supported pooling strategies
 <br>
