@@ -26,7 +26,11 @@
   <a href="#-white_check_mark-supported-embeddings-and-models">Supported Embeddings</a> •  
   <a href="#-clipboard-api-">API</a> •   
 </p>  
-<a href="https://imgflip.com/gif/39n8ch" align="center", width=600, height=400><img src="https://i.imgflip.com/39n8ch.gif" title="made at imgflip.com"/></a>
+</p>
+
+<p align="center">
+    <img src="https://imgflip.com/gif/39n8ch" width="700">
+</p>
   
 <h2 align="center">What is it :question:</h3>  
   
