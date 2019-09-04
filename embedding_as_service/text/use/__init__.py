@@ -1,4 +1,4 @@
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Union
 import numpy as np
 
 from embedding_as_service.text import Embedding
@@ -52,5 +52,10 @@ class Embeddings(object):
         self.sess.run(tf.initializers.global_variables())
         self.model_name = model
 
-    def encode(self, texts: list, pooling: Optional[str] = None) -> Optional[np.array]:
+    def encode(self, texts: Union[List[str], List[List[str]]],
+               pooling: str,
+               max_seq_length: int,
+               is_tokenized: bool = False,
+               **kwargs
+               ) -> Optional[np.array]:
         return self.sess.run(self.use_module(texts))

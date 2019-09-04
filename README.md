@@ -59,7 +59,7 @@ array([[[ 1.7049843 ,  0.        ,  1.3486509 , ..., -1.3647075 ,
 ```  
 #### 3. Using **pooling strategy**, click <a href="#heavy_plus_sign-pooling-strategies-">here</a> for more.  
 ```python  
->>> vecs = en.encode(texts=['hello aman', 'how are you?'], pooling='REDUCE_MEAN')  
+>>> vecs = en.encode(texts=['hello aman', 'how are you?'], pooling='reduce_mean')  
 >>> vecs  
 array([[-0.33547154,  0.34566957,  1.1954105 , ...,  0.33702594,  
  1.0317835 , -0.785943  ], [-0.3439088 ,  0.36881036,  1.0612687 , ...,  0.28851607, 1.1107115 , -0.6253736 ]], dtype=float32)  
@@ -107,7 +107,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
   | Argument | Type | Default | Description |
 |--------------------|------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Texts` | List[str] or List[List[str]] | *Required* | List of sentences or list of list of sentence tokens in case of `is_tokenized=True`
-| `pooling_strategy`| str |(Optional)| Pooling methods to apply, here is available methods|
+| `pooling`| str |(Optional)| Pooling methods to apply, <a href="#heavy_plus_sign-pooling-strategies-">here</a> is available methods|
 | `max_seq_length`| int | `128` | Maximum Sequence Length, default is 128|
 | `is_tokenized` | bool | `False` | set as True in case of tokens are passed for encoding |  
 | `max_batch_size` | int | `128` | maximum number of sequences handled by encoder, larger batch will be partitioned into small batches. |
@@ -163,9 +163,9 @@ Here are the list of supported embeddings and their respective models.
 |Strategy|Description|
 |---|---|
 | `None` | no pooling at all, useful when you want to use word embedding instead of sentence embedding. This will results in a `[max_seq_len, embedding_size]` encode matrix for a sequence.|
-| `REDUCE_MEAN` | take the average of all token embeddings |
-| `REDUCE_MIN` | take the minumun of all token embeddings|
-| `REDUCE_MAX` | take the maximum of all token embeddings |
-| `REDUCE_MEAN_MAX` | do `REDUCE_MEAN` and `REDUCE_MAX` separately and then concat them together |
-| `FIRST_TOKEN` | get the token embedding of first token of a sentence |
-| `LAST_TOKEN` | get the token embedding of last token of a sentence |
+| `reduce_mean` | take the average of all token embeddings |
+| `reduce_min` | take the minumun of all token embeddings|
+| `reduce_max` | take the maximum of all token embeddings |
+| `reduce_mean_max` | do `reduce_mean` and `reduce_max` separately and then concat them together |
+| `first_token` | get the token embedding of first token of a sentence |
+| `last_token` | get the token embedding of last token of a sentence |

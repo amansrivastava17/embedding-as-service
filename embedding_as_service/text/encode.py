@@ -3,7 +3,6 @@ import numpy as np
 import importlib
 import os
 
-
 from embedding_as_service.utils import home_directory, get_hashed_name, download_from_url, extract_file
 from embedding_as_service.text import MODELS_DIR
 
@@ -71,7 +70,7 @@ class Encoder(object):
             os.makedirs(downloaded_models_dir)
 
         model_hashed_name = get_hashed_name(self.embedding + self.model)
-        model_path = os.path.join(downloaded_models_dir,  model_hashed_name)
+        model_path = os.path.join(downloaded_models_dir, model_hashed_name)
 
         if not os.path.exists(model_path):
             if not download:
@@ -102,15 +101,26 @@ class Encoder(object):
             raise ValueError('Wrong input format!')
         return tokens
 
-    def encode(self, texts: Union[List[str], str], pooling: Optional[str] = None, **kwargs) -> np.array:
-        if isinstance(texts, str):
-            embeddings = self.embedding_cls.encode([texts], pooling, **kwargs)
-        elif isinstance(texts, list):
-            embeddings = []
-            for i in range(0, len(texts), self.batch_size):
-                vectors = self.embedding_cls.encode(texts[i: i + self.batch_size], pooling, **kwargs)
-                embeddings.append(vectors)
-            embeddings = np.vstack(embeddings)
-        else:
-            raise ValueError('Wrong input format!')
+    def encode(self,
+               texts: Union[List[str], List[List[str]]],
+               pooling: Optional[str] = None,
+               max_seq_length: Optional[int] = 128,
+               is_tokenized=False,
+               max_batch_size=128,
+               ** kwargs
+        ) -> np.array:
+        if not isinstance(texts, list):
+            raise ValueError('input expected to be list of str')
+        if is_tokenized:
+            if False in [isinstance(text, list) for text in texts]:
+                raise ValueError('Input expected to be list of tokens for `is_tokenized` = True')
+        embeddings = []
+        for i in range(0, len(texts), self.batch_size):
+            vectors = self.embedding_cls.encode(text=texts[i: i + self.batch_size],
+                                                pooling=pooling,
+                                                max_seq_length=max_seq_length,
+                                                is_tokenized=is_tokenized)
+            embeddings.append(vectors)
+        embeddings = np.vstack(embeddings)
+
         return embeddings

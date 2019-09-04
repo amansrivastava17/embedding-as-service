@@ -1,4 +1,4 @@
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Union
 import numpy as np
 from tqdm import tqdm
 import os
@@ -82,18 +82,27 @@ class Embeddings(object):
             print('Error loading Model, ', str(e))
         return self
 
-    def _single_encode_text(self, text, oov_vector, max_seq_length):
-        tokens = Embeddings.tokenize(text)
+    def _single_encode_text(self, text: Union[str, List[str]], oov_vector: np.array, max_seq_length: int,
+                            is_tokenized: bool):
+
+        tokens = text
+        if not is_tokenized:
+            tokens = Embeddings.tokenize(text)
         if len(tokens) > max_seq_length:
             tokens = tokens[0: max_seq_length]
         while len(tokens) < max_seq_length:
             tokens.append('<pad>')
         return np.array([self.word_vectors.get(token, oov_vector) for token in tokens])
 
-    def encode(self, texts: list, pooling: Optional[str] = None, **kwargs) -> np.array:
-        max_seq_length = kwargs.get('max_seq_length', 128)
+    def encode(self, texts: Union[List[str], List[List[str]]],
+               pooling: str,
+               max_seq_length: int,
+               is_tokenized: bool = False,
+               **kwargs
+               ) -> Optional[np.array]:
         oov_vector = np.zeros(Embeddings.EMBEDDING_MODELS[self.model_name].dimensions, dtype="float32")
-        token_embeddings = np.array([self._single_encode_text(text, oov_vector, max_seq_length) for text in texts])
+        token_embeddings = np.array([self._single_encode_text(text, oov_vector, max_seq_length, is_tokenized)
+                                     for text in texts])
 
         if not pooling:
             return token_embeddings

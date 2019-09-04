@@ -1,4 +1,4 @@
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Union
 import numpy as np
 
 from embedding_as_service.text import Embedding
@@ -10,15 +10,15 @@ from embedding_as_service.utils import POOL_FUNC_MAP
 
 class Embeddings(object):
     EMBEDDING_MODELS: List[Embedding] = [
-                        Embedding(name=u'elmo_bi_lm',
-                                  dimensions=512,
-                                  corpus_size='1B',
-                                  vocabulary_size='5.5B',
-                                  download_url='https://storage.googleapis.com/tfhub-modules/google/elmo/2.tar.gz',
-                                  format='tar.gz',
-                                  architecture='Embedding layer,cnn_layer_with_maxpool,2 lstm layers',
-                                  trained_data='One Billion Word Benchmark',
-                                  language='en')
+        Embedding(name=u'elmo_bi_lm',
+                  dimensions=512,
+                  corpus_size='1B',
+                  vocabulary_size='5.5B',
+                  download_url='https://storage.googleapis.com/tfhub-modules/google/elmo/2.tar.gz',
+                  format='tar.gz',
+                  architecture='Embedding layer,cnn_layer_with_maxpool,2 lstm layers',
+                  trained_data='One Billion Word Benchmark',
+                  language='en')
     ]
 
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
@@ -47,9 +47,16 @@ class Embeddings(object):
         self.sess.run(tf.initializers.global_variables())
         self.model_name = model
 
-    def encode(self, texts: list, pooling: Optional[str] = None, **kwargs) -> Optional[np.array]:
-        text_tokens = [Embeddings.tokenize(text) for text in texts]
-        max_seq_length = kwargs.get('max_seq_length')
+    def encode(self, texts: Union[List[str], List[List[str]]],
+               pooling: str,
+               max_seq_length: int,
+               is_tokenized: bool = False,
+               **kwargs
+               ) -> Optional[np.array]:
+
+        text_tokens = texts
+        if not is_tokenized:
+            text_tokens = [Embeddings.tokenize(text) for text in texts]
         if max_seq_length:
             text_tokens = [Embeddings.padded_tokens(tokens, max_seq_length) for tokens in text_tokens]
             seq_length = [max_seq_length] * len(texts)

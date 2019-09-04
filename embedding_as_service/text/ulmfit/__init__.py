@@ -3,7 +3,7 @@ from embedding_as_service.text import Embedding
 from embedding_as_service.text.ulmfit.model import build_language_model
 from embedding_as_service.utils import POOL_FUNC_MAP
 
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Union
 import numpy as np
 import pickle
 import os
@@ -65,8 +65,15 @@ class Embeddings(object):
         self.ulmfit_model.load_weights(weights_path)
         self.model_name = model
 
-    def encode(self, texts: list, pooling: Optional[str] = None, **kwargs) -> Optional[List[np.array]]:
-        tokenized_texts = [Embeddings.tokenize(text) for text in texts]
+    def encode(self, texts: Union[List[str], List[List[str]]],
+               pooling: str,
+               max_seq_length: int,
+               is_tokenized: bool = False,
+               **kwargs
+               ) -> Optional[np.array]:
+        tokenized_texts = texts
+        if not is_tokenized:
+            tokenized_texts = [Embeddings.tokenize(text) for text in texts]
         tokenized_text_words = [[self.word2idx[w] for w in text] for text in tokenized_texts]
         embeddings = []
 

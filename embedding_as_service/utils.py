@@ -138,11 +138,11 @@ def np_last(vectors: np.ndarray):
 
 
 POOL_FUNC_MAP = {
-    "REDUCE_MEAN": np.mean,
-    "REDUCE_MAX": np.max,
-    "REDUCE_MIN": np.min,
-    "REDUCE_MEAN_MAX": reduce_mean_max,
-    "FIRST_TOKEN": np_first,
-    "LAST_TOKEN": np_last
+    "reduce_mean": np.mean,
+    "reduce_max": np.max,
+    "reduce_min": np.min,
+    "reduce_mean_max": reduce_mean_max,
+    "first_token": np_first,
+    "last_token": np_last
 }
 

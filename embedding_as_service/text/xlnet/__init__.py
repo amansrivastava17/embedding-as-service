@@ -1,4 +1,4 @@
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple, Optional, Union
 import sentencepiece as spm
 import tensorflow as tf
 from tqdm import tqdm
@@ -73,14 +73,20 @@ class Embeddings(object):
         return encode_pieces(cls.tokenizer, text)
 
     @staticmethod
-    def _model_single_input(text: str, max_seq_length: int) -> Tuple[List[int], List[int], List[int]]:
-        tokens_a = Embeddings.tokenize(text)
+    def _model_single_input(text: Union[str, List[str]], max_seq_length: int, is_tokenized: bool
+                            ) -> Tuple[List[int], List[int], List[int]]:
+
+        tokens_a = text
+        if not is_tokenized:
+            tokens_a = Embeddings.tokenize(text)
 
         if len(tokens_a) > max_seq_length - 2:
             tokens_a = tokens_a[0: (max_seq_length - 2)]
 
         tokens = []
         segment_ids = []
+
+        tokens_a = [Embeddings.tokenizer.PieceToId(token) for token in tokens]
         for token in tokens_a:
             tokens.append(token)
             segment_ids.append(SEG_ID_A)
@@ -90,7 +96,7 @@ class Embeddings(object):
         tokens.append(CLS_ID)
         segment_ids.append(SEG_ID_CLS)
 
-        input_ids = [Embeddings.tokenizer.PieceToId(token) for token in tokens]
+        input_ids = tokens
 
         # The mask has 0 for real tokens and 1 for padding tokens. Only real
         # tokens are attended to.
@@ -117,11 +123,15 @@ class Embeddings(object):
         self.model_name = model
         print("Model loaded Successfully !")
 
-    def encode(self, texts: list, pooling: Optional[str] = None, **kwargs) -> Optional[np.array]:
-        max_seq_length = kwargs.get('max_seq_length', 128)
+    def encode(self, texts: Union[List[str], List[List[str]]],
+               pooling: str,
+               max_seq_length: int,
+               is_tokenized: bool = False,
+               **kwargs
+               ) -> Optional[np.array]:
         input_ids, input_masks, segment_ids = [], [], []
         for text in tqdm(texts, desc="Converting texts to features"):
-            input_id, input_mask, segment_id = self._model_single_input(text, max_seq_length)
+            input_id, input_mask, segment_id = self._model_single_input(text, max_seq_length, is_tokenized)
             input_ids.append(input_id)
             input_masks.append(input_mask)
             segment_ids.append(segment_id)
