@@ -34,7 +34,7 @@
   
 <h2 align="center">What is it</h3>  
   
-**Encoding/Embedding** is a upstream task of encoding any inputs in the form of text, image, audio, video, transactional data to fixed length vector. Embeddings are quite popular in the field of NLP, there has been various Embeddings models being proposed in recent years by researchers, some of the famous one are bert, xlnet, word2vec etc. The goal of this repo is to build one stop solution for all embeddings techniques available, here we are starting with popular text embeddings for now and later on we aim  to add as much technique for image, audio, video input also.  
+**Encoding/Embedding** is a upstream task of encoding any inputs in the form of text, image, audio, video, transactional data to fixed length vector. Embeddings are quite popular in the field of NLP, there has been various Embeddings models being proposed in recent years by researchers, some of the famous one are bert, xlnet, word2vec etc. The goal of this repo is to build one stop solution for all embeddings techniques available, here we are starting with popular text embeddings for now and later on we aim  to add as much technique for image, audio, video inputs also.  
   
 **Finally**, **`embedding-as-service`** help you to encode any given text to fixed length vector from supported embeddings and models.  
   
@@ -44,7 +44,7 @@ Install the embedding-as-servive via `pip`.
 ```bash  
 pip install embedding-as-service
 ```  
-> Note that the code MUST be running on **Python >= 3.6** with **Tensorflow >= 1.10** (_one-point-ten_). Again, this module does not support Python 2!  
+> Note that the code MUST be running on **Python >= 3.6**. Again module does not support Python 2!  
   
 <h2 align="center"> :zap: Getting Started</h2>  
   
