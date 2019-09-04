@@ -11,7 +11,7 @@
       <img src="https://img.shields.io/pypi/v/embedding-as-service?colorB=brightgreen" alt="Pypi package">  
     </a>  
   <a href="https://pypi.org/project/embedding-as-service/">  
-      <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/embedding-as-service">  
+      <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/embedding-as-service.svg">  
   </a>  
    <a href="https://github.com/amansrivastava17/embedding-as-service/issues">
         <img src="https://img.shields.io/github/issues/amansrivastava17/embedding-as-service.svg"
