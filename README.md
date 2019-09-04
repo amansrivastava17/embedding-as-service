@@ -29,7 +29,7 @@
 </p>
 
 <p align="center">
-    <img src=".github/demo.gif?raw=true" width="500", height="300">
+    <img src=".github/demo.gif?raw=true" width="550", height="330">
 </p>
   
 <h2 align="center">What is it</h3>  
