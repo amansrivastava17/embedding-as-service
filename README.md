@@ -1,4 +1,5 @@
 
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 <h1 align="center">embedding-as-service</h1>  
 <p align="center">One-Stop Solution to encode sentence to fixed length vectors from various embedding techniques   
 <br>• Inspired from <a href="https://github.com/hanxiao/bert-as-service"> bert-as-service</a> </p>  
@@ -198,3 +199,18 @@ If you use embedding-as-service in a scientific publication, we would appreciate
   year={2019}
 }
 ```
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/MrPranav101"><img src="https://avatars0.githubusercontent.com/u/43914392?v=4" width="100px;" alt="MrPranav101"/><br /><sub><b>MrPranav101</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=MrPranav101" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=MrPranav101" title="Documentation">📖</a> <a href="#infra-MrPranav101" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+  </tr>
+</table>
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
