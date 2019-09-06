@@ -67,7 +67,7 @@ array([[[ 1.7049843 ,  0.        ,  1.3486509 , ..., -1.3647075 ,
 (2, 128, 768) # batch x max_sequence_length x embedding_size  
 ```  
 #### 3. Using **pooling strategy**, click <a href="#-pooling-strategies-">here</a> for more.  
-<details><summary><I>Supported Pooling Methods </I></summary>
+<details><summary><I><pre>   Supported Pooling Methods</pre></I></summary>
 
 |Strategy|Description|
 |---|---|
