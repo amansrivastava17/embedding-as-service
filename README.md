@@ -67,16 +67,7 @@ array([[[ 1.7049843 ,  0.        ,  1.3486509 , ..., -1.3647075 ,
 (2, 128, 768) # batch x max_sequence_length x embedding_size  
 ```  
 #### 3. Using **pooling strategy**, click <a href="#-pooling-strategies-">here</a> for more.  
-```python  
->>> vecs = en.encode(texts=['hello aman', 'how are you?'], pooling='reduce_mean')  
->>> vecs  
-array([[-0.33547154,  0.34566957,  1.1954105 , ...,  0.33702594,  
- 1.0317835 , -0.785943  ], [-0.3439088 ,  0.36881036,  1.0612687 , ...,  0.28851607, 1.1107115 , -0.6253736 ]], dtype=float32)  
-  
->>> vecs.shape  
-(2, 768) # batch x embedding_size  
-```  
-<p> <details><summary>Supported Pooling Methods </summary>
+> <details><summary>Supported Pooling Methods </summary>
 
 |Strategy|Description|
 |---|---|
@@ -88,7 +79,17 @@ array([[-0.33547154,  0.34566957,  1.1954105 , ...,  0.33702594,
 | `first_token` | get the token embedding of first token of a sentence |
 | `last_token` | get the token embedding of last token of a sentence |
 </details>
-</p>
+
+
+```python  
+>>> vecs = en.encode(texts=['hello aman', 'how are you?'], pooling='reduce_mean')  
+>>> vecs  
+array([[-0.33547154,  0.34566957,  1.1954105 , ...,  0.33702594,  
+ 1.0317835 , -0.785943  ], [-0.3439088 ,  0.36881036,  1.0612687 , ...,  0.28851607, 1.1107115 , -0.6253736 ]], dtype=float32)  
+  
+>>> vecs.shape  
+(2, 768) # batch x embedding_size  
+```  
 
 #### 4. Use custom `max_seq_length`, default is 128  
 ```python  
