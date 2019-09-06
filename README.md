@@ -76,7 +76,7 @@ array([[-0.33547154,  0.34566957,  1.1954105 , ...,  0.33702594,
 >>> vecs.shape  
 (2, 768) # batch x embedding_size  
 ```  
-<details><summary>Supported Pooling Methods </summary>
+<p> <details><summary>Supported Pooling Methods </summary>
 
 |Strategy|Description|
 |---|---|
@@ -88,6 +88,7 @@ array([[-0.33547154,  0.34566957,  1.1954105 , ...,  0.33702594,
 | `first_token` | get the token embedding of first token of a sentence |
 | `last_token` | get the token embedding of last token of a sentence |
 </details>
+</p>
 
 #### 4. Use custom `max_seq_length`, default is 128  
 ```python  
