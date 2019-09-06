@@ -20,7 +20,7 @@
         <img src="https://img.shields.io/github/license/amansrivastava17/embedding-as-service.svg"  
              alt="GitHub license">  
   </a>
-  <a href="https://github.com/amansrivastava17/embedding-as-service/blob/master/.all-contributorsrc">  
+  <a href="https://github.com/amansrivastava17/embedding-as-service/graphs/contributors">  
         <img src="https://img.shields.io/badge/all_contributors-5-blue.svg"  
              alt="Contributors">  
   </a>  
