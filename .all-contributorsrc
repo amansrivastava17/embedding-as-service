@@ -26,6 +26,17 @@
         "doc",
         "infra"
       ]
+    },
+    {
+      "login": "ashutoshsingh0223",
+      "name": "Ashutosh Singh",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/40604544?v=4",
+      "profile": "https://github.com/ashutoshsingh0223",
+      "contributions": [
+        "code",
+        "doc",
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
