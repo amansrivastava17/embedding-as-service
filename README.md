@@ -122,7 +122,6 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 >>> tokens = [s.split() for s in texts]  
 >>> vecs = en.encode(tokens, is_tokenized=True)  
 ```  
-<br>
 <h2 align="center">📋 API </h2>  
 <p align="right"><a href="#embedding-as-service"><sup>▴ Back to top</sup></a></p>
 
