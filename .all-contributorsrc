@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "MrPranav101",
+      "name": "MrPranav101",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/43914392?v=4",
+      "profile": "https://github.com/MrPranav101",
+      "contributions": [
+        "code",
+        "doc",
+        "infra"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "embedding-as-service",
+  "projectOwner": "amansrivastava17",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}
