@@ -177,3 +177,24 @@ Here are the list of supported embeddings and their respective models.
 ||  |`wiki_50` | 50| |  
 ||  |`crawl_42B_300` | 300| |  
 ||  |`crawl_840B_300` | 300| |
+
+
+## Contribute
+
+Contributions are always welcome!
+Please read the [contribution guidelines](contributing.md) first.
+
+
+<h2 align="center">Citing</h2>
+<p align="right"><a href="#embedding-as-service"><sup>▴ Back to top</sup></a></p>
+
+If you use embedding-as-service in a scientific publication, we would appreciate references to the following BibTex entry:
+
+```latex
+@misc{aman2019embeddingservice,
+  title={embedding-as-service},
+  author={Srivastava, Aman},
+  howpublished={\url{https://github.com/amansrivastava17/embedding-as-service}},
+  year={2019}
+}
+```
