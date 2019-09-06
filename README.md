@@ -143,7 +143,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 
 <br>
 
-<h3 href="#supported-models">✅ Supported Embeddings and Models</h3>  
+<h3 align="center" href="#supported-models">✅ Supported Embeddings and Models</h3>  
  
 <Summary>Here are the list of supported embeddings and their respective models.  
   
@@ -182,7 +182,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 <h2>Contribute</h2>
 
 Contributions are always welcome!
-Please read the [contribution guidelines](contributing.md) first.
+Please read the [contribution guidelines](CONTRIBUTION.md) first.
 
 
 <h2>Citing</h2>
