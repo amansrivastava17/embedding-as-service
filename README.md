@@ -46,6 +46,8 @@
 **Finally**, **`embedding-as-service`** help you to encode any given text to fixed length vector from supported embeddings and models.  
   
 <h2 align="center">💾 Installation</h2>  
+<p align="right"><a href="#embedding-as-service"><sup>▴ Back to top</sup></a></p>
+  
   
 Install the embedding-as-servive via `pip`.   
 ```bash  
@@ -53,7 +55,9 @@ $ pip install embedding-as-service
 ```  
 > Note that the code MUST be running on **Python >= 3.6**. Again module does not support Python 2!  
   
-<h2 align="center">⚡ ️Getting Started</h2>  
+<h2 align="center">⚡ ️Getting Started</h2> 
+<p align="right"><a href="#embedding-as-service"><sup>▴ Back to top</sup></a></p>
+ 
   
 #### 1. **Intialise encoder using supported embedding** and models from <a href="#-supported-embeddings-and-models">here</a>  
 ```python  
@@ -120,6 +124,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 ```  
 <br>
 <h2 align="center">📋 API </h2>  
+<p align="right"><a href="#embedding-as-service"><sup>▴ Back to top</sup></a></p>
 
 #### 1. class `embedding_as_service.text.encoder.Encoder`
 
@@ -146,7 +151,8 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 
 
 <h2 align="center" href="#supported-models">✔ Supported Embeddings and Models</h2>  
- 
+<p align="right"><a href="#embedding-as-service"><sup>▴ Back to top</sup></a></p>
+
  
 Here are the list of supported embeddings and their respective models.  
   
