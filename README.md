@@ -143,7 +143,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 
 <br>
 
-<h4 href="#supported-models">✅ Supported Embeddings and Models</h4>  
+<h3 href="#supported-models">✅ Supported Embeddings and Models</h3>  
   
 Here are the list of supported embeddings and their respective models.  
   
@@ -179,13 +179,13 @@ Here are the list of supported embeddings and their respective models.
 ||  |`crawl_840B_300` | 300| |
 
 
-## Contribute
+### Contribute
 
 Contributions are always welcome!
 Please read the [contribution guidelines](contributing.md) first.
 
 
-<h4>Citing</h2>
+### Citing
 <p align="right"><a href="#embedding-as-service"><sup>▴ Back to top</sup></a></p>
 
 If you use embedding-as-service in a scientific publication, we would appreciate references to the following BibTex entry:
