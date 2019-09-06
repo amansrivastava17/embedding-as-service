@@ -16,12 +16,12 @@
         <img src="https://img.shields.io/github/issues/amansrivastava17/embedding-as-service.svg"
              alt="GitHub issues">
   </a>
-  <a href="https://github.com/amansrivastava/embedding-as-service/blob/master/LICENSE">  
+  <a href="https://github.com/amansrivastava17/embedding-as-service/blob/master/LICENSE">  
         <img src="https://img.shields.io/github/license/amansrivastava17/embedding-as-service.svg"  
              alt="GitHub license">  
   </a>
-  <a href="https://github.com/amansrivastava/embedding-as-service/blob/master/.all-contributorsrc">  
-        <img src="https://img.shields.io/badge/all_contributors-5-orange.svg"  
+  <a href="https://github.com/amansrivastava17/embedding-as-service/blob/master/.all-contributorsrc">  
+        <img src="https://img.shields.io/badge/all_contributors-5-blue.svg"  
              alt="Contributors">  
   </a>  
 </p>  
