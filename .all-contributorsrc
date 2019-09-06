@@ -26,6 +26,17 @@
         "doc",
         "infra"
       ]
+    },
+    {
+      "login": "DhavalTaunk08",
+      "name": "Dhaval Taunk",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/31320833?v=4",
+      "profile": "https://www.linkedin.com/in/dhavaltaunk08/",
+      "contributions": [
+        "code",
+        "doc",
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
