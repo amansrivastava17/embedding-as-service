@@ -144,6 +144,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 | `batch_size` | int | `128` | maximum number of sequences handled by encoder, larger batch will be partitioned into small batches. |
   
  2. def `embedding_as_service.text.encoder.Encoder.tokenize`
+ 
   | Argument | Type | Default | Description |
 |--------------------|------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Texts` | List[str] | *Required* | List of sentences  
