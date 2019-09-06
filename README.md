@@ -67,6 +67,18 @@ array([[[ 1.7049843 ,  0.        ,  1.3486509 , ..., -1.3647075 ,
 (2, 128, 768) # batch x max_sequence_length x embedding_size  
 ```  
 #### 3. Using **pooling strategy**, click <a href="#-pooling-strategies-">here</a> for more.  
+<details><summary><b>Supported Pooling Methods </b></summary>
+|Strategy|Description|
+|---|---|
+| `None` | no pooling at all, useful when you want to use word embedding instead of sentence embedding. This will results in a `[max_seq_len, embedding_size]` encode matrix for a sequence.|
+| `reduce_mean` | take the average of all token embeddings |
+| `reduce_min` | take the minumun of all token embeddings|
+| `reduce_max` | take the maximum of all token embeddings |
+| `reduce_mean_max` | do `reduce_mean` and `reduce_max` separately and then concat them together |
+| `first_token` | get the token embedding of first token of a sentence |
+| `last_token` | get the token embedding of last token of a sentence |
+</details>
+
 ```python  
 >>> vecs = en.encode(texts=['hello aman', 'how are you?'], pooling='reduce_mean')  
 >>> vecs  
@@ -162,19 +174,3 @@ Here are the list of supported embeddings and their respective models.
 ||  |`wiki_50` | 50| |  
 ||  |`crawl_42B_300` | 300| |  
 ||  |`crawl_840B_300` | 300| |
-
-<br>
-<h2 align="center">➕ Pooling Strategies </h2>  
-
- Here is a table summarizes all supported pooling strategies
-<br>
-
-|Strategy|Description|
-|---|---|
-| `None` | no pooling at all, useful when you want to use word embedding instead of sentence embedding. This will results in a `[max_seq_len, embedding_size]` encode matrix for a sequence.|
-| `reduce_mean` | take the average of all token embeddings |
-| `reduce_min` | take the minumun of all token embeddings|
-| `reduce_max` | take the maximum of all token embeddings |
-| `reduce_mean_max` | do `reduce_mean` and `reduce_max` separately and then concat them together |
-| `first_token` | get the token embedding of first token of a sentence |
-| `last_token` | get the token embedding of last token of a sentence |
