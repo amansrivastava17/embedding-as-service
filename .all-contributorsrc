@@ -26,6 +26,17 @@
         "doc",
         "infra"
       ]
+    },
+    {
+      "login": "chiragjn",
+      "name": "Chirag Jain",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/10295418?v=4",
+      "profile": "https://chiragjn.github.io",
+      "contributions": [
+        "code",
+        "doc",
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
