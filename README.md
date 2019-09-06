@@ -209,6 +209,16 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 
 Please read the [contribution guidelines](CONTRIBUTION.md) first.
 
+<h2>Credits</h2>
+<p align="right"><a href="#embedding-as-service"><sup>▴ Back to top</sup></a></p>
+
+
+This software uses the following open source packages:
+
+- [XLnet](https://github.com/zihangdai/xlnet)
+- [tensorflow-hub](https://www.tensorflow.org/hub)
+
+
 <h2>Citing</h2>
 <p align="right"><a href="#embedding-as-service"><sup>▴ Back to top</sup></a></p>
 
