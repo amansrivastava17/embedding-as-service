@@ -1,5 +1,3 @@
-
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
 <h1 align="center">embedding-as-service</h1>  
 <p align="center">One-Stop Solution to encode sentence to fixed length vectors from various embedding techniques   
 <br>• Inspired from <a href="https://github.com/hanxiao/bert-as-service"> bert-as-service</a> </p>  
@@ -23,7 +21,7 @@
              alt="GitHub license">  
   </a>
   <a href="https://github.com/amansrivastava/embedding-as-service/blob/master/.all-contributorsrc">  
-        <img src="https://img.shields.io/badge/all_contributors-3-orange.svg"  
+        <img src="https://img.shields.io/badge/all_contributors-5-orange.svg"  
              alt="Contributors">  
   </a>  
 </p>  
