@@ -28,6 +28,7 @@
       ]
     },
     {
+
       "login": "chiragjn",
       "name": "Chirag Jain",
       "avatar_url": "https://avatars2.githubusercontent.com/u/10295418?v=4",
@@ -38,7 +39,31 @@
         "infra"
       ]
     }
-  ],
+    {
+
+      "login": "ashutoshsingh0223",
+      "name": "Ashutosh Singh",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/40604544?v=4",
+      "profile": "https://github.com/ashutoshsingh0223",
+       "contributions": [
+
+        "code",
+        "doc",
+        "infra"
+      ]
+    }
+
+  {
+      "login": "DhavalTaunk08",
+      "name": "Dhaval Taunk",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/31320833?v=4",
+      "profile": "https://www.linkedin.com/in/dhavaltaunk08/",
+   "contributions": [
+        "code",
+        "doc",
+        "infra"
+        ]
+  },
   "contributorsPerLine": 7,
   "projectName": "embedding-as-service",
   "projectOwner": "amansrivastava17",
