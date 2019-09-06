@@ -179,13 +179,13 @@ Here are the list of supported embeddings and their respective models.
 ||  |`crawl_840B_300` | 300| |
 
 
-### Contribute
+<h2 align="center">Contribute</h2>
 
 Contributions are always welcome!
 Please read the [contribution guidelines](contributing.md) first.
 
 
-### Citing
+<h2 align="center">Citing</h2>
 <p align="right"><a href="#embedding-as-service"><sup>▴ Back to top</sup></a></p>
 
 If you use embedding-as-service in a scientific publication, we would appreciate references to the following BibTex entry:
