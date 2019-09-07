@@ -3,22 +3,19 @@ from keras.layers import Layer
 
 
 class DenseLayer(Layer):
-    def __init__(self, input_shape, activation, output_dim, **kwargs):
-        self.input_shape = input_shape
-        self.activation = activation
-        self.output_dim = output_dim
+    def __init__(self, **kwargs):
         super(DenseLayer, self).__init__(**kwargs)
 
-    def build(self, input_shape):
+    def build(self, input_shape, output_shape, activation):
 
-        self.dense = Layer.Dense(units=self.output_dim,
-                                 activation=self.activation,
+        self.dense = Layer.Dense(units=output_shape,
+                                 activation=activation,
                                  trainable=True)
 
-        super(DenseLayer, self).build(input_shape)
+        super(DenseLayer, self).build(input_shape, output_shape, activation)
 
     def call(self, x):
         return K.dot(x, self.dense)
 
-    def compute_output_shape(self):
-        return self.output_dim
+    def compute_output_shape(self, output_shape):
+        return self.output_shape
