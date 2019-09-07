@@ -7,10 +7,10 @@ class DenseLayer(Layer):
 
         super(DenseLayer, self).__init__(**kwargs)
 
-    def build(self, input_shape,output_dim, activation):
+    def build(self, input_shape, output_dim, activation):
 
-        self.dense = Layer.Dense(units=self.output_dim,
-                                 activation=self.activation,
+        self.dense = Layer.Dense(units=output_dim,
+                                 activation=activation,
                                  trainable=True)
 
         super(DenseLayer, self).build(input_shape, output_dim, activation)
