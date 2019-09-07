@@ -17,7 +17,7 @@ class DenseLayer(Layer):
         super(DenseLayer, self).build(input_shape)
 
     def call(self, x):
-        return K.dot(x, self.kernel)
+        return K.dot(x, self.dense)
 
     def compute_output_shape(self, input_shape):
         return (input_shape[0], self.output_dim)
