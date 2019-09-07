@@ -4,7 +4,7 @@ from keras.layers import Layer
 
 class DenseLayer(Layer):
     def __init__(self, output_dim=64, activation='relu', **kwargs):
-        self.output_dim = output_dim,
+        self.output_dim = output_dim
         self.activation = activation
         super(DenseLayer, self).__init__(**kwargs)
 
