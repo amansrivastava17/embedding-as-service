@@ -3,7 +3,7 @@ from keras.layers import Layer
 
 
 class DenseLayer(Layer):
-    def __init__(self, input_shape=64, activation='relu', output_dim=64, **kwargs):
+    def __init__(self, input_shape, activation, output_dim, **kwargs):
         self.input_shape = input_shape
         self.activation = activation
         self.output_dim = output_dim
