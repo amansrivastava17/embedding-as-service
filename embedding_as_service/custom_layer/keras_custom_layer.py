@@ -3,15 +3,15 @@ from keras.layers import Layer
 
 
 class DenseLayer(Layer):
-    def __init__(self, output_dim=64, activation='relu', **kwargs):
-        self.output_dim = output_dim
-        self.activation = activation
+    def __init__(self, output_dimension=64, activation_func='relu', **kwargs):
+        self.output_dimension = output_dimension
+        self.activation_func = activation_func
         super(DenseLayer, self).__init__(**kwargs)
 
     def build(self, input_shape):
 
-        self.dense = Layer.Dense(units=self.output_dim,
-                                 activation=self.activation,
+        self.dense = Layer.Dense(units=self.output_dimension,
+                                 activation=self.activation_func,
                                  trainable=True)
 
         super(DenseLayer, self).build(input_shape)
