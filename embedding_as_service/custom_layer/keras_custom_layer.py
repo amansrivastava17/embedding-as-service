@@ -10,7 +10,7 @@ class DenseLayer(Layer):
 
     def build(self, input_shape):
 
-        self.dense = Layer.Dense(units=self.output_dimension,
+        self.dense = Layer.Dense(self.output_dimension,
                                  activation=self.activation_func,
                                  trainable=True)
 
