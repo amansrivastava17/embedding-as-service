@@ -43,15 +43,18 @@ class Encoder(object):
         """
         Return list of supported languages
         Returns:
-            (list): supported languages
+            (list): valid values for `embedding` argument
         """
-        supported_languages = []
+        supported_embeddings = []
         cwd = os.path.dirname(os.path.abspath(__file__))
-        cwd_dirs = [x for x in os.listdir(cwd) if os.path.isdir(os.path.join(cwd, x)) if not x.startswith('__') and
-                    not x.startswith('.')]
+        cwd_dirs = []
+        for x in os.listdir(cwd):
+            if os.path.isdir(os.path.join(cwd, x)) and not x.startswith('__') and not x.startswith('.'):
+                cwd_dirs.append(x)
+
         for _dir in cwd_dirs:
-            supported_languages.append(_dir)
-        return supported_languages
+            supported_embeddings.append(_dir)
+        return supported_embeddings
 
     def _get_or_download_model(self, download: bool) -> Optional[str]:
         """
@@ -97,7 +100,7 @@ class Encoder(object):
             for i in range(0, len(texts)):
                 tokens.append(self.embedding_cls.tokenize(texts[i]))
         else:
-            raise ValueError('Wrong input format!')
+            raise ValueError('Argument `texts` should be either str or List[str]')
         return tokens
 
     def encode(self,
@@ -109,10 +112,10 @@ class Encoder(object):
                ** kwargs
                ) -> np.array:
         if not isinstance(texts, list):
-            raise ValueError('input expected to be list of str')
+            raise ValueError('Argument `texts` should be either List[str] or List[List[str]]')
         if is_tokenized:
-            if False in [isinstance(text, list) for text in texts]:
-                raise ValueError('Input expected to be list of tokens for `is_tokenized` = True')
+            if not all(isinstance(text, list) for text in texts):
+                raise ValueError('Argument `texts` should be List[List[str]] (list of tokens) when `is_tokenized` = True')
         embeddings = []
         for i in range(0, len(texts), batch_size):
             vectors = self.embedding_cls.encode(texts=texts[i: i + batch_size],
