@@ -1,7 +1,7 @@
 from embedding_as_service.text.ulmfit import *
 from embedding_as_service.text import Embedding
 from embedding_as_service.text.ulmfit.model import build_language_model
-from embedding_as_service.utils import POOL_FUNC_MAP
+from embedding_as_service.utils import POOL_FUNC_MAP, download_from_url
 
 from typing import List, Dict, Optional, Union
 import numpy as np
@@ -15,9 +15,9 @@ class Embeddings(object):
                   dimensions=300,
                   corpus_size='570k human-generated English sentence pairs',
                   vocabulary_size='230k',
-                  download_url='https://www.dropbox.com/s/4k5zwvmqdhwql8t/ulmfit_forward.zip?dl=1',
+                  download_url='https://www.dropbox.com/s/yhq3s1fmbmhmjyi/ULMFit_keras_fwd.h5?dl=0',
                   format='zip',
-                  architecture='Transformer',
+                  architecture='LSTM',
                   trained_data='Stephen Merity’s Wikitext 103 dataset',
                   language='en'),
 
@@ -25,9 +25,9 @@ class Embeddings(object):
                   dimensions=300,
                   corpus_size='570k human-generated English sentence pairs',
                   vocabulary_size='230k',
-                  download_url='https://www.dropbox.com/s/152w8wtv3hxmazp/ulmfit_backword.zip?dl=1',
+                  download_url='https://www.dropbox.com/s/7kvrlunq08hyzos/ULMFit_keras_bwd.h5?dl=0',
                   format='zip',
-                  architecture='Transformer',
+                  architecture='LSTM',
                   trained_data='Stephen Merity’s Wikitext 103 dataset',
                   language='en')
     ]
@@ -39,6 +39,7 @@ class Embeddings(object):
         self.model_name = None
         self.word2idx = None
         self.idx2word = None
+        self.vocab_url = 'https://www.dropbox.com/s/p2mfyo8fuo5do3u/itos_wt103.pkl?dl=0'
 
     @classmethod
     def tokenize(cls, text: str):
@@ -54,6 +55,9 @@ class Embeddings(object):
 
         weights_path = os.path.join(model_path,  'model.h5')
         id2word_path = os.path.join(model_path, 'itos_wt103.pkl')
+
+        if not os.path.exists(id2word_path):
+            download_from_url(self.vocab_url, id2word_path)
 
         with open(id2word_path, 'rb') as f:
             idx2word = pickle.load(f)
