@@ -133,6 +133,6 @@ class BertLayer(Layer):
 
     def compute_output_shape(self, input_shape):
         if not self.pooling:
-            return (input_shape[0][0], input_shape[0][1], self.output_size)
+            return input_shape[0][0], input_shape[0][1], self.output_size
         else:
-            return (input_shape[0], self.output_size)
+            return input_shape[0], self.output_size
