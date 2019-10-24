@@ -26,7 +26,7 @@ def printable_text(text):
   elif six.PY2:
     if isinstance(text, str):
       return text
-    elif isinstance(text, unicode):
+    elif isinstance(text, six.text_type):
       return text.encode("utf-8")
     else:
       raise ValueError("Unsupported string type: %s" % (type(text)))
@@ -69,7 +69,7 @@ def encode_pieces(sp_model, text, return_unicode=True, sample=False):
   # return_unicode is used only for py2
 
   # note(zhiliny): in some systems, sentencepiece only accepts str for py2
-  if six.PY2 and isinstance(text, unicode):
+  if six.PY2 and isinstance(text, (str, six.text_type)):
     text = text.encode('utf-8')
 
   if not sample:

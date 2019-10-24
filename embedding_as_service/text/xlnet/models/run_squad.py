@@ -446,7 +446,7 @@ def convert_examples_to_features(examples, sp_model, max_seq_length,
       assert tok_start_position <= tok_end_position
 
     def _piece_to_id(x):
-      if six.PY2 and isinstance(x, unicode):
+      if six.PY2 and isinstance(x, (str, six.text_type)):
         x = x.encode('utf-8')
       return sp_model.PieceToId(x)
 
