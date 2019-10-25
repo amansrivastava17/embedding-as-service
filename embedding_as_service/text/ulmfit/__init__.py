@@ -15,7 +15,7 @@ class Embeddings(object):
                   dimensions=300,
                   corpus_size='570k human-generated English sentence pairs',
                   vocabulary_size='230k',
-                  download_url='https://www.dropbox.com/s/yhq3s1fmbmhmjyi/ULMFit_keras_fwd.h5?dl=0',
+                  download_url='https://www.dropbox.com/s/chtrlru8lv0viud/ulmfit_forward.zip?dl=1',
                   format='zip',
                   architecture='LSTM',
                   trained_data='Stephen Merity’s Wikitext 103 dataset',
@@ -25,7 +25,7 @@ class Embeddings(object):
                   dimensions=300,
                   corpus_size='570k human-generated English sentence pairs',
                   vocabulary_size='230k',
-                  download_url='https://www.dropbox.com/s/7kvrlunq08hyzos/ULMFit_keras_bwd.h5?dl=0',
+                  download_url='https://www.dropbox.com/s/3w2h03aeac51n8b/ulmfit_backword.zip?dl=1',
                   format='zip',
                   architecture='LSTM',
                   trained_data='Stephen Merity’s Wikitext 103 dataset',
@@ -39,7 +39,6 @@ class Embeddings(object):
         self.model_name = None
         self.word2idx = None
         self.idx2word = None
-        self.vocab_url = 'https://www.dropbox.com/s/p2mfyo8fuo5do3u/itos_wt103.pkl?dl=0'
 
     @classmethod
     def tokenize(cls, text: str):
@@ -55,9 +54,6 @@ class Embeddings(object):
 
         weights_path = os.path.join(model_path,  'model.h5')
         id2word_path = os.path.join(model_path, 'itos_wt103.pkl')
-
-        if not os.path.exists(id2word_path):
-            download_from_url(self.vocab_url, id2word_path)
 
         with open(id2word_path, 'rb') as f:
             idx2word = pickle.load(f)
@@ -78,7 +74,8 @@ class Embeddings(object):
         tokenized_texts = texts
         if not is_tokenized:
             tokenized_texts = [Embeddings.tokenize(text) for text in texts]
-        tokenized_text_words = [[self.word2idx[w] for w in text] for text in tokenized_texts]
+        tokenized_text_words = [[self.word2idx.get(w, self.word2idx['unk'])
+                                 for w in text] for text in tokenized_texts]
         embeddings = []
 
         for x in tokenized_text_words:
