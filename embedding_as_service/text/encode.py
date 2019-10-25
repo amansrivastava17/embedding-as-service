@@ -3,11 +3,11 @@ import numpy as np
 import importlib
 import os
 
-from embedding_as_service.utils import home_directory, get_hashed_name, download_from_url, extract_file
+from embedding_as_service.utils import home_directory, get_hashed_name, download_from_url, extract_file, ArgSingleton
 from embedding_as_service.text import MODELS_DIR
 
 
-class Encoder(object):
+class Encoder(object, metaclass=ArgSingleton):
     def __init__(self, embedding: str, model: str, download: bool = False):
         self.embedding = embedding
         self.model = model
