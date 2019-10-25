@@ -74,7 +74,8 @@ class Embeddings(object):
         tokenized_texts = texts
         if not is_tokenized:
             tokenized_texts = [Embeddings.tokenize(text) for text in texts]
-        tokenized_text_words = [[self.word2idx[w] for w in text] for text in tokenized_texts]
+        tokenized_text_words = [[self.word2idx.get(w, self.word2idx['unk'])
+                                 for w in text] for text in tokenized_texts]
         embeddings = []
 
         for x in tokenized_text_words:
