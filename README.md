@@ -132,7 +132,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 | `embedding` | str | *Required* | embedding method to be used, check `Embedding` column <a href="#-supported-embeddings-and-models">here</a>|
 | `model`| str |*Required*| Model to be used for mentioned embedding, check `Model` column <a href="#-supported-embeddings-and-models">here</a>|
 | `download`| bool |`False`| Download model if model does not exists|
-<hr>
+
 2. **def** <span style="color:blue">`embedding_as_service.text.encoder.Encoder.encode`</span>
 
   | Argument | Type | Default | Description |
@@ -142,7 +142,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 | `max_seq_length`| int | `128` | Maximum Sequence Length, default is 128|
 | `is_tokenized` | bool | `False` | set as True in case of tokens are passed for encoding |  
 | `batch_size` | int | `128` | maximum number of sequences handled by encoder, larger batch will be partitioned into small batches. |
-<hr>  
+
  3. **def** <span style="color:blue">`embedding_as_service.text.encoder.Encoder.tokenize`</span>
  
   | Argument | Type | Default | Description |
