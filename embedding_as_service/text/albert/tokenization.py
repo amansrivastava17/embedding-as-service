@@ -196,8 +196,11 @@ def load_vocab(vocab_file):
     with tf.gfile.GFile(vocab_file, "r") as reader:
         while True:
             token = convert_to_unicode(reader.readline())
+            print(token)
             if not token.strip():
                 break
+            print(token)
+            print(token.strip().split()[0])
             token = token.strip().split()[0]
             if token not in vocab:
                 vocab[token] = len(vocab)
