@@ -65,12 +65,10 @@ class Embeddings(object):
 
     def create_tokenizer_from_hub_module(self):
         """Get the vocab file and casing info from the Hub module."""
-        with tf.Graph().as_default():
-            tokenization_info = self.albert_module(signature="tokenization_info", as_dict=True)
+        tokenization_info = self.albert_module(signature="tokenization_info", as_dict=True)
 
-            with tf.Session() as sess:
-                vocab_file, do_lower_case = sess.run([tokenization_info["vocab_file"],
-                                                      tokenization_info["do_lower_case"]])
+        vocab_file, do_lower_case = self.sess.run([tokenization_info["vocab_file"],
+                                                   tokenization_info["do_lower_case"]])
 
         Embeddings.tokenizer = FullTokenizer(
             vocab_file=vocab_file, do_lower_case=do_lower_case,
