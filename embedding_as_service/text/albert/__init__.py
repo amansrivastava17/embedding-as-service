@@ -67,12 +67,12 @@ class Embeddings(object):
         """Get the vocab file and casing info from the Hub module."""
         tokenization_info = self.albert_module(signature="tokenization_info", as_dict=True)
 
-        vocab_file, do_lower_case = self.sess.run([tokenization_info["vocab_file"],
+        sentence_piece_file, do_lower_case = self.sess.run([tokenization_info["vocab_file"],
                                                    tokenization_info["do_lower_case"]])
 
         Embeddings.tokenizer = FullTokenizer(
-            vocab_file=vocab_file, do_lower_case=do_lower_case,
-            spm_model_file=None)
+            vocab_file=None, do_lower_case=do_lower_case,
+            spm_model_file=sentence_piece_file)
 
     @classmethod
     def tokenize(cls, text):
