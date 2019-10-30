@@ -186,6 +186,11 @@ Here are the list of supported embeddings and their respective models.
 ||  |`wiki_50` | 50| |  
 ||  |`crawl_42B_300` | 300| |  
 ||  |`crawl_840B_300` | 300| |
+|:nine: |`ALBERT`|`albert_base` | 768| <a href="https://arxiv.org/pdf/1909.11942.pdf"> Read Paper :bookmark:  </a>|  
+||  |`albert_large` | 1024| |  
+||  |`albert_xlarge` | 2048| |  
+||  |`albert_xxlarge` | 4096| |  
+
 
 
 ## Credits 
