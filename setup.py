@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
 
 setuptools.setup(
     name="embedding_as_service",
-    version="1.2.0",
+    version="1.3.0",
     author="Aman Srivastava",
     author_email="amans.rlx@gmail.com",
     description="embedding-as-service: one-stop solution to encode sentence to vectors using various embedding methods",
