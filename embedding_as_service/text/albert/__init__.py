@@ -24,7 +24,7 @@ class Embeddings(object):
                                   language='en'),
 
                         Embedding(name='albert_large',
-                                  dimensions=768,
+                                  dimensions=1024,
                                   corpus_size='3300M',
                                   vocabulary_size='30522(sub-word)',
                                   download_url='https://tfhub.dev/google/albert_large/1?tf-hub-format=compressed',
@@ -34,7 +34,7 @@ class Embeddings(object):
                                   language='en'),
 
                         Embedding(name='albert_xlarge',
-                                  dimensions=768,
+                                  dimensions=2048,
                                   corpus_size='3300M',
                                   vocabulary_size='30522 (sub-word)',
                                   download_url='https://tfhub.dev/google/albert_xlarge/1?tf-hub-format=compressed',
@@ -44,7 +44,7 @@ class Embeddings(object):
                                   language='en'),
 
                         Embedding(name='albert_xxlarge',
-                                  dimensions=1024,
+                                  dimensions=4096,
                                   corpus_size='3300M',
                                   vocabulary_size='30522 (sub-word)',
                                   download_url='https://tfhub.dev/google/albert_xxlarge/1?tf-hub-format=compressed',
