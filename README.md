@@ -170,13 +170,13 @@ Here are the list of supported embeddings and their respective models.
 ||  |`bert_large_uncased` | 1024||   
 ||  |`bert_large_cased` | 1024| |  
 |:four: |`ELMO` |`elmo_bi_lm` | 512| <a href="https://allennlp.org/elmo"> Read Paper :bookmark: </a>|  
-|:five: |`ulmfit` |`ulmfit_forward` | 300|<a href="https://arxiv.org/abs/1801.06146"> Read Paper :bookmark: </a>|   
+|:five: |`ULMFit` |`ulmfit_forward` | 300|<a href="https://arxiv.org/abs/1801.06146"> Read Paper :bookmark: </a>|   
 |||`ulmfit_backward` | 300| |  
 |:six: |`USE`|`use_dan` | 512| <a href="https://arxiv.org/abs/1803.11175"> Read Paper :bookmark: </a>|  
 ||  |`use_transformer_large` | 512| |  
 ||  |`use_transformer_lite` | 512| |  
 |:seven: |`Word2Vec`|`google_news_300` | 300| <a href="https://arxiv.org/abs/1301.3781"> Read Paper :bookmark:  </a>|  
-|:eight: |`fasttext`|`wiki_news_300` | 300| <a href="https://arxiv.org/abs/1607.01759"> Read Paper :bookmark: </a>|  
+|:eight: |`FastText`|`wiki_news_300` | 300| <a href="https://arxiv.org/abs/1607.01759"> Read Paper :bookmark: </a>|  
 ||  |`wiki_news_300_sub` | 300| |  
 ||  |`common_crawl_300` | 300| |  
 ||  |`common_crawl_300_sub` | 300| |  
