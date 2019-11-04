@@ -158,29 +158,29 @@ Here are the list of supported embeddings and their respective models.
   
 |  |Embedding  | Model  | Embedding dimensions | Paper |   
 |:--|:--|:--:|:--:|--|  
-|:one: |**ALBert**|`albert_base` | 768| <a href="https://arxiv.org/pdf/1909.11942.pdf"> Read Paper :bookmark:  </a>|  
+|:one: |**albert**|`albert_base` | 768| <a href="https://arxiv.org/pdf/1909.11942.pdf"> Read Paper :bookmark:  </a>|  
 ||  |`albert_large` | 1024| |  
 ||  |`albert_xlarge` | 2048| |  
 ||  |`albert_xxlarge` | 4096| |  
-|:two: |**XLNet** |`xlnet_large_cased` | 1024| <a href="https://arxiv.org/abs/1906.08237"> Read Paper :bookmark: </a>|  
+|:two: |**xlnet** |`xlnet_large_cased` | 1024| <a href="https://arxiv.org/abs/1906.08237"> Read Paper :bookmark: </a>|  
 ||  |`xlnet_base_cased` | 768| |  
-|:three: |**BERT** |`bert_base_uncased` | 768| <a href="https://arxiv.org/abs/1810.04805"> Read Paper :bookmark:  </a>|  
+|:three: |**bert** |`bert_base_uncased` | 768| <a href="https://arxiv.org/abs/1810.04805"> Read Paper :bookmark:  </a>|  
 |||`bert_base_cased` | 768| |  
 ||  |`bert_multi_cased` | 768||   
 ||  |`bert_large_uncased` | 1024||   
 ||  |`bert_large_cased` | 1024| |  
-|:four: |**ELMO** |`elmo_bi_lm` | 512| <a href="https://allennlp.org/elmo"> Read Paper :bookmark: </a>|  
-|:five: |**ULMFit** |`ulmfit_forward` | 300|<a href="https://arxiv.org/abs/1801.06146"> Read Paper :bookmark: </a>|   
+|:four: |**elmo** |`elmo_bi_lm` | 512| <a href="https://allennlp.org/elmo"> Read Paper :bookmark: </a>|  
+|:five: |**ulmfit** |`ulmfit_forward` | 300|<a href="https://arxiv.org/abs/1801.06146"> Read Paper :bookmark: </a>|   
 |||`ulmfit_backward` | 300| |  
-|:six: |**USE**|`use_dan` | 512| <a href="https://arxiv.org/abs/1803.11175"> Read Paper :bookmark: </a>|  
+|:six: |**use**|`use_dan` | 512| <a href="https://arxiv.org/abs/1803.11175"> Read Paper :bookmark: </a>|  
 ||  |`use_transformer_large` | 512| |  
 ||  |`use_transformer_lite` | 512| |  
-|:seven: |**Word2Vec**|`google_news_300` | 300| <a href="https://arxiv.org/abs/1301.3781"> Read Paper :bookmark:  </a>|  
-|:eight: |**FastText**|`wiki_news_300` | 300| <a href="https://arxiv.org/abs/1607.01759"> Read Paper :bookmark: </a>|  
+|:seven: |**word2vec**|`google_news_300` | 300| <a href="https://arxiv.org/abs/1301.3781"> Read Paper :bookmark:  </a>|  
+|:eight: |**fasttext**|`wiki_news_300` | 300| <a href="https://arxiv.org/abs/1607.01759"> Read Paper :bookmark: </a>|  
 ||  |`wiki_news_300_sub` | 300| |  
 ||  |`common_crawl_300` | 300| |  
 ||  |`common_crawl_300_sub` | 300| |  
-|:nine: |**Glove**|`twitter_200` | 200| <a href="https://nlp.stanford.edu/pubs/glove.pdf"> Read Paper :bookmark:  </a>|  
+|:nine: |**glove**|`twitter_200` | 200| <a href="https://nlp.stanford.edu/pubs/glove.pdf"> Read Paper :bookmark:  </a>|  
 ||  |`twitter_100` | 100| |  
 ||  |`twitter_50` | 50| |  
 ||  |`twitter_25` | 25| |  
