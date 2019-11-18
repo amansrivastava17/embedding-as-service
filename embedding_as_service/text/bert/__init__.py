@@ -77,6 +77,7 @@ class Embeddings(object):
         self.sess = tf.Session()
         self.bert_module = None
         self.model_name = None
+        self.graph = tf.Graph()
 
     def create_tokenizer_from_hub_module(self, model_path: str):
         """Get the vocab file and casing info from the Hub module."""
@@ -132,10 +133,18 @@ class Embeddings(object):
         return input_ids, input_mask, segment_ids
 
     def load_model(self, model: str, model_path: str):
-        self.bert_module = hub.Module(model_path)
-        self.sess.run(tf.initializers.global_variables())
+        with self.graph.as_default():
+            # We will be feeding 1D tensors of text into the graph.
+            _input = tf.placeholder(dtype=tf.string, shape=[None])
+            embed = hub.Module(model_path)
+            self.bert_module = embed(_input)
+            init_op = tf.group([tf.global_variables_initializer(), tf.tables_initializer()])
+        self.graph.finalize()
+        self.sess = tf.Session(graph=self.graph)
+        self.sess.run(init_op)
         self.create_tokenizer_from_hub_module(model_path)
         self.model_name = model
+
         print("Model loaded Successfully !")
 
     def encode(self, texts: Union[List[str], List[List[str]]],
@@ -156,10 +165,9 @@ class Embeddings(object):
             input_mask=np.array(input_masks),
             segment_ids=np.array(segment_ids))
 
-        bert_outputs = self.bert_module(bert_inputs, signature="tokens", as_dict=True)
-        sequence_output = bert_outputs["sequence_output"]
-
-        token_embeddings = self.sess.run(sequence_output)
+        bert_outputs = self.sess.run(self.bert_module, feed_dict={'_input': bert_inputs, 'signature': 'tokens',
+                                                                  'as_dict': True})
+        token_embeddings = bert_outputs["sequence_output"]
 
         if not pooling:
             return token_embeddings
