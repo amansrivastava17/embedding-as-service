@@ -8,7 +8,7 @@ from embedding_as_service.text import MODELS_DIR
 
 
 class Encoder(object, metaclass=ArgSingleton):
-    def __init__(self, embedding: str, model: str, download: bool = False):
+    def __init__(self, embedding: str, model: str):
         self.embedding = embedding
         self.model = model
         self.embedding_model_dict = None
@@ -30,7 +30,7 @@ class Encoder(object, metaclass=ArgSingleton):
             raise ValueError(f"Given embedding \"{embedding}\" does not have support for model \"{model}\", "
                              f"the supported models are: {model_names}")
 
-        self.model_path = self._get_or_download_model(download)
+        self.model_path = self._get_or_download_model(download=True)
         if not self.model_path:
             print(f"Model does not exits, pass download param as True")
             return

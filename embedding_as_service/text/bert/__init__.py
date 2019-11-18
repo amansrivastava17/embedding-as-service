@@ -74,7 +74,7 @@ class Embeddings(object):
     tokenizer: FullTokenizer = None
 
     def __init__(self):
-        self.sess = tf.Session()
+        self.sess = None
         self.bert_module = None
         self.model_name = None
         self.graph = tf.Graph()
