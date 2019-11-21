@@ -2,10 +2,11 @@ from typing import List, Dict, Tuple, Optional, Union
 import numpy as np
 
 from embedding_as_service.text import Embedding
-import tensorflow as tf
 import tensorflow_hub as hub
 from tqdm import tqdm
-from bert.tokenization import FullTokenizer
+from .tokenization import FullTokenizer
+import tensorflow as tf
+from tensorflow.keras.models import Model
 
 from embedding_as_service.utils import POOL_FUNC_MAP
 
@@ -74,21 +75,14 @@ class Embeddings(object):
     tokenizer: FullTokenizer = None
 
     def __init__(self):
-        self.sess = None
-        self.bert_module = None
+        self.bert_model = None
         self.model_name = None
-        self.graph = tf.Graph()
+        self.max_seq_length = 128
 
-    def create_tokenizer_from_hub_module(self, model_path: str):
+    def create_tokenizer_from_hub_module(self):
         """Get the vocab file and casing info from the Hub module."""
-        tokenization_info = self.bert_module(signature="tokenization_info", as_dict=True)
-        vocab_file, do_lower_case = self.sess.run(
-            [
-                tokenization_info["vocab_file"],
-                tokenization_info["do_lower_case"],
-            ]
-        )
-
+        vocab_file = self.bert_model.resolved_object.vocab_file.asset_path.numpy()
+        do_lower_case = self.bert_model.resolved_object.do_lower_case.numpy()
         Embeddings.tokenizer = FullTokenizer(vocab_file=vocab_file, do_lower_case=do_lower_case)
 
     @classmethod
@@ -133,18 +127,17 @@ class Embeddings(object):
         return input_ids, input_mask, segment_ids
 
     def load_model(self, model: str, model_path: str):
-        with self.graph.as_default():
-            # We will be feeding 1D tensors of text into the graph.
-            _input = tf.placeholder(dtype=tf.string, shape=[None])
-            embed = hub.Module(model_path)
-            self.bert_module = embed(_input)
-            init_op = tf.group([tf.global_variables_initializer(), tf.tables_initializer()])
-        self.graph.finalize()
-        self.sess = tf.Session(graph=self.graph)
-        self.sess.run(init_op)
-        self.create_tokenizer_from_hub_module(model_path)
-        self.model_name = model
+        bert_layer = hub.KerasLayer(model_path)
+        input_word_ids = tf.keras.layers.Input(shape=self.max_seq_length, dtype=tf.int32, name="input_word_ids")
+        input_mask = tf.keras.layers.Input(shape=self.max_seq_length, dtype=tf.int32, name="input_mask")
+        segment_ids = tf.keras.layers.Input(shape=self.max_seq_length, dtype=tf.int32, name="segment_ids")
 
+        pooled_output, sequence_output = bert_layer([input_word_ids, input_mask, segment_ids])
+        self.bert_model = Model(inputs=[input_word_ids, input_mask, segment_ids],
+                                outputs=[pooled_output, sequence_output])
+
+        self.create_tokenizer_from_hub_module()
+        self.model_name = model
         print("Model loaded Successfully !")
 
     def encode(self, texts: Union[List[str], List[List[str]]],
@@ -165,9 +158,8 @@ class Embeddings(object):
             input_mask=np.array(input_masks),
             segment_ids=np.array(segment_ids))
 
-        bert_outputs = self.sess.run(self.bert_module, feed_dict={'_input': bert_inputs, 'signature': 'tokens',
-                                                                  'as_dict': True})
-        token_embeddings = bert_outputs["sequence_output"]
+        pooled_output, sequence_output = self.bert_model(bert_inputs)
+        token_embeddings = sequence_output
 
         if not pooling:
             return token_embeddings
