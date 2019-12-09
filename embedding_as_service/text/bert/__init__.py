@@ -77,6 +77,7 @@ class Embeddings(object):
         self.sess = tf.Session()
         self.bert_module = None
         self.model_name = None
+        self.graph = tf.get_default_graph()
 
     def create_tokenizer_from_hub_module(self, model_path: str):
         """Get the vocab file and casing info from the Hub module."""
@@ -156,10 +157,11 @@ class Embeddings(object):
             input_mask=np.array(input_masks),
             segment_ids=np.array(segment_ids))
 
-        bert_outputs = self.bert_module(bert_inputs, signature="tokens", as_dict=True)
-        sequence_output = bert_outputs["sequence_output"]
+        with self.graph.as_default():
+            bert_outputs = self.bert_module(bert_inputs, signature="tokens", as_dict=True)
+            sequence_output = bert_outputs["sequence_output"]
 
-        token_embeddings = self.sess.run(sequence_output)
+            token_embeddings = self.sess.run(sequence_output)
 
         if not pooling:
             return token_embeddings
