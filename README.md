@@ -5,14 +5,14 @@
   <a href="https://github.com/amansrivastava17/embedding-as-service/stargazers">  
     <img src="https://img.shields.io/github/stars/amansrivastava17/embedding-as-service.svg?colorA=orange&colorB=orange&logo=github"  
          alt="GitHub stars">  
-  </a>  
+  </a> 
+  <a href="https://pepy.tech/project/embedding-as-service/">  
+      <img src="https://pepy.tech/badge/embedding-as-service" alt="Downloads">  
+  </a>   
   <a href="https://pypi.org/project/embedding-as-service/">  
       <img src="https://img.shields.io/pypi/v/embedding-as-service?colorB=brightgreen" alt="Pypi package">  
-    </a>  
-  <a href="https://pypi.org/project/embedding-as-service/">  
-      <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/embedding-as-service.svg">  
   </a>  
-   <a href="https://github.com/amansrivastava17/embedding-as-service/issues">
+  <a href="https://github.com/amansrivastava17/embedding-as-service/issues">
         <img src="https://img.shields.io/github/issues/amansrivastava17/embedding-as-service.svg"
              alt="GitHub issues">
   </a>
