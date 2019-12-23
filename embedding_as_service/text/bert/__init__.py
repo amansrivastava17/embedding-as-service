@@ -79,9 +79,9 @@ class Embeddings(object):
         self.model_name = None
         self.encoded = None
         self.max_seq_len = max_seq_len
-        self.input_placeholder = tf.placeholder(tf.int64, [None, self.max_seq_len])
-        self.mask_placeholder = tf.placeholder(tf.int64, [None, self.max_seq_len])
-        self.segment_placeholder = tf.placeholder(tf.int64, [None, self.max_seq_len])
+        self.input_placeholder = tf.placeholder(tf.int32, [None, self.max_seq_len])
+        self.mask_placeholder = tf.placeholder(tf.int32, [None, self.max_seq_len])
+        self.segment_placeholder = tf.placeholder(tf.int32, [None, self.max_seq_len])
 
     def create_tokenizer_from_hub_module(self, model_path: str):
         """Get the vocab file and casing info from the Hub module."""
