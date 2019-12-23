@@ -73,10 +73,15 @@ class Embeddings(object):
 
     tokenizer: FullTokenizer = None
 
-    def __init__(self):
+    def __init__(self, max_seq_len: int = 256):
         self.sess = tf.Session()
         self.bert_module = None
         self.model_name = None
+        self.encoded = None
+        self.max_seq_len = max_seq_len
+        self.input_placeholder = tf.placeholder(tf.int64, [None, self.max_seq_len])
+        self.mask_placeholder = tf.placeholder(tf.int64, [None, self.max_seq_len])
+        self.segment_placeholder = tf.placeholder(tf.int64, [None, self.max_seq_len])
 
     def create_tokenizer_from_hub_module(self, model_path: str):
         """Get the vocab file and casing info from the Hub module."""
@@ -136,11 +141,16 @@ class Embeddings(object):
         self.sess.run(tf.initializers.global_variables())
         self.create_tokenizer_from_hub_module(model_path)
         self.model_name = model
+        self.encoded = self.bert_module(dict(
+                                                input_ids=self.input_placeholder,
+                                                input_mask=self.mask_placeholder,
+                                                segment_ids=self.segment_placeholder
+                                        ))["sequence_output"]
         print("Model loaded Successfully !")
 
     def encode(self, texts: Union[List[str], List[List[str]]],
                pooling: str,
-               max_seq_length: int,
+               max_seq_length: int = 256,
                is_tokenized: bool = False,
                **kwargs
                ) -> Optional[np.array]:
@@ -151,15 +161,17 @@ class Embeddings(object):
             input_masks.append(input_mask)
             segment_ids.append(segment_id)
 
-        bert_inputs = dict(
-            input_ids=np.array(input_ids),
-            input_mask=np.array(input_masks),
-            segment_ids=np.array(segment_ids))
+        bert_inputs = {
+            self.input_placeholder: np.array(input_ids),
+            self.mask_placeholder: np.array(input_masks),
+            self.segment_placeholder: np.array(segment_ids)
+        }
 
-        bert_outputs = self.bert_module(bert_inputs, signature="tokens", as_dict=True)
-        sequence_output = bert_outputs["sequence_output"]
+        # bert_outputs = self.encode(bert_inputs, signature="tokens", as_dict=True)
+        bert_outputs = self.sess.run(self.encoded, feed_dict=bert_inputs)
+        # sequence_output = bert_outputs["sequence_output"]
 
-        token_embeddings = self.sess.run(sequence_output)
+        token_embeddings = self.sess.run(bert_outputs)
 
         if not pooling:
             return token_embeddings

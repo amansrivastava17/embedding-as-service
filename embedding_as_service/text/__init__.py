@@ -15,4 +15,5 @@ class Embedding(NamedTuple):
     architecture: str
     trained_data: str
     language: str
+    max_seq_len: int
 
