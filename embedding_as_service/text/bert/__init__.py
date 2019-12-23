@@ -168,10 +168,8 @@ class Embeddings(object):
         }
 
         # bert_outputs = self.encode(bert_inputs, signature="tokens", as_dict=True)
-        bert_outputs = self.sess.run(self.encoded, feed_dict=bert_inputs)
+        token_embeddings = self.sess.run(self.encoded, feed_dict=bert_inputs)["sequence_output"]
         # sequence_output = bert_outputs["sequence_output"]
-
-        token_embeddings = self.sess.run(bert_outputs)
 
         if not pooling:
             return token_embeddings
