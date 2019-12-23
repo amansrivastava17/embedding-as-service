@@ -73,7 +73,7 @@ class Embeddings(object):
 
     tokenizer: FullTokenizer = None
 
-    def __init__(self, max_seq_len: int = 256):
+    def __init__(self, max_seq_len: Optional[int] = 256):
         self.sess = tf.Session()
         self.bert_module = None
         self.model_name = None
