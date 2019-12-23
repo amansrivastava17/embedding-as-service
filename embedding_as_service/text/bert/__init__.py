@@ -145,7 +145,7 @@ class Embeddings(object):
                                                 input_ids=self.input_placeholder,
                                                 input_mask=self.mask_placeholder,
                                                 segment_ids=self.segment_placeholder
-                                        ))
+                                        ), signature="tokens", as_dict=True)
         print("Model loaded Successfully !")
 
     def encode(self, texts: Union[List[str], List[List[str]]],
