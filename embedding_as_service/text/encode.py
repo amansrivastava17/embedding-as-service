@@ -116,7 +116,8 @@ class Encoder(object, metaclass=ArgSingleton):
             raise ValueError('Argument `texts` should be either List[str] or List[List[str]]')
         if is_tokenized:
             if not all(isinstance(text, list) for text in texts):
-                raise ValueError('Argument `texts` should be List[List[str]] (list of tokens) when `is_tokenized` = True')
+                raise ValueError('Argument `texts` should be List[List[str]] (list of tokens) '
+                                 'when `is_tokenized` = True')
         embeddings = []
         for i in range(0, len(texts), batch_size):
             vectors = self.embedding_cls.encode(texts=texts[i: i + batch_size],

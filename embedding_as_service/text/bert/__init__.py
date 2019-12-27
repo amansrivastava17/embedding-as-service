@@ -78,11 +78,11 @@ class Embeddings(object):
         self.bert_outputs = None
         self.model_name = None
         self.max_seq_length = None
-        self.placeholders = {
-            'input_ids': None,
-            'input_mask': None,
-            'segment_ids': None
-        }
+
+        # placeholder definition
+        self.input_ids = None
+        self.input_masks = None
+        self.segment_ids = None
 
     @classmethod
     def tokenize(cls, text):
@@ -128,14 +128,15 @@ class Embeddings(object):
     def load_model(self, model: str, model_path: str, max_seq_legth: int):
         g = tf.Graph()
         with g.as_default():
-            self.placeholders['input_ids'] = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_legth])
-            self.placeholders['input_masks'] = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_legth])
-            self.placeholders['segment_ids'] = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_legth])
+            self.input_ids = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_legth])
+            self.input_masks = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_legth])
+            self.segment_ids = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_legth])
+
             hub_module = hub.Module(model_path)
             bert_inputs = dict(
-                input_ids=self.placeholders['input_ids'],
-                input_mask=self.placeholders['input_masks'],
-                segment_ids=self.placeholders['segment_ids']
+                input_ids=self.input_ids,
+                input_mask=self.input_masks,
+                segment_ids=self.segment_ids
             )
 
             self.bert_outputs = hub_module(bert_inputs, signature="tokens", as_dict=True)
@@ -170,9 +171,9 @@ class Embeddings(object):
             _segment_ids.append(_segment_id)
 
         bert_inputs = {
-            self.placeholders['input_ids']: np.array(_input_ids),
-            self.placeholders['input_mask']: np.array(_input_masks),
-            self.placeholders['segment_ids']: np.array(_segment_ids)
+            self.input_ids: np.array(_input_ids),
+            self.input_masks: np.array(_input_masks),
+            self.segment_ids: np.array(_segment_ids)
         }
 
         token_embeddings = self.sess.run(self.bert_outputs, feed_dict=bert_inputs)["sequence_output"]
