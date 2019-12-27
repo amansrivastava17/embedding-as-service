@@ -37,7 +37,7 @@ class Encoder(object, metaclass=ArgSingleton):
             return
 
         print('Loading Model (this might take few minutes).....')
-        self._load_model(self.max_seq_length)
+        self._load_model()
 
     @staticmethod
     def get_supported_embeddings() -> List[str]:
