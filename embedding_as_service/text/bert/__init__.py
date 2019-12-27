@@ -151,6 +151,7 @@ class Embeddings(object):
             ]
         )
         Embeddings.tokenizer = FullTokenizer(vocab_file=vocab_file, do_lower_case=do_lower_case)
+        self.max_seq_length = max_seq_legth
         self.model_name = model
 
         print("Model loaded Successfully !")
