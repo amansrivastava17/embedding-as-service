@@ -8,11 +8,12 @@ from embedding_as_service.text import MODELS_DIR
 
 
 class Encoder(object, metaclass=ArgSingleton):
-    def __init__(self, embedding: str, model: str, download: bool = False):
+    def __init__(self, embedding: str, model: str, max_seq_length: int = 128):
         self.embedding = embedding
         self.model = model
         self.embedding_model_dict = None
         self.model_path = None
+        self.max_seq_length = max_seq_length
 
         supported_embeddings = self.get_supported_embeddings()
 
@@ -30,13 +31,13 @@ class Encoder(object, metaclass=ArgSingleton):
             raise ValueError(f"Given embedding \"{embedding}\" does not have support for model \"{model}\", "
                              f"the supported models are: {model_names}")
 
-        self.model_path = self._get_or_download_model(download)
+        self.model_path = self._get_or_download_model(download=True)
         if not self.model_path:
             print(f"Model does not exits, pass download param as True")
             return
 
         print('Loading Model (this might take few minutes).....')
-        self._load_model()
+        self._load_model(self.max_seq_length)
 
     @staticmethod
     def get_supported_embeddings() -> List[str]:
@@ -89,7 +90,7 @@ class Encoder(object, metaclass=ArgSingleton):
         return model_path
 
     def _load_model(self):
-        self.embedding_cls.load_model(self.model, self.model_path)
+        self.embedding_cls.load_model(self.model, self.model_path, self.max_seq_length)
         return
 
     def tokenize(self, texts: Union[List[str], str]) -> np.array:
