@@ -26,6 +26,7 @@ class Embeddings(object):
     def __init__(self):
         self.elmo_module = None
         self.model_name = None
+        self.max_seq_length = None
         self.sess = tf.Session()
 
     @classmethod
@@ -42,14 +43,20 @@ class Embeddings(object):
             padded_len = max_seq_length - len_tokens
             return tokens + [padded_token] * padded_len
 
-    def load_model(self, model: str, model_path: str):
-        self.elmo_module = hub.Module(model_path)
-        self.sess.run(tf.initializers.global_variables())
+    def load_model(self, model: str, model_path: str, max_seq_length: int):
+        g = tf.Graph()
+        with g.as_default():
+            self.elmo_module = hub.Module(model_path)
+            init_op = tf.group([tf.global_variables_initializer()])
+        g.finalize()
+        self.sess = tf.Session(graph=g)
+        self.sess.run(init_op)
+
         self.model_name = model
+        self.max_seq_length = max_seq_length
 
     def encode(self, texts: Union[List[str], List[List[str]]],
                pooling: str,
-               max_seq_length: int,
                is_tokenized: bool = False,
                **kwargs
                ) -> Optional[np.array]:
@@ -57,11 +64,8 @@ class Embeddings(object):
         text_tokens = texts
         if not is_tokenized:
             text_tokens = [Embeddings.tokenize(text) for text in texts]
-        if max_seq_length:
-            text_tokens = [Embeddings.padded_tokens(tokens, max_seq_length) for tokens in text_tokens]
-            seq_length = [max_seq_length] * len(texts)
-        else:
-            seq_length = [len(tokens) for tokens in text_tokens]
+        text_tokens = [Embeddings.padded_tokens(tokens, self.max_seq_length) for tokens in text_tokens]
+        seq_length = [self.max_seq_length] * len(texts)
 
         sequence_output = self.elmo_module(inputs={"tokens": text_tokens, "sequence_len": seq_length},
                                            signature="tokens", as_dict=True)["elmo"]

@@ -107,7 +107,6 @@ class Encoder(object, metaclass=ArgSingleton):
     def encode(self,
                texts: Union[List[str], List[List[str]]],
                pooling: Optional[str] = None,
-               max_seq_length: Optional[int] = 128,
                is_tokenized: bool = False,
                batch_size: int = 128,
                ** kwargs
@@ -122,7 +121,6 @@ class Encoder(object, metaclass=ArgSingleton):
         for i in range(0, len(texts), batch_size):
             vectors = self.embedding_cls.encode(texts=texts[i: i + batch_size],
                                                 pooling=pooling,
-                                                max_seq_length=max_seq_length,
                                                 is_tokenized=is_tokenized)
             embeddings.append(vectors)
         embeddings = np.vstack(embeddings)

@@ -125,12 +125,12 @@ class Embeddings(object):
         assert len(segment_ids) == max_seq_length
         return input_ids, input_mask, segment_ids
 
-    def load_model(self, model: str, model_path: str, max_seq_legth: int):
+    def load_model(self, model: str, model_path: str, max_seq_length: int):
         g = tf.Graph()
         with g.as_default():
-            self.input_ids = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_legth])
-            self.input_masks = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_legth])
-            self.segment_ids = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_legth])
+            self.input_ids = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_length])
+            self.input_masks = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_length])
+            self.segment_ids = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_length])
 
             hub_module = hub.Module(model_path)
             bert_inputs = dict(
@@ -152,7 +152,7 @@ class Embeddings(object):
             ]
         )
         Embeddings.tokenizer = FullTokenizer(vocab_file=vocab_file, do_lower_case=do_lower_case)
-        self.max_seq_length = max_seq_legth
+        self.max_seq_length = max_seq_length
         self.model_name = model
 
         print("Model loaded Successfully !")

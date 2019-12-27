@@ -46,15 +46,21 @@ class Embeddings(object):
         self.sess.run([tf.global_variables_initializer(), tf.tables_initializer()])
         self.use_module = None
         self.model_name = None
+        self.max_seq_length = None
 
-    def load_model(self, model: str, model_path: str):
-        self.use_module = hub.Module(model_path)
-        self.sess.run(tf.initializers.global_variables())
+    def load_model(self, model: str, model_path: str, max_seq_length: int):
+        g = tf.Graph()
+        with g.as_default():
+            self.use_module = hub.Module(model_path)
+            init_op = tf.group([tf.global_variables_initializer()])
+        g.finalize()
+        self.sess = tf.Session(graph=g)
+        self.sess.run(init_op)
         self.model_name = model
+        self.max_seq_length = max_seq_length
 
     def encode(self, texts: Union[List[str], List[List[str]]],
                pooling: str,
-               max_seq_length: int,
                is_tokenized: bool = False,
                **kwargs
                ) -> Optional[np.array]:
