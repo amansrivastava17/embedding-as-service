@@ -30,8 +30,8 @@ class Embeddings(object):
         self.sess = tf.Session()
 
         # placeholder
-        self.text_tokens = None
-        self.seq_length = None
+        self.tokens = None
+        self.sequence_len = None
 
     @classmethod
     def tokenize(cls, text: str):
@@ -51,12 +51,12 @@ class Embeddings(object):
         g = tf.Graph()
         with g.as_default():
             hub_module = hub.Module(model_path)
-            self.text_tokens = tf.placeholder(dtype=tf.string, shape=[None, max_seq_length])
-            self.seq_length = tf.placeholder(dtype=tf.int32, shape=[max_seq_length])
+            self.tokens = tf.placeholder(dtype=tf.string, shape=[None, max_seq_length])
+            self.sequence_len = tf.placeholder(dtype=tf.int32, shape=[max_seq_length])
 
             elmo_inputs = dict(
-                text_tokens=self.text_tokens,
-                seq_length=self.seq_length
+                tokens=self.tokens,
+                sequence_len=self.sequence_len
             )
             self.elmo_outputs = hub_module(elmo_inputs, signature="tokens", as_dict=True)
             init_op = tf.group([tf.global_variables_initializer()])
@@ -80,8 +80,8 @@ class Embeddings(object):
         seq_length = [self.max_seq_length] * len(texts)
 
         elmo_inputs = {
-            self.text_tokens: text_tokens,
-            self.seq_length: seq_length
+            self.tokens: np.array(text_tokens),
+            self.sequence_len: np.array(seq_length)
         }
 
         token_embeddings = self.sess.run(self.elmo_outputs, feed_dict=elmo_inputs)["elmo"]
