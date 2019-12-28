@@ -52,7 +52,7 @@ class Embeddings(object):
         with g.as_default():
             hub_module = hub.Module(model_path)
             self.tokens = tf.placeholder(dtype=tf.string, shape=[None, max_seq_length])
-            self.sequence_len = tf.placeholder(dtype=tf.int32, shape=[max_seq_length])
+            self.sequence_len = tf.placeholder(dtype=tf.int32, shape=[None])
 
             elmo_inputs = dict(
                 tokens=self.tokens,
