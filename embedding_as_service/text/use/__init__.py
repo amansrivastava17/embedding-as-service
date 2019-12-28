@@ -54,10 +54,10 @@ class Embeddings(object):
     def load_model(self, model: str, model_path: str, max_seq_length: int):
         g = tf.Graph()
         with g.as_default():
-            self.sentences = tf.placeholder(tf.string)
+            self.sentences = tf.placeholder(tf.string, shape=[None])
             hub_module = hub.Module(model_path)
             self.use_outputs = hub_module(self.sentences)
-            init_op = tf.group([tf.global_variables_initializer()])
+            init_op = tf.group([tf.global_variables_initializer(), tf.tables_initializer()])
         g.finalize()
         self.sess = tf.Session(graph=g)
         self.sess.run(init_op)
@@ -69,4 +69,4 @@ class Embeddings(object):
                is_tokenized: bool = False,
                **kwargs
                ) -> Optional[np.array]:
-        return self.sess.run(self.use_outputs, {self.sentences: texts})
+        return self.sess.run(self.use_outputs, feed_dict={self.sentences: texts})
