@@ -56,7 +56,7 @@ class Embeddings(object):
         with g.as_default():
             self.sentences = tf.placeholder(tf.string, shape=[None])
             hub_module = hub.Module(model_path)
-            self.use_outputs = hub_module(self.sentences)
+            self.use_outputs = hub_module(self.sentences, as_dict=True)
             init_op = tf.group([tf.global_variables_initializer(), tf.tables_initializer()])
         g.finalize()
         self.sess = tf.Session(graph=g)
