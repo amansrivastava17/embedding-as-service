@@ -67,6 +67,7 @@ class Embeddings(object):
 
     def encode(self, texts: Union[List[str], List[List[str]]],
                pooling: str,
+               max_seq_length: int,
                is_tokenized: bool = False,
                **kwargs
                ) -> Optional[np.array]:
