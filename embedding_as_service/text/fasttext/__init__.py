@@ -61,12 +61,13 @@ class Embeddings(object):
     def __init__(self):
         self.word_vectors: Dict[Any, Any] = {}
         self.model_name = None
+        self.max_seq_length = None
 
     @classmethod
     def tokenize(cls, text):
         return [x.lower().strip() for x in text.split()]
 
-    def load_model(self, model: str, model_path: str):
+    def load_model(self, model: str, model_path: str, max_seq_length: int):
         try:
             model_file = [f for f in os.listdir(model_path) if os.path.isfile(os.path.join(model_path, f))]
             f = open(os.path.join(model_path, model_file[0]), 'r')
@@ -77,14 +78,15 @@ class Embeddings(object):
                 self.word_vectors[word] = np.array([float(val) for val in split_line[1:]])
             print("Model loaded Successfully !")
             self.model_name = model
+            self.max_seq_length = max_seq_length
             return self
         except Exception as e:
             print('Error loading Model, ', str(e))
         return self
 
-    def _single_encode_text(self, text: Union[str, List[str]], oov_vector: np.array, max_seq_length: int,
+    def _single_encode_text(self, text: Union[str, List[str]], oov_vector: np.array,
                             is_tokenized: bool):
-
+        max_seq_length = self.max_seq_length
         tokens = text
         if not is_tokenized:
             tokens = Embeddings.tokenize(text)
@@ -96,12 +98,11 @@ class Embeddings(object):
 
     def encode(self, texts: Union[List[str], List[List[str]]],
                pooling: str,
-               max_seq_length: int,
                is_tokenized: bool = False,
                **kwargs
                ) -> Optional[np.array]:
         oov_vector = np.zeros(Embeddings.EMBEDDING_MODELS[self.model_name].dimensions, dtype="float32")
-        token_embeddings = np.array([self._single_encode_text(text, oov_vector, max_seq_length, is_tokenized)
+        token_embeddings = np.array([self._single_encode_text(text, oov_vector, is_tokenized)
                                      for text in texts])
 
         if not pooling:

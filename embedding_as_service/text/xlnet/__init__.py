@@ -58,6 +58,7 @@ class Embeddings(object):
         self.xlnet_config = None
         self.run_config = None
         self.model_name = None
+        self.max_seq_length = None
         self.sess = tf.Session()
 
     @staticmethod
@@ -72,10 +73,9 @@ class Embeddings(object):
         text = preprocess_text(text, lower=False)
         return encode_pieces(cls.tokenizer, text)
 
-    @staticmethod
-    def _model_single_input(text: Union[str, List[str]], max_seq_length: int, is_tokenized: bool
+    def _model_single_input(self, text: Union[str, List[str]], is_tokenized: bool
                             ) -> Tuple[List[int], List[int], List[int]]:
-
+        max_seq_length = self.max_seq_length
         tokens_a = text
         if not is_tokenized:
             tokens_a = Embeddings.tokenize(text)
@@ -115,24 +115,24 @@ class Embeddings(object):
 
         return input_ids, input_mask, segment_ids
 
-    def load_model(self, model: str, model_path: str):
+    def load_model(self, model: str, model_path: str, max_seq_length: int):
         model_path = os.path.join(model_path, next(os.walk(model_path))[1][0])
         self.xlnet_config = xlnet.XLNetConfig(json_path=os.path.join(model_path, Embeddings.mode_config_path))
         self.run_config = xlnet.create_run_config(is_training=True, is_finetune=True, FLAGS=Flags)
         self.load_tokenizer(model_path)
+        self.max_seq_length = max_seq_length
         self.model_name = model
         print("Model loaded Successfully !")
 
     def encode(self,
                texts: Union[List[str], List[List[str]]],
                pooling: str,
-               max_seq_length: int,
                is_tokenized: bool = False,
                **kwargs
                ) -> Optional[np.array]:
         input_ids, input_masks, segment_ids = [], [], []
         for text in tqdm(texts, desc="Converting texts to features"):
-            input_id, input_mask, segment_id = self._model_single_input(text, max_seq_length, is_tokenized)
+            input_id, input_mask, segment_id = self._model_single_input(text, is_tokenized)
             input_ids.append(input_id)
             input_masks.append(input_mask)
             segment_ids.append(segment_id)

@@ -8,11 +8,12 @@ from embedding_as_service.text import MODELS_DIR
 
 
 class Encoder(object, metaclass=ArgSingleton):
-    def __init__(self, embedding: str, model: str, download: bool = False):
+    def __init__(self, embedding: str, model: str, max_seq_length: int = 128):
         self.embedding = embedding
         self.model = model
         self.embedding_model_dict = None
         self.model_path = None
+        self.max_seq_length = max_seq_length
 
         supported_embeddings = self.get_supported_embeddings()
 
@@ -30,7 +31,7 @@ class Encoder(object, metaclass=ArgSingleton):
             raise ValueError(f"Given embedding \"{embedding}\" does not have support for model \"{model}\", "
                              f"the supported models are: {model_names}")
 
-        self.model_path = self._get_or_download_model(download)
+        self.model_path = self._get_or_download_model(download=True)
         if not self.model_path:
             print(f"Model does not exits, pass download param as True")
             return
@@ -89,7 +90,7 @@ class Encoder(object, metaclass=ArgSingleton):
         return model_path
 
     def _load_model(self):
-        self.embedding_cls.load_model(self.model, self.model_path)
+        self.embedding_cls.load_model(self.model, self.model_path, self.max_seq_length)
         return
 
     def tokenize(self, texts: Union[List[str], str]) -> np.array:
@@ -106,7 +107,6 @@ class Encoder(object, metaclass=ArgSingleton):
     def encode(self,
                texts: Union[List[str], List[List[str]]],
                pooling: Optional[str] = None,
-               max_seq_length: Optional[int] = 128,
                is_tokenized: bool = False,
                batch_size: int = 128,
                ** kwargs
@@ -115,12 +115,12 @@ class Encoder(object, metaclass=ArgSingleton):
             raise ValueError('Argument `texts` should be either List[str] or List[List[str]]')
         if is_tokenized:
             if not all(isinstance(text, list) for text in texts):
-                raise ValueError('Argument `texts` should be List[List[str]] (list of tokens) when `is_tokenized` = True')
+                raise ValueError('Argument `texts` should be List[List[str]] (list of tokens) '
+                                 'when `is_tokenized` = True')
         embeddings = []
         for i in range(0, len(texts), batch_size):
             vectors = self.embedding_cls.encode(texts=texts[i: i + batch_size],
                                                 pooling=pooling,
-                                                max_seq_length=max_seq_length,
                                                 is_tokenized=is_tokenized)
             embeddings.append(vectors)
         embeddings = np.vstack(embeddings)

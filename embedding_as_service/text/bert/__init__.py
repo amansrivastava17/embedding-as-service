@@ -75,29 +75,24 @@ class Embeddings(object):
 
     def __init__(self):
         self.sess = tf.Session()
-        self.bert_module = None
+        self.bert_outputs = None
         self.model_name = None
+        self.max_seq_length = None
 
-    def create_tokenizer_from_hub_module(self, model_path: str):
-        """Get the vocab file and casing info from the Hub module."""
-        tokenization_info = self.bert_module(signature="tokenization_info", as_dict=True)
-        vocab_file, do_lower_case = self.sess.run(
-            [
-                tokenization_info["vocab_file"],
-                tokenization_info["do_lower_case"],
-            ]
-        )
-
-        Embeddings.tokenizer = FullTokenizer(vocab_file=vocab_file, do_lower_case=do_lower_case)
+        # placeholder definition
+        self.input_ids = None
+        self.input_masks = None
+        self.segment_ids = None
 
     @classmethod
     def tokenize(cls, text):
         return cls.tokenizer.tokenize(text)
 
-    @staticmethod
-    def _model_single_input(text: Union[str, List[str]], max_seq_length: int, is_tokenized: bool = False
+    def _model_single_input(self, text: Union[str, List[str]],  is_tokenized: bool = False
                             ) -> Tuple[List[int], List[int], List[int]]:
+        max_seq_length = self.max_seq_length
         tokens_a = text
+
         if not is_tokenized:
             tokens_a = Embeddings.tokenize(text)
             if len(tokens_a) > max_seq_length - 2:
@@ -128,38 +123,60 @@ class Embeddings(object):
         assert len(input_ids) == max_seq_length
         assert len(input_mask) == max_seq_length
         assert len(segment_ids) == max_seq_length
-
         return input_ids, input_mask, segment_ids
 
-    def load_model(self, model: str, model_path: str):
-        self.bert_module = hub.Module(model_path)
-        self.sess.run(tf.initializers.global_variables())
-        self.create_tokenizer_from_hub_module(model_path)
+    def load_model(self, model: str, model_path: str, max_seq_length: int):
+        g = tf.Graph()
+        with g.as_default():
+            self.input_ids = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_length])
+            self.input_masks = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_length])
+            self.segment_ids = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_length])
+
+            hub_module = hub.Module(model_path)
+            bert_inputs = dict(
+                input_ids=self.input_ids,
+                input_mask=self.input_masks,
+                segment_ids=self.segment_ids
+            )
+
+            self.bert_outputs = hub_module(bert_inputs, signature="tokens", as_dict=True)
+            tokenization_info = hub_module(signature="tokenization_info", as_dict=True)
+            init_op = tf.group([tf.global_variables_initializer(), tf.tables_initializer()])
+        g.finalize()
+        self.sess = tf.Session(graph=g)
+        self.sess.run(init_op)
+        vocab_file, do_lower_case = self.sess.run(
+            [
+                tokenization_info["vocab_file"],
+                tokenization_info["do_lower_case"],
+            ]
+        )
+        Embeddings.tokenizer = FullTokenizer(vocab_file=vocab_file, do_lower_case=do_lower_case)
+        self.max_seq_length = max_seq_length
         self.model_name = model
+
         print("Model loaded Successfully !")
 
     def encode(self, texts: Union[List[str], List[List[str]]],
                pooling: str,
-               max_seq_length: int,
                is_tokenized: bool = False,
                **kwargs
                ) -> Optional[np.array]:
-        input_ids, input_masks, segment_ids = [], [], []
+        _input_ids, _input_masks, _segment_ids = [], [], []
+
         for text in tqdm(texts, desc="Converting texts to features"):
-            input_id, input_mask, segment_id = self._model_single_input(text, max_seq_length, is_tokenized)
-            input_ids.append(input_id)
-            input_masks.append(input_mask)
-            segment_ids.append(segment_id)
+            _input_id, _input_mask, _segment_id = self._model_single_input(text, is_tokenized)
+            _input_ids.append(_input_id)
+            _input_masks.append(_input_mask)
+            _segment_ids.append(_segment_id)
 
-        bert_inputs = dict(
-            input_ids=np.array(input_ids),
-            input_mask=np.array(input_masks),
-            segment_ids=np.array(segment_ids))
+        bert_inputs = {
+            self.input_ids: np.array(_input_ids),
+            self.input_masks: np.array(_input_masks),
+            self.segment_ids: np.array(_segment_ids)
+        }
 
-        bert_outputs = self.bert_module(bert_inputs, signature="tokens", as_dict=True)
-        sequence_output = bert_outputs["sequence_output"]
-
-        token_embeddings = self.sess.run(sequence_output)
+        token_embeddings = self.sess.run(self.bert_outputs, feed_dict=bert_inputs)["sequence_output"]
 
         if not pooling:
             return token_embeddings

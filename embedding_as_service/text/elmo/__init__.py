@@ -24,9 +24,14 @@ class Embeddings(object):
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
 
     def __init__(self):
-        self.elmo_module = None
+        self.elmo_outputs = None
         self.model_name = None
+        self.max_seq_length = None
         self.sess = tf.Session()
+
+        # placeholder
+        self.tokens = None
+        self.sequence_len = None
 
     @classmethod
     def tokenize(cls, text: str):
@@ -42,14 +47,28 @@ class Embeddings(object):
             padded_len = max_seq_length - len_tokens
             return tokens + [padded_token] * padded_len
 
-    def load_model(self, model: str, model_path: str):
-        self.elmo_module = hub.Module(model_path)
-        self.sess.run(tf.initializers.global_variables())
+    def load_model(self, model: str, model_path: str, max_seq_length: int):
+        g = tf.Graph()
+        with g.as_default():
+            hub_module = hub.Module(model_path)
+            self.tokens = tf.placeholder(dtype=tf.string, shape=[None, max_seq_length])
+            self.sequence_len = tf.placeholder(dtype=tf.int32, shape=[None])
+
+            elmo_inputs = dict(
+                tokens=self.tokens,
+                sequence_len=self.sequence_len
+            )
+            self.elmo_outputs = hub_module(elmo_inputs, signature="tokens", as_dict=True)
+            init_op = tf.group([tf.global_variables_initializer()])
+        g.finalize()
+        self.sess = tf.Session(graph=g)
+        self.sess.run(init_op)
+
         self.model_name = model
+        self.max_seq_length = max_seq_length
 
     def encode(self, texts: Union[List[str], List[List[str]]],
                pooling: str,
-               max_seq_length: int,
                is_tokenized: bool = False,
                **kwargs
                ) -> Optional[np.array]:
@@ -57,16 +76,15 @@ class Embeddings(object):
         text_tokens = texts
         if not is_tokenized:
             text_tokens = [Embeddings.tokenize(text) for text in texts]
-        if max_seq_length:
-            text_tokens = [Embeddings.padded_tokens(tokens, max_seq_length) for tokens in text_tokens]
-            seq_length = [max_seq_length] * len(texts)
-        else:
-            seq_length = [len(tokens) for tokens in text_tokens]
+        text_tokens = [Embeddings.padded_tokens(tokens, self.max_seq_length) for tokens in text_tokens]
+        seq_length = [self.max_seq_length] * len(texts)
 
-        sequence_output = self.elmo_module(inputs={"tokens": text_tokens, "sequence_len": seq_length},
-                                           signature="tokens", as_dict=True)["elmo"]
+        elmo_inputs = {
+            self.tokens: np.array(text_tokens),
+            self.sequence_len: np.array(seq_length)
+        }
 
-        token_embeddings = self.sess.run(sequence_output)
+        token_embeddings = self.sess.run(self.elmo_outputs, feed_dict=elmo_inputs)["elmo"]
 
         if not pooling:
             return token_embeddings
