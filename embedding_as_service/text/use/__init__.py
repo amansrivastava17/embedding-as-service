@@ -4,6 +4,7 @@ import numpy as np
 from embedding_as_service.text import Embedding
 import tensorflow as tf
 import tensorflow_hub as hub
+import sentencepiece as spm
 
 
 class Embeddings(object):
@@ -48,19 +49,46 @@ class Embeddings(object):
         self.model_name = None
         self.max_seq_length = None
 
-        # placeholder
+        # placeholder for dan and large model
         self.sentences = None
+
+        # sentencepiece and place holder model for lite version
+        self.sp_model = spm.SentencePieceProcessor()
+        self.input_placeholder = None
+
+    def process_to_ids_in_sparse_format(self, sentences):
+        # An utility method that processes sentences with the sentence piece processor
+        # 'sp' and returns the results in tf.SparseTensor-similar format:
+        # (values, indices, dense_shape)
+        ids = [self.sp_model.EncodeAsIds(x) for x in sentences]
+        max_len = max(len(x) for x in ids)
+        dense_shape = (len(ids), max_len)
+        values = [item for sublist in ids for item in sublist]
+        indices = [[row, col] for row in range(len(ids)) for col in range(len(ids[row]))]
+        return values, indices, dense_shape
 
     def load_model(self, model: str, model_path: str, max_seq_length: int):
         g = tf.Graph()
         with g.as_default():
-            self.sentences = tf.placeholder(tf.string, shape=[None])
             hub_module = hub.Module(model_path)
-            self.use_outputs = hub_module(self.sentences, as_dict=True)
-            init_op = tf.group([tf.global_variables_initializer(), tf.tables_initializer()])
+            if model == 'use_transformer_lite':
+                self.input_placeholder = tf.sparse_placeholder(tf.int64, shape=[None, None])
+                self.use_outputs = hub_module(
+                    inputs=dict(
+                        values=self.input_placeholder.values,
+                        indices=self.input_placeholder.indices,
+                        dense_shape=self.input_placeholder.dense_shape)
+                )
+            else:
+                self.sentences = tf.placeholder(tf.string, shape=[None])
+                self.use_outputs = hub_module(self.sentences)
+                init_op = tf.group([tf.global_variables_initializer(), tf.tables_initializer()])
         g.finalize()
         self.sess = tf.Session(graph=g)
         self.sess.run(init_op)
+        spm_path = self.sess.run(hub_module(signature="spm_path"))
+        self.sp_model.Load(spm_path)
+
         self.model_name = model
         self.max_seq_length = max_seq_length
 
@@ -69,4 +97,13 @@ class Embeddings(object):
                is_tokenized: bool = False,
                **kwargs
                ) -> Optional[np.array]:
-        return self.sess.run(self.use_outputs, feed_dict={self.sentences: texts})
+        if self.model_name == 'use_transformer_lite':
+            values, indices, dense_shape = self.process_to_ids_in_sparse_format(texts)
+            embeddings = self.sess.run(self.use_outputs, feed_dict={
+                self.input_placeholder.values: values,
+                self.input_placeholder.indices: indices,
+                self.input_placeholder.dense_shape: dense_shape
+            })
+        else:
+            embeddings = self.sess.run(self.use_outputs, feed_dict={self.sentences: texts})["default"]
+        return embeddings
