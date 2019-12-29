@@ -62,7 +62,7 @@ $ pip install embedding-as-service
 #### 1. **Intialise encoder using supported embedding** and models from <a href="#-supported-embeddings-and-models">here</a>  
 ```python  
 >>> from embedding_as_service.text.encode import Encoder  
->>> en = Encoder(embedding='bert', model='bert_base_cased', download=True)  
+>>> en = Encoder(embedding='bert', model='bert_base_cased')  
 ```  
 #### 2. Get sentences **tokens embedding**  
 ```python 
@@ -99,8 +99,9 @@ array([[-0.33547154,  0.34566957,  1.1954105 , ...,  0.33702594,
 ```  
 
 #### 4. Use custom `max_seq_length`, default is 128  
-```python  
->>> vecs = en.encode(texts=['hello aman', 'how are you?'], max_seq_length=256)  
+```python 
+>>> en = Encoder(embedding='bert', model='bert_base_cased', max_seq_length=256)  
+>>> vecs = en.encode(texts=['hello aman', 'how are you?'])  
 >>> vecs  
 array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,  
  -0.5564591 ,  0.6454179 ], [ 0.53209245,  0.00526248, -0.71091074, ..., -0.5171917 , -0.40458363,  0.6779779 ]], dtype=float32)  
@@ -131,7 +132,7 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 |--------------------|------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `embedding` | str | *Required* | embedding method to be used, check `Embedding` column <a href="#-supported-embeddings-and-models">here</a>|
 | `model`| str |*Required*| Model to be used for mentioned embedding, check `Model` column <a href="#-supported-embeddings-and-models">here</a>|
-| `download`| bool |`False`| Download model if model does not exists|
+| `max_seq_length`| int |128| Maximum Sequence Length, default is 128|
 
 2. **def** <span style="color:blue">`embedding_as_service.text.encoder.Encoder.encode`</span>
 
@@ -139,7 +140,6 @@ array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,
 |--------------------|------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Texts` | List[str] or List[List[str]] | *Required* | List of sentences or list of list of sentence tokens in case of `is_tokenized=True`
 | `pooling`| str |(Optional)| Pooling methods to apply, <a href="#-pooling-strategies-">here</a> is available methods|
-| `max_seq_length`| int | `128` | Maximum Sequence Length, default is 128|
 | `is_tokenized` | bool | `False` | set as True in case of tokens are passed for encoding |  
 | `batch_size` | int | `128` | maximum number of sequences handled by encoder, larger batch will be partitioned into small batches. |
 
@@ -211,9 +211,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://www.linkedin.com/in/aman-srivastava-a8bb1285/"><img src="https://avatars0.githubusercontent.com/u/5950398?v=4" width="100px;" alt="Aman Srivastava"/><br /><sub><b>Aman Srivastava</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=amansrivastava17" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=amansrivastava17" title="Documentation">📖</a> <a href="#infra-amansrivastava17" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     <td align="center"><a href="https://github.com/ashutoshsingh0223"><img src="https://avatars3.githubusercontent.com/u/40604544?v=4" width="100px;" alt="Ashutosh Singh"/><br /><sub><b>Ashutosh Singh</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=ashutoshsingh0223" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=ashutoshsingh0223" title="Documentation">📖</a> <a href="#infra-ashutoshsingh0223" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://chiragjn.github.io"><img src="https://avatars2.githubusercontent.com/u/10295418?v=4" width="100px;" alt="Chirag Jain"/><br /><sub><b>Chirag Jain</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=chiragjn" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=chiragjn" title="Documentation">📖</a> <a href="#infra-chiragjn" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     <td align="center"><a href="https://github.com/MrPranav101"><img src="https://avatars0.githubusercontent.com/u/43914392?v=4" width="100px;" alt="MrPranav101"/><br /><sub><b>MrPranav101</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=MrPranav101" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=MrPranav101" title="Documentation">📖</a> <a href="#infra-MrPranav101" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>    
     <td align="center"><a href="https://www.linkedin.com/in/dhavaltaunk08/"><img src="https://avatars0.githubusercontent.com/u/31320833?v=4" width="100px;" alt="Dhaval Taunk"/><br /><sub><b>Dhaval Taunk</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=DhavalTaunk08" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=DhavalTaunk08" title="Documentation">📖</a> <a href="#infra-DhavalTaunk08" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
-    <td align="center"><a href="https://chiragjn.github.io"><img src="https://avatars2.githubusercontent.com/u/10295418?v=4" width="100px;" alt="Chirag Jain"/><br /><sub><b>Chirag Jain</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=chiragjn" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=chiragjn" title="Documentation">📖</a> <a href="#infra-chiragjn" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
   </tr>
 </table>
 
