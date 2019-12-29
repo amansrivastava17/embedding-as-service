@@ -5,7 +5,7 @@ from embedding_as_service.text import Embedding
 import tensorflow as tf
 import tensorflow_hub as hub
 from tqdm import tqdm
-from bert.tokenization import FullTokenizer
+from .tokenization import FullTokenizer
 
 from embedding_as_service.utils import POOL_FUNC_MAP
 
