@@ -74,7 +74,7 @@ class Embeddings(object):
     tokenizer: FullTokenizer = None
 
     def __init__(self):
-        self.sess = tf.Session()
+        self.sess = tf.compat.v1.Session()
         self.bert_outputs = None
         self.model_name = None
         self.max_seq_length = None
@@ -128,9 +128,9 @@ class Embeddings(object):
     def load_model(self, model: str, model_path: str, max_seq_length: int):
         g = tf.Graph()
         with g.as_default():
-            self.input_ids = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_length])
-            self.input_masks = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_length])
-            self.segment_ids = tf.placeholder(dtype=tf.int32, shape=[None, max_seq_length])
+            self.input_ids = tf.compat.v1.placeholder(dtype=tf.int32, shape=[None, max_seq_length])
+            self.input_masks = tf.compat.v1.placeholder(dtype=tf.int32, shape=[None, max_seq_length])
+            self.segment_ids = tf.compat.v1.placeholder(dtype=tf.int32, shape=[None, max_seq_length])
 
             hub_module = hub.Module(model_path)
             bert_inputs = dict(
@@ -141,9 +141,9 @@ class Embeddings(object):
 
             self.bert_outputs = hub_module(bert_inputs, signature="tokens", as_dict=True)
             tokenization_info = hub_module(signature="tokenization_info", as_dict=True)
-            init_op = tf.group([tf.global_variables_initializer(), tf.tables_initializer()])
+            init_op = tf.group([tf.compat.v1.global_variables_initializer(), tf.compat.v1.tables_initializer()])
         g.finalize()
-        self.sess = tf.Session(graph=g)
+        self.sess = tf.compat.v1.Session(graph=g)
         self.sess.run(init_op)
         vocab_file, do_lower_case = self.sess.run(
             [

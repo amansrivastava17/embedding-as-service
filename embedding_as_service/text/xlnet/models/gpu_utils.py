@@ -8,7 +8,7 @@ import tensorflow as tf
 
 def assign_to_gpu(gpu=0, ps_dev="/device:CPU:0"):
     def _assign(op):
-        node_def = op if isinstance(op, tf.NodeDef) else op.node_def
+        node_def = op if isinstance(op, tf.compat.v1.NodeDef) else op.node_def
         if node_def.op == "Variable":
             return ps_dev
         else:
@@ -57,7 +57,7 @@ def average_grads_and_vars(tower_grads_and_vars):
 
 
 def load_from_checkpoint(saver, logdir):
-    sess = tf.get_default_session()
+    sess = tf.compat.v1.get_default_session()
     ckpt = tf.train.get_checkpoint_state(logdir)
     if ckpt and ckpt.model_checkpoint_path:
         if os.path.isabs(ckpt.model_checkpoint_path):

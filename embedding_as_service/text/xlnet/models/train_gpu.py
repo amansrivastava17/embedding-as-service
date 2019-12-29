@@ -138,12 +138,12 @@ def get_model_fn():
         FLAGS, features, labels, mems, is_training)
 
     #### Check model parameters
-    num_params = sum([np.prod(v.shape) for v in tf.trainable_variables()])
-    tf.logging.info('#params: {}'.format(num_params))
+    num_params = sum([np.prod(v.shape) for v in tf.compat.v1.trainable_variables()])
+    tf.compat.v1.logging.info('#params: {}'.format(num_params))
 
     # GPU
     assert is_training
-    all_vars = tf.trainable_variables()
+    all_vars = tf.compat.v1.trainable_variables()
     grads = tf.gradients(total_loss, all_vars)
     grads_and_vars = list(zip(grads, all_vars))
 
@@ -165,7 +165,7 @@ def single_core_graph(is_training, features, mems):
 
 
 def create_mems_tf(bsz_per_core):
-  mems = [tf.placeholder(dtype=tf.float32,
+  mems = [tf.compat.v1.placeholder(dtype=tf.float32,
                          shape=[FLAGS.mem_len, bsz_per_core, FLAGS.d_model])
           for layer in range(FLAGS.n_layer)]
 
@@ -201,7 +201,7 @@ def train(ps_device):
       num_predict=FLAGS.num_predict)
 
   # for key, info in record_info_dict.items():
-  tf.logging.info("num of batches {}".format(record_info_dict["num_batch"]))
+  tf.compat.v1.logging.info("num of batches {}".format(record_info_dict["num_batch"]))
 
   ##### Create input tensors / placeholders
   bsz_per_core = FLAGS.train_batch_size // FLAGS.num_core_per_host
@@ -228,7 +228,7 @@ def train(ps_device):
   for i in range(FLAGS.num_core_per_host):
     reuse = True if i > 0 else None
     with tf.device(assign_to_gpu(i, ps_device)), \
-        tf.variable_scope(tf.get_variable_scope(), reuse=reuse):
+        tf.compat.v1.variable_scope(tf.compat.v1.get_variable_scope(), reuse=reuse):
 
       # The mems for each tower is a dictionary
       mems_i = {}
@@ -256,7 +256,7 @@ def train(ps_device):
   ## get train op
   train_op, learning_rate, gnorm = model_utils.get_train_op(FLAGS, None,
       grads_and_vars=grads_and_vars)
-  global_step = tf.train.get_global_step()
+  global_step = tf.compat.v1.train.get_global_step()
 
   ##### Training loop
   # initialize mems
@@ -267,15 +267,15 @@ def train(ps_device):
       mems_i_np[key] = initialize_mems_np(bsz_per_core)
     tower_mems_np.append(mems_i_np)
 
-  saver = tf.train.Saver()
+  saver = tf.compat.v1.train.Saver()
 
-  gpu_options = tf.GPUOptions(allow_growth=True)
+  gpu_options = tf.compat.v1.GPUOptions(allow_growth=True)
 
   model_utils.init_from_checkpoint(FLAGS, global_vars=True)
 
-  with tf.Session(config=tf.ConfigProto(allow_soft_placement=True,
+  with tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(allow_soft_placement=True,
       gpu_options=gpu_options)) as sess:
-    sess.run(tf.global_variables_initializer())
+    sess.run(tf.compat.v1.global_variables_initializer())
 
     fetches = [loss, tower_new_mems, global_step, gnorm, learning_rate, train_op]
 
@@ -294,7 +294,7 @@ def train(ps_device):
 
       if curr_step > 0 and curr_step % FLAGS.iterations == 0:
         curr_loss = total_loss / (curr_step - prev_step)
-        tf.logging.info("[{}] | gnorm {:.2f} lr {:8.6f} "
+        tf.compat.v1.logging.info("[{}] | gnorm {:.2f} lr {:8.6f} "
             "| loss {:.2f} | pplx {:>7.2f}, bpc {:>7.4f}".format(
             curr_step, fetched[-3], fetched[-2],
             curr_loss, math.exp(curr_loss), curr_loss / math.log(2)))
@@ -303,7 +303,7 @@ def train(ps_device):
       if curr_step > 0 and curr_step % FLAGS.save_steps == 0:
         save_path = os.path.join(FLAGS.model_dir, "model.ckpt")
         saver.save(sess, save_path)
-        tf.logging.info("Model saved in path: {}".format(save_path))
+        tf.compat.v1.logging.info("Model saved in path: {}".format(save_path))
 
       if curr_step >= FLAGS.train_steps:
         break
@@ -312,17 +312,17 @@ def train(ps_device):
 def main(unused_argv):
   del unused_argv  # Unused
 
-  tf.logging.set_verbosity(tf.logging.INFO)
+  tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.INFO)
 
   # Get corpus info
   FLAGS.n_token = data_utils.VOCAB_SIZE
-  tf.logging.info("n_token {}".format(FLAGS.n_token))
+  tf.compat.v1.logging.info("n_token {}".format(FLAGS.n_token))
 
-  if not tf.gfile.Exists(FLAGS.model_dir):
-    tf.gfile.MakeDirs(FLAGS.model_dir)
+  if not tf.io.gfile.exists(FLAGS.model_dir):
+    tf.io.gfile.makedirs(FLAGS.model_dir)
 
   train("/gpu:0")
 
 
 if __name__ == "__main__":
-  tf.app.run()
+  tf.compat.v1.app.run()

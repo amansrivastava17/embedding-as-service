@@ -59,7 +59,7 @@ class Embeddings(object):
         self.run_config = None
         self.model_name = None
         self.max_seq_length = None
-        self.sess = tf.Session()
+        self.sess = tf.compat.v1.Session()
 
     @staticmethod
     def load_tokenizer(model_path: str):
@@ -145,7 +145,7 @@ class Embeddings(object):
             seg_ids=np.array(segment_ids, dtype=np.int32),
             input_mask=np.array(input_masks, dtype=np.float32)
         )
-        self.sess.run(tf.initializers.global_variables())
+        self.sess.run(tf.compat.v1.initializers.global_variables())
 
         # Get a sequence output
         sequence_output = xlnet_model.get_sequence_output()

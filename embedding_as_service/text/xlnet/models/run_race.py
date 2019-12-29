@@ -233,9 +233,9 @@ def get_examples(data_dir, set_type):
     if level == "high" and FLAGS.middle_only: continue
 
     cur_dir = os.path.join(data_dir, set_type, level)
-    for filename in tf.gfile.ListDirectory(cur_dir):
+    for filename in tf.io.gfile.listdir(cur_dir):
       cur_path = os.path.join(cur_dir, filename)
-      with tf.gfile.Open(cur_path) as f:
+      with tf.io.gfile.GFile(cur_path) as f:
         cur_data = json.load(f)
 
         answers = cur_data["answers"]
@@ -264,15 +264,15 @@ def get_examples(data_dir, set_type):
 
 
 def file_based_convert_examples_to_features(examples, tokenize_fn, output_file):
-  if tf.gfile.Exists(output_file) and not FLAGS.overwrite_data:
+  if tf.io.gfile.exists(output_file) and not FLAGS.overwrite_data:
     return
 
-  tf.logging.info("Start writing tfrecord %s.", output_file)
-  writer = tf.python_io.TFRecordWriter(output_file)
+  tf.compat.v1.logging.info("Start writing tfrecord %s.", output_file)
+  writer = tf.io.TFRecordWriter(output_file)
 
   for ex_index, example in enumerate(examples):
     if ex_index % 10000 == 0:
-      tf.logging.info("Writing example %d of %d" % (ex_index, len(examples)))
+      tf.compat.v1.logging.info("Writing example %d of %d" % (ex_index, len(examples)))
 
     feature = convert_single_example(example, tokenize_fn)
 
@@ -302,18 +302,18 @@ def file_based_input_fn_builder(input_file, seq_length, is_training,
   """Creates an `input_fn` closure to be passed to TPUEstimator."""
 
   name_to_features = {
-      "input_ids": tf.FixedLenFeature([seq_length * 4], tf.int64),
-      "input_mask": tf.FixedLenFeature([seq_length * 4], tf.float32),
-      "segment_ids": tf.FixedLenFeature([seq_length * 4], tf.int64),
-      "label_ids": tf.FixedLenFeature([], tf.int64),
-      "is_real_example": tf.FixedLenFeature([], tf.int64),
+      "input_ids": tf.io.FixedLenFeature([seq_length * 4], tf.int64),
+      "input_mask": tf.io.FixedLenFeature([seq_length * 4], tf.float32),
+      "segment_ids": tf.io.FixedLenFeature([seq_length * 4], tf.int64),
+      "label_ids": tf.io.FixedLenFeature([], tf.int64),
+      "is_real_example": tf.io.FixedLenFeature([], tf.int64),
   }
 
-  tf.logging.info("Input tfrecord file {}".format(input_file))
+  tf.compat.v1.logging.info("Input tfrecord file {}".format(input_file))
 
   def _decode_record(record, name_to_features):
     """Decodes a record to a TensorFlow example."""
-    example = tf.parse_single_example(record, name_to_features)
+    example = tf.io.parse_single_example(serialized=record, features=name_to_features)
 
     # tf.Example only supports tf.int64, but the TPU only supports tf.int32.
     # So cast all int64 to int32.
@@ -343,7 +343,7 @@ def file_based_input_fn_builder(input_file, seq_length, is_training,
       # d = d.shuffle(buffer_size=100)
 
     d = d.apply(
-        tf.contrib.data.map_and_batch(
+        tf.data.experimental.map_and_batch(
             lambda record: _decode_record(record, name_to_features),
             batch_size=batch_size,
             drop_remainder=drop_remainder))
@@ -362,8 +362,8 @@ def get_model_fn():
         FLAGS, features, is_training)
 
     #### Check model parameters
-    num_params = sum([np.prod(v.shape) for v in tf.trainable_variables()])
-    tf.logging.info('#params: {}'.format(num_params))
+    num_params = sum([np.prod(v.shape) for v in tf.compat.v1.trainable_variables()])
+    tf.compat.v1.logging.info('#params: {}'.format(num_params))
 
     #### load pretrained text
     scaffold_fn = model_utils.init_from_checkpoint(FLAGS)
@@ -373,15 +373,15 @@ def get_model_fn():
       assert FLAGS.num_hosts == 1
 
       def metric_fn(per_example_loss, label_ids, logits, is_real_example):
-        predictions = tf.argmax(logits, axis=-1, output_type=tf.int32)
+        predictions = tf.argmax(input=logits, axis=-1, output_type=tf.int32)
         eval_input_dict = {
             'labels': label_ids,
             'predictions': predictions,
             'weights': is_real_example
         }
-        accuracy = tf.metrics.accuracy(**eval_input_dict)
+        accuracy = tf.compat.v1.metrics.accuracy(**eval_input_dict)
 
-        loss = tf.metrics.mean(values=per_example_loss, weights=is_real_example)
+        loss = tf.compat.v1.metrics.mean(values=per_example_loss, weights=is_real_example)
         return {
             'eval_accuracy': accuracy,
             'eval_loss': loss}
@@ -431,7 +431,7 @@ def get_model_fn():
 
 
 def main(_):
-  tf.logging.set_verbosity(tf.logging.INFO)
+  tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.INFO)
 
   #### Validate flags
   if FLAGS.save_steps is not None:
@@ -441,8 +441,8 @@ def main(_):
     raise ValueError(
         "At least one of `do_train` or `do_eval` must be True.")
 
-  if not tf.gfile.Exists(FLAGS.output_dir):
-    tf.gfile.MakeDirs(FLAGS.output_dir)
+  if not tf.io.gfile.exists(FLAGS.output_dir):
+    tf.io.gfile.makedirs(FLAGS.output_dir)
 
   sp = spm.SentencePieceProcessor()
   sp.Load(FLAGS.spiece_model_file)
@@ -476,7 +476,7 @@ def main(_):
         spm_basename, FLAGS.max_seq_length)
     train_file = os.path.join(FLAGS.output_dir, train_file_base)
 
-    if not tf.gfile.Exists(train_file) or FLAGS.overwrite_data:
+    if not tf.io.gfile.exists(train_file) or FLAGS.overwrite_data:
       train_examples = get_examples(FLAGS.data_dir, "train")
       random.shuffle(train_examples)
       file_based_convert_examples_to_features(
@@ -491,7 +491,7 @@ def main(_):
 
   if FLAGS.do_eval:
     eval_examples = get_examples(FLAGS.data_dir, FLAGS.eval_split)
-    tf.logging.info("Num of eval samples: {}".format(len(eval_examples)))
+    tf.compat.v1.logging.info("Num of eval samples: {}".format(len(eval_examples)))
 
     # TPU requires a fixed batch size for all batches, therefore the number
     # of examples must be a multiple of the batch size, or else examples
@@ -530,13 +530,13 @@ def main(_):
         steps=eval_steps)
 
     # Log current result
-    tf.logging.info("=" * 80)
+    tf.compat.v1.logging.info("=" * 80)
     log_str = "Eval | "
     for key, val in ret.items():
       log_str += "{} {} | ".format(key, val)
-    tf.logging.info(log_str)
-    tf.logging.info("=" * 80)
+    tf.compat.v1.logging.info(log_str)
+    tf.compat.v1.logging.info("=" * 80)
 
 
 if __name__ == "__main__":
-  tf.app.run()
+  tf.compat.v1.app.run()

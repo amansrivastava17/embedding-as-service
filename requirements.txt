@@ -3,8 +3,8 @@ tqdm==4.32.2
 numpy==1.16.4
 requests==2.21.0
 bert-tensorflow==1.0.1
-tensorflow_hub==0.4.0
+tensorflow_hub==0.7.0
 smart_open==1.8.4
-tensorflow==1.15.0
+tensorflow==2.0.0
 setuptools>=41.0.0
 sentencepiece==0.1.85

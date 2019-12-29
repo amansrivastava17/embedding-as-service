@@ -43,8 +43,8 @@ class Embeddings(object):
     EMBEDDING_MODELS: Dict[str, Embedding] = {embedding.name: embedding for embedding in EMBEDDING_MODELS}
 
     def __init__(self):
-        self.sess = tf.Session()
-        self.sess.run([tf.global_variables_initializer(), tf.tables_initializer()])
+        self.sess = tf.compat.v1.Session()
+        self.sess.run([tf.compat.v1.global_variables_initializer(), tf.compat.v1.tables_initializer()])
         self.use_outputs = None
         self.model_name = None
         self.max_seq_length = None
@@ -73,7 +73,7 @@ class Embeddings(object):
         with g.as_default():
             hub_module = hub.Module(model_path)
             if model == 'use_transformer_lite':
-                self.input_placeholder = tf.sparse_placeholder(tf.int64, shape=[None, None])
+                self.input_placeholder = tf.compat.v1.sparse_placeholder(tf.int64, shape=[None, None])
                 self.use_outputs = hub_module(
                     inputs=dict(
                         values=self.input_placeholder.values,
@@ -82,12 +82,12 @@ class Embeddings(object):
                 )
                 spm_path_info = hub_module(signature="spm_path")
             else:
-                self.sentences = tf.placeholder(tf.string, shape=[None])
+                self.sentences = tf.compat.v1.placeholder(tf.string, shape=[None])
                 self.use_outputs = hub_module(self.sentences, as_dict=True)
-            init_op = tf.group([tf.global_variables_initializer(), tf.tables_initializer()])
+            init_op = tf.group([tf.compat.v1.global_variables_initializer(), tf.compat.v1.tables_initializer()])
 
         g.finalize()
-        self.sess = tf.Session(graph=g)
+        self.sess = tf.compat.v1.Session(graph=g)
         self.sess.run(init_op)
 
         if model == 'use_transformer_lite':

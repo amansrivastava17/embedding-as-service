@@ -27,7 +27,7 @@ class Embeddings(object):
         self.elmo_outputs = None
         self.model_name = None
         self.max_seq_length = None
-        self.sess = tf.Session()
+        self.sess = tf.compat.v1.Session()
 
         # placeholder
         self.tokens = None
@@ -51,17 +51,17 @@ class Embeddings(object):
         g = tf.Graph()
         with g.as_default():
             hub_module = hub.Module(model_path)
-            self.tokens = tf.placeholder(dtype=tf.string, shape=[None, max_seq_length])
-            self.sequence_len = tf.placeholder(dtype=tf.int32, shape=[None])
+            self.tokens = tf.compat.v1.placeholder(dtype=tf.string, shape=[None, max_seq_length])
+            self.sequence_len = tf.compat.v1.placeholder(dtype=tf.int32, shape=[None])
 
             elmo_inputs = dict(
                 tokens=self.tokens,
                 sequence_len=self.sequence_len
             )
             self.elmo_outputs = hub_module(elmo_inputs, signature="tokens", as_dict=True)
-            init_op = tf.group([tf.global_variables_initializer()])
+            init_op = tf.group([tf.compat.v1.global_variables_initializer()])
         g.finalize()
-        self.sess = tf.Session(graph=g)
+        self.sess = tf.compat.v1.Session(graph=g)
         self.sess.run(init_op)
 
         self.model_name = model

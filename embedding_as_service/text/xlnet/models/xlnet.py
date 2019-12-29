@@ -59,7 +59,7 @@ class XLNetConfig(object):
       setattr(self, key, getattr(FLAGS, key))
 
   def init_from_json(self, json_path):
-    with tf.gfile.Open(json_path) as f:
+    with tf.io.gfile.GFile(json_path) as f:
       json_data = json.load(f)
       for key in self.keys:
         setattr(self, key, json_data[key])
@@ -71,9 +71,9 @@ class XLNetConfig(object):
       json_data[key] = getattr(self, key)
 
     json_dir = os.path.dirname(json_path)
-    if not tf.gfile.Exists(json_dir):
-      tf.gfile.MakeDirs(json_dir)
-    with tf.gfile.Open(json_path, "w") as f:
+    if not tf.io.gfile.exists(json_dir):
+      tf.io.gfile.makedirs(json_dir)
+    with tf.io.gfile.GFile(json_path, "w") as f:
       json.dump(json_data, f, indent=4, sort_keys=True)
 
 
@@ -216,7 +216,7 @@ class XLNetModel(object):
         inp_q=inp_q)
     tfm_args.update(input_args)
 
-    with tf.variable_scope("model", reuse=tf.AUTO_REUSE):
+    with tf.compat.v1.variable_scope("model", reuse=tf.compat.v1.AUTO_REUSE):
       (self.output, self.new_mems, self.lookup_table
           ) = modeling.transformer_xl(**tfm_args)
 
@@ -238,7 +238,7 @@ class XLNetModel(object):
     xlnet_config = self.xlnet_config
     run_config = self.run_config
 
-    with tf.variable_scope("model", reuse=tf.AUTO_REUSE):
+    with tf.compat.v1.variable_scope("model", reuse=tf.compat.v1.AUTO_REUSE):
       summary = modeling.summarize_sequence(
           summary_type=summary_type,
           hidden=self.output,

@@ -193,7 +193,7 @@ def printable_text(text):
 def load_vocab(vocab_file):
     """Loads a vocabulary file into a dictionary."""
     vocab = collections.OrderedDict()
-    with tf.gfile.GFile(vocab_file, "r") as reader:
+    with tf.io.gfile.GFile(vocab_file, "r") as reader:
         while True:
             token = convert_to_unicode(reader.readline())
             if not token.strip():
@@ -237,7 +237,7 @@ class FullTokenizer(object):
         self.sp_model = None
         if spm_model_file:
             self.sp_model = spm.SentencePieceProcessor()
-            tf.logging.info("loading sentence piece model")
+            tf.compat.v1.logging.info("loading sentence piece model")
             self.sp_model.Load(spm_model_file)
             # Note(mingdachen): For the purpose of consisent API, we are
             # generating a vocabulary for the sentence piece tokenizer.

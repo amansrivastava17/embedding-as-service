@@ -183,7 +183,7 @@ class DataProcessor(object):
   @classmethod
   def _read_tsv(cls, input_file, quotechar=None):
     """Reads a tab separated value file."""
-    with tf.gfile.Open(input_file, "r") as f:
+    with tf.io.gfile.GFile(input_file, "r") as f:
       reader = csv.reader(f, delimiter="\t", quotechar=quotechar)
       lines = []
       for line in reader:
@@ -246,13 +246,13 @@ class GLUEProcessor(DataProcessor):
 
       # there are some incomplete lines in QNLI
       if len(line) <= a_column:
-        tf.logging.warning('Incomplete line, ignored.')
+        tf.compat.v1.logging.warning('Incomplete line, ignored.')
         continue
       text_a = line[a_column]
 
       if b_column is not None:
         if len(line) <= b_column:
-          tf.logging.warning('Incomplete line, ignored.')
+          tf.compat.v1.logging.warning('Incomplete line, ignored.')
           continue
         text_b = line[b_column]
       else:
@@ -262,7 +262,7 @@ class GLUEProcessor(DataProcessor):
         label = self.get_labels()[0]
       else:
         if len(line) <= self.label_column:
-          tf.logging.warning('Incomplete line, ignored.')
+          tf.compat.v1.logging.warning('Incomplete line, ignored.')
           continue
         label = line[self.label_column]
       examples.append(
@@ -284,7 +284,7 @@ class Yelp5Processor(DataProcessor):
   def _create_examples(self, input_file):
     """Creates examples for the training and dev sets."""
     examples = []
-    with tf.gfile.Open(input_file) as f:
+    with tf.io.gfile.GFile(input_file) as f:
       reader = csv.reader(f)
       for i, line in enumerate(reader):
 
@@ -309,11 +309,11 @@ class ImdbProcessor(DataProcessor):
     examples = []
     for label in ["neg", "pos"]:
       cur_dir = os.path.join(data_dir, label)
-      for filename in tf.gfile.ListDirectory(cur_dir):
+      for filename in tf.io.gfile.listdir(cur_dir):
         if not filename.endswith("txt"): continue
 
         path = os.path.join(cur_dir, filename)
-        with tf.gfile.Open(path) as f:
+        with tf.io.gfile.GFile(path) as f:
           text = f.read().strip().replace("<br />", " ")
         examples.append(InputExample(
             guid="unused_id", text_a=text, text_b=None, label=label))
@@ -367,13 +367,13 @@ class StsbProcessor(GLUEProcessor):
 
       # there are some incomplete lines in QNLI
       if len(line) <= a_column:
-        tf.logging.warning('Incomplete line, ignored.')
+        tf.compat.v1.logging.warning('Incomplete line, ignored.')
         continue
       text_a = line[a_column]
 
       if b_column is not None:
         if len(line) <= b_column:
-          tf.logging.warning('Incomplete line, ignored.')
+          tf.compat.v1.logging.warning('Incomplete line, ignored.')
           continue
         text_b = line[b_column]
       else:
@@ -383,7 +383,7 @@ class StsbProcessor(GLUEProcessor):
         label = self.get_labels()[0]
       else:
         if len(line) <= self.label_column:
-          tf.logging.warning('Incomplete line, ignored.')
+          tf.compat.v1.logging.warning('Incomplete line, ignored.')
           continue
         label = float(line[self.label_column])
       examples.append(
@@ -398,20 +398,20 @@ def file_based_convert_examples_to_features(
   """Convert a set of `InputExample`s to a TFRecord file."""
 
   # do not create duplicated records
-  if tf.gfile.Exists(output_file) and not FLAGS.overwrite_data:
-    tf.logging.info("Do not overwrite tfrecord {} exists.".format(output_file))
+  if tf.io.gfile.exists(output_file) and not FLAGS.overwrite_data:
+    tf.compat.v1.logging.info("Do not overwrite tfrecord {} exists.".format(output_file))
     return
 
-  tf.logging.info("Create new tfrecord {}.".format(output_file))
+  tf.compat.v1.logging.info("Create new tfrecord {}.".format(output_file))
 
-  writer = tf.python_io.TFRecordWriter(output_file)
+  writer = tf.io.TFRecordWriter(output_file)
 
   if num_passes > 1:
     examples *= num_passes
 
   for (ex_index, example) in enumerate(examples):
     if ex_index % 10000 == 0:
-      tf.logging.info("Writing example {} of {}".format(ex_index,
+      tf.compat.v1.logging.info("Writing example {} of {}".format(ex_index,
                                                         len(examples)))
 
     feature = convert_single_example(ex_index, example, label_list,
@@ -447,20 +447,20 @@ def file_based_input_fn_builder(input_file, seq_length, is_training,
 
 
   name_to_features = {
-      "input_ids": tf.FixedLenFeature([seq_length], tf.int64),
-      "input_mask": tf.FixedLenFeature([seq_length], tf.float32),
-      "segment_ids": tf.FixedLenFeature([seq_length], tf.int64),
-      "label_ids": tf.FixedLenFeature([], tf.int64),
-      "is_real_example": tf.FixedLenFeature([], tf.int64),
+      "input_ids": tf.io.FixedLenFeature([seq_length], tf.int64),
+      "input_mask": tf.io.FixedLenFeature([seq_length], tf.float32),
+      "segment_ids": tf.io.FixedLenFeature([seq_length], tf.int64),
+      "label_ids": tf.io.FixedLenFeature([], tf.int64),
+      "is_real_example": tf.io.FixedLenFeature([], tf.int64),
   }
   if FLAGS.is_regression:
-    name_to_features["label_ids"] = tf.FixedLenFeature([], tf.float32)
+    name_to_features["label_ids"] = tf.io.FixedLenFeature([], tf.float32)
 
-  tf.logging.info("Input tfrecord file {}".format(input_file))
+  tf.compat.v1.logging.info("Input tfrecord file {}".format(input_file))
 
   def _decode_record(record, name_to_features):
     """Decodes a record to a TensorFlow example."""
-    example = tf.parse_single_example(record, name_to_features)
+    example = tf.io.parse_single_example(serialized=record, features=name_to_features)
 
     # tf.Example only supports tf.int64, but the TPU only supports tf.int32.
     # So cast all int64 to int32.
@@ -486,7 +486,7 @@ def file_based_input_fn_builder(input_file, seq_length, is_training,
     d = tf.data.TFRecordDataset(input_file)
     # Shard the dataset to difference devices
     if input_context is not None:
-      tf.logging.info("Input pipeline id %d out of %d",
+      tf.compat.v1.logging.info("Input pipeline id %d out of %d",
           input_context.input_pipeline_id, input_context.num_replicas_in_sync)
       d = d.shard(input_context.num_input_pipelines,
                   input_context.input_pipeline_id)
@@ -498,7 +498,7 @@ def file_based_input_fn_builder(input_file, seq_length, is_training,
       d = d.repeat()
 
     d = d.apply(
-        tf.contrib.data.map_and_batch(
+        tf.data.experimental.map_and_batch(
             lambda record: _decode_record(record, name_to_features),
             batch_size=batch_size,
             drop_remainder=drop_remainder))
@@ -523,8 +523,8 @@ def get_model_fn(n_class):
           FLAGS, features, n_class, is_training)
 
     #### Check model parameters
-    num_params = sum([np.prod(v.shape) for v in tf.trainable_variables()])
-    tf.logging.info('#params: {}'.format(num_params))
+    num_params = sum([np.prod(v.shape) for v in tf.compat.v1.trainable_variables()])
+    tf.compat.v1.logging.info('#params: {}'.format(num_params))
 
     #### load pretrained text
     scaffold_fn = model_utils.init_from_checkpoint(FLAGS)
@@ -534,22 +534,22 @@ def get_model_fn(n_class):
       assert FLAGS.num_hosts == 1
 
       def metric_fn(per_example_loss, label_ids, logits, is_real_example):
-        predictions = tf.argmax(logits, axis=-1, output_type=tf.int32)
+        predictions = tf.argmax(input=logits, axis=-1, output_type=tf.int32)
         eval_input_dict = {
             'labels': label_ids,
             'predictions': predictions,
             'weights': is_real_example
         }
-        accuracy = tf.metrics.accuracy(**eval_input_dict)
+        accuracy = tf.compat.v1.metrics.accuracy(**eval_input_dict)
 
-        loss = tf.metrics.mean(values=per_example_loss, weights=is_real_example)
+        loss = tf.compat.v1.metrics.mean(values=per_example_loss, weights=is_real_example)
         return {
             'eval_accuracy': accuracy,
             'eval_loss': loss}
 
       def regression_metric_fn(
           per_example_loss, label_ids, logits, is_real_example):
-        loss = tf.metrics.mean(values=per_example_loss, weights=is_real_example)
+        loss = tf.compat.v1.metrics.mean(values=per_example_loss, weights=is_real_example)
         pearsonr = tf.contrib.metrics.streaming_pearson_correlation(
             logits, label_ids, weights=is_real_example)
         return {'eval_loss': loss, 'eval_pearsonr': pearsonr}
@@ -607,9 +607,9 @@ def get_model_fn(n_class):
       #### Creating host calls
       if not FLAGS.is_regression:
         label_ids = tf.reshape(features['label_ids'], [-1])
-        predictions = tf.argmax(logits, axis=-1, output_type=label_ids.dtype)
+        predictions = tf.argmax(input=logits, axis=-1, output_type=label_ids.dtype)
         is_correct = tf.equal(predictions, label_ids)
-        accuracy = tf.reduce_mean(tf.cast(is_correct, tf.float32))
+        accuracy = tf.reduce_mean(input_tensor=tf.cast(is_correct, tf.float32))
 
         monitor_dict["accuracy"] = accuracy
 
@@ -634,7 +634,7 @@ def get_model_fn(n_class):
 
 
 def main(_):
-  tf.logging.set_verbosity(tf.logging.INFO)
+  tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.INFO)
 
   #### Validate flags
   if FLAGS.save_steps is not None:
@@ -642,8 +642,8 @@ def main(_):
 
   if FLAGS.do_predict:
     predict_dir = FLAGS.predict_dir
-    if not tf.gfile.Exists(predict_dir):
-      tf.gfile.MakeDirs(predict_dir)
+    if not tf.io.gfile.exists(predict_dir):
+      tf.io.gfile.makedirs(predict_dir)
 
   processors = {
       "mnli_matched": MnliMatchedProcessor,
@@ -658,8 +658,8 @@ def main(_):
         "At least one of `do_train`, `do_eval, `do_predict` or "
         "`do_submit` must be True.")
 
-  if not tf.gfile.Exists(FLAGS.output_dir):
-    tf.gfile.MakeDirs(FLAGS.output_dir)
+  if not tf.io.gfile.exists(FLAGS.output_dir):
+    tf.io.gfile.makedirs(FLAGS.output_dir)
 
   task_name = FLAGS.task_name.lower()
 
@@ -700,11 +700,11 @@ def main(_):
     train_file_base = "{}.len-{}.train.tf_record".format(
         spm_basename, FLAGS.max_seq_length)
     train_file = os.path.join(FLAGS.output_dir, train_file_base)
-    tf.logging.info("Use tfrecord file {}".format(train_file))
+    tf.compat.v1.logging.info("Use tfrecord file {}".format(train_file))
 
     train_examples = processor.get_train_examples(FLAGS.data_dir)
     np.random.shuffle(train_examples)
-    tf.logging.info("Num of train samples: {}".format(len(train_examples)))
+    tf.compat.v1.logging.info("Num of train samples: {}".format(len(train_examples)))
 
     file_based_convert_examples_to_features(
         train_examples, label_list, FLAGS.max_seq_length, tokenize_fn,
@@ -724,7 +724,7 @@ def main(_):
     else:
       eval_examples = processor.get_test_examples(FLAGS.data_dir)
 
-    tf.logging.info("Num of eval samples: {}".format(len(eval_examples)))
+    tf.compat.v1.logging.info("Num of eval samples: {}".format(len(eval_examples)))
 
   if FLAGS.do_eval:
     # TPU requires a fixed batch size for all batches, therefore the number
@@ -756,14 +756,14 @@ def main(_):
 
     # Filter out all checkpoints in the directory
     steps_and_files = []
-    filenames = tf.gfile.ListDirectory(FLAGS.model_dir)
+    filenames = tf.io.gfile.listdir(FLAGS.model_dir)
 
     for filename in filenames:
       if filename.endswith(".index"):
         ckpt_name = filename[:-6]
         cur_filename = join(FLAGS.model_dir, ckpt_name)
         global_step = int(cur_filename.split("-")[-1])
-        tf.logging.info("Add {} to eval list.".format(cur_filename))
+        tf.compat.v1.logging.info("Add {} to eval list.".format(cur_filename))
         steps_and_files.append([global_step, cur_filename])
     steps_and_files = sorted(steps_and_files, key=lambda x: x[0])
 
@@ -783,20 +783,20 @@ def main(_):
 
       eval_results.append(ret)
 
-      tf.logging.info("=" * 80)
+      tf.compat.v1.logging.info("=" * 80)
       log_str = "Eval result | "
       for key, val in sorted(ret.items(), key=lambda x: x[0]):
         log_str += "{} {} | ".format(key, val)
-      tf.logging.info(log_str)
+      tf.compat.v1.logging.info(log_str)
 
     key_name = "eval_pearsonr" if FLAGS.is_regression else "eval_accuracy"
     eval_results.sort(key=lambda x: x[key_name], reverse=True)
 
-    tf.logging.info("=" * 80)
+    tf.compat.v1.logging.info("=" * 80)
     log_str = "Best result | "
     for key, val in sorted(eval_results[0].items(), key=lambda x: x[0]):
       log_str += "{} {} | ".format(key, val)
-    tf.logging.info(log_str)
+    tf.compat.v1.logging.info(log_str)
 
   if FLAGS.do_predict:
     eval_file_base = "{}.len-{}.{}.predict.tf_record".format(
@@ -814,7 +814,7 @@ def main(_):
         drop_remainder=False)
 
     predict_results = []
-    with tf.gfile.Open(os.path.join(predict_dir, "{}.tsv".format(
+    with tf.io.gfile.GFile(os.path.join(predict_dir, "{}.tsv".format(
         task_name)), "w") as fout:
       fout.write("index\tprediction\n")
 
@@ -823,7 +823,7 @@ def main(_):
           yield_single_examples=True,
           checkpoint_path=FLAGS.predict_ckpt)):
         if pred_cnt % 1000 == 0:
-          tf.logging.info("Predicting submission for example: {}".format(
+          tf.compat.v1.logging.info("Predicting submission for example: {}".format(
               pred_cnt))
 
         logits = [float(x) for x in result["logits"].flat]
@@ -847,9 +847,9 @@ def main(_):
     predict_json_path = os.path.join(predict_dir, "{}.logits.json".format(
         task_name))
 
-    with tf.gfile.Open(predict_json_path, "w") as fp:
+    with tf.io.gfile.GFile(predict_json_path, "w") as fp:
       json.dump(predict_results, fp, indent=4)
 
 
 if __name__ == "__main__":
-  tf.app.run()
+  tf.compat.v1.app.run()

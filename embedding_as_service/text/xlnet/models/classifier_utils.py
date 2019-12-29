@@ -130,12 +130,12 @@ def convert_single_example(ex_index, example, label_list, max_seq_length,
   else:
     label_id = example.label
   if ex_index < 5:
-    tf.logging.info("*** Example ***")
-    tf.logging.info("guid: %s" % (example.guid))
-    tf.logging.info("input_ids: %s" % " ".join([str(x) for x in input_ids]))
-    tf.logging.info("input_mask: %s" % " ".join([str(x) for x in input_mask]))
-    tf.logging.info("segment_ids: %s" % " ".join([str(x) for x in segment_ids]))
-    tf.logging.info("label: {} (id = {})".format(example.label, label_id))
+    tf.compat.v1.logging.info("*** Example ***")
+    tf.compat.v1.logging.info("guid: %s" % (example.guid))
+    tf.compat.v1.logging.info("input_ids: %s" % " ".join([str(x) for x in input_ids]))
+    tf.compat.v1.logging.info("input_mask: %s" % " ".join([str(x) for x in input_mask]))
+    tf.compat.v1.logging.info("segment_ids: %s" % " ".join([str(x) for x in segment_ids]))
+    tf.compat.v1.logging.info("label: {} (id = {})".format(example.label, label_id))
 
   feature = InputFeatures(
       input_ids=input_ids,

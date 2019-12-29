@@ -37,7 +37,7 @@ def construct_scalar_host_call(
 
         return tf.contrib.summary.all_summary_ops()
 
-  global_step_tensor = tf.reshape(tf.train.get_or_create_global_step(), [1])
+  global_step_tensor = tf.reshape(tf.compat.v1.train.get_or_create_global_step(), [1])
   other_tensors = [tf.reshape(monitor_dict[key], [1]) for key in metric_names]
 
   return host_call_fn, [global_step_tensor] + other_tensors
@@ -50,25 +50,25 @@ def two_stream_loss(FLAGS, features, labels, mems, is_training):
   mem_name = "mems"
   mems = mems.get(mem_name, None)
 
-  inp_k = tf.transpose(features["input_k"], [1, 0])
-  inp_q = tf.transpose(features["input_q"], [1, 0])
+  inp_k = tf.transpose(a=features["input_k"], perm=[1, 0])
+  inp_q = tf.transpose(a=features["input_q"], perm=[1, 0])
 
-  seg_id = tf.transpose(features["seg_id"], [1, 0])
+  seg_id = tf.transpose(a=features["seg_id"], perm=[1, 0])
 
   inp_mask = None
-  perm_mask = tf.transpose(features["perm_mask"], [1, 2, 0])
+  perm_mask = tf.transpose(a=features["perm_mask"], perm=[1, 2, 0])
 
   if FLAGS.num_predict is not None:
     # [num_predict x tgt_len x bsz]
-    target_mapping = tf.transpose(features["target_mapping"], [1, 2, 0])
+    target_mapping = tf.transpose(a=features["target_mapping"], perm=[1, 2, 0])
   else:
     target_mapping = None
 
   # target for LM loss
-  tgt = tf.transpose(features["target"], [1, 0])
+  tgt = tf.transpose(a=features["target"], perm=[1, 0])
 
   # target mask for LM loss
-  tgt_mask = tf.transpose(features["target_mask"], [1, 0])
+  tgt_mask = tf.transpose(a=features["target_mask"], perm=[1, 0])
 
   # construct xlnet config and save to model_dir
   xlnet_config = xlnet.XLNetConfig(FLAGS=FLAGS)
@@ -94,7 +94,7 @@ def two_stream_loss(FLAGS, features, labels, mems, is_training):
 
   initializer = xlnet_model.get_initializer()
 
-  with tf.variable_scope("model", reuse=tf.AUTO_REUSE):
+  with tf.compat.v1.variable_scope("model", reuse=tf.compat.v1.AUTO_REUSE):
     # LM loss
     lm_loss = modeling.lm_loss(
         hidden=output,
@@ -114,7 +114,7 @@ def two_stream_loss(FLAGS, features, labels, mems, is_training):
     tgt_mask = tf.cast(tgt_mask, tf.float32)
     lm_loss = tf.cast(lm_loss, tf.float32)
 
-  total_loss = tf.reduce_sum(lm_loss * tgt_mask) / tf.reduce_sum(tgt_mask)
+  total_loss = tf.reduce_sum(input_tensor=lm_loss * tgt_mask) / tf.reduce_sum(input_tensor=tgt_mask)
   monitor_dict["total_loss"] = total_loss
 
   return total_loss, new_mems, monitor_dict
@@ -133,11 +133,11 @@ def get_classification_loss(
     FLAGS, features, n_class, is_training):
   """Loss for downstream classification tasks."""
 
-  bsz_per_core = tf.shape(features["input_ids"])[0]
+  bsz_per_core = tf.shape(input=features["input_ids"])[0]
 
-  inp = tf.transpose(features["input_ids"], [1, 0])
-  seg_id = tf.transpose(features["segment_ids"], [1, 0])
-  inp_mask = tf.transpose(features["input_mask"], [1, 0])
+  inp = tf.transpose(a=features["input_ids"], perm=[1, 0])
+  seg_id = tf.transpose(a=features["segment_ids"], perm=[1, 0])
+  inp_mask = tf.transpose(a=features["input_mask"], perm=[1, 0])
   label = tf.reshape(features["label_ids"], [bsz_per_core])
 
   xlnet_config = xlnet.XLNetConfig(json_path=FLAGS.model_config_path)
@@ -152,7 +152,7 @@ def get_classification_loss(
 
   summary = xlnet_model.get_pooled_out(FLAGS.summary_type, FLAGS.use_summ_proj)
 
-  with tf.variable_scope("model", reuse=tf.AUTO_REUSE):
+  with tf.compat.v1.variable_scope("model", reuse=tf.compat.v1.AUTO_REUSE):
 
     if FLAGS.cls_scope is not None and FLAGS.cls_scope:
       cls_scope = "classification_{}".format(FLAGS.cls_scope)
@@ -167,7 +167,7 @@ def get_classification_loss(
         scope=cls_scope,
         return_logits=True)
 
-    total_loss = tf.reduce_mean(per_example_loss)
+    total_loss = tf.reduce_mean(input_tensor=per_example_loss)
 
     return total_loss, per_example_loss, logits
 
@@ -176,11 +176,11 @@ def get_regression_loss(
     FLAGS, features, is_training):
   """Loss for downstream regression tasks."""
 
-  bsz_per_core = tf.shape(features["input_ids"])[0]
+  bsz_per_core = tf.shape(input=features["input_ids"])[0]
 
-  inp = tf.transpose(features["input_ids"], [1, 0])
-  seg_id = tf.transpose(features["segment_ids"], [1, 0])
-  inp_mask = tf.transpose(features["input_mask"], [1, 0])
+  inp = tf.transpose(a=features["input_ids"], perm=[1, 0])
+  seg_id = tf.transpose(a=features["segment_ids"], perm=[1, 0])
+  inp_mask = tf.transpose(a=features["input_mask"], perm=[1, 0])
   label = tf.reshape(features["label_ids"], [bsz_per_core])
 
   xlnet_config = xlnet.XLNetConfig(json_path=FLAGS.model_config_path)
@@ -195,7 +195,7 @@ def get_regression_loss(
 
   summary = xlnet_model.get_pooled_out(FLAGS.summary_type, FLAGS.use_summ_proj)
 
-  with tf.variable_scope("model", reuse=tf.AUTO_REUSE):
+  with tf.compat.v1.variable_scope("model", reuse=tf.compat.v1.AUTO_REUSE):
     per_example_loss, logits = modeling.regression_loss(
         hidden=summary,
         labels=label,
@@ -203,7 +203,7 @@ def get_regression_loss(
         scope="regression_{}".format(FLAGS.task_name.lower()),
         return_logits=True)
 
-    total_loss = tf.reduce_mean(per_example_loss)
+    total_loss = tf.reduce_mean(input_tensor=per_example_loss)
 
     return total_loss, per_example_loss, logits
 
@@ -211,12 +211,12 @@ def get_regression_loss(
 def get_qa_outputs(FLAGS, features, is_training):
   """Loss for downstream span-extraction QA tasks such as SQuAD."""
 
-  inp = tf.transpose(features["input_ids"], [1, 0])
-  seg_id = tf.transpose(features["segment_ids"], [1, 0])
-  inp_mask = tf.transpose(features["input_mask"], [1, 0])
+  inp = tf.transpose(a=features["input_ids"], perm=[1, 0])
+  seg_id = tf.transpose(a=features["segment_ids"], perm=[1, 0])
+  inp_mask = tf.transpose(a=features["input_mask"], perm=[1, 0])
   cls_index = tf.reshape(features["cls_index"], [-1])
 
-  seq_len = tf.shape(inp)[0]
+  seq_len = tf.shape(input=inp)[0]
 
   xlnet_config = xlnet.XLNetConfig(json_path=FLAGS.model_config_path)
   run_config = xlnet.create_run_config(is_training, True, FLAGS)
@@ -236,17 +236,17 @@ def get_qa_outputs(FLAGS, features, is_training):
   p_mask = features["p_mask"]
 
   # logit of the start position
-  with tf.variable_scope("start_logits"):
-    start_logits = tf.layers.dense(
+  with tf.compat.v1.variable_scope("start_logits"):
+    start_logits = tf.compat.v1.layers.dense(
         output,
         1,
         kernel_initializer=initializer)
-    start_logits = tf.transpose(tf.squeeze(start_logits, -1), [1, 0])
+    start_logits = tf.transpose(a=tf.squeeze(start_logits, -1), perm=[1, 0])
     start_logits_masked = start_logits * (1 - p_mask) - 1e30 * p_mask
     start_log_probs = tf.nn.log_softmax(start_logits_masked, -1)
 
   # logit of the end position
-  with tf.variable_scope("end_logits"):
+  with tf.compat.v1.variable_scope("end_logits"):
     if is_training:
       # during training, compute the end logits based on the
       # ground truth of the start position
@@ -256,17 +256,17 @@ def get_qa_outputs(FLAGS, features, is_training):
                                dtype=tf.float32)
       start_features = tf.einsum("lbh,bl->bh", output, start_index)
       start_features = tf.tile(start_features[None], [seq_len, 1, 1])
-      end_logits = tf.layers.dense(
+      end_logits = tf.compat.v1.layers.dense(
           tf.concat([output, start_features], axis=-1), xlnet_config.d_model,
           kernel_initializer=initializer, activation=tf.tanh, name="dense_0")
       end_logits = tf.contrib.layers.layer_norm(
           end_logits, begin_norm_axis=-1)
 
-      end_logits = tf.layers.dense(
+      end_logits = tf.compat.v1.layers.dense(
           end_logits, 1,
           kernel_initializer=initializer,
           name="dense_1")
-      end_logits = tf.transpose(tf.squeeze(end_logits, -1), [1, 0])
+      end_logits = tf.transpose(a=tf.squeeze(end_logits, -1), perm=[1, 0])
       end_logits_masked = end_logits * (1 - p_mask) - 1e30 * p_mask
       end_log_probs = tf.nn.log_softmax(end_logits_masked, -1)
     else:
@@ -282,7 +282,7 @@ def get_qa_outputs(FLAGS, features, is_training):
       start_features = tf.tile(start_features[None],
                                [seq_len, 1, 1, 1])
       end_input = tf.concat([end_input, start_features], axis=-1)
-      end_logits = tf.layers.dense(
+      end_logits = tf.compat.v1.layers.dense(
           end_input,
           xlnet_config.d_model,
           kernel_initializer=initializer,
@@ -290,13 +290,13 @@ def get_qa_outputs(FLAGS, features, is_training):
           name="dense_0")
       end_logits = tf.contrib.layers.layer_norm(end_logits,
                                                 begin_norm_axis=-1)
-      end_logits = tf.layers.dense(
+      end_logits = tf.compat.v1.layers.dense(
           end_logits,
           1,
           kernel_initializer=initializer,
           name="dense_1")
       end_logits = tf.reshape(end_logits, [seq_len, -1, FLAGS.start_n_top])
-      end_logits = tf.transpose(end_logits, [1, 2, 0])
+      end_logits = tf.transpose(a=end_logits, perm=[1, 2, 0])
       end_logits_masked = end_logits * (
           1 - p_mask[:, None]) - 1e30 * p_mask[:, None]
       end_log_probs = tf.nn.log_softmax(end_logits_masked, -1)
@@ -319,7 +319,7 @@ def get_qa_outputs(FLAGS, features, is_training):
     return_dict["end_top_index"] = end_top_index
 
   # an additional layer to predict answerability
-  with tf.variable_scope("answer_class"):
+  with tf.compat.v1.variable_scope("answer_class"):
     # get the representation of CLS
     cls_index = tf.one_hot(cls_index, seq_len, axis=-1, dtype=tf.float32)
     cls_feature = tf.einsum("lbh,bl->bh", output, cls_index)
@@ -332,14 +332,14 @@ def get_qa_outputs(FLAGS, features, is_training):
     # note(zhiliny): no dependency on end_feature so that we can obtain
     # one single `cls_logits` for each sample
     ans_feature = tf.concat([start_feature, cls_feature], -1)
-    ans_feature = tf.layers.dense(
+    ans_feature = tf.compat.v1.layers.dense(
         ans_feature,
         xlnet_config.d_model,
         activation=tf.tanh,
         kernel_initializer=initializer, name="dense_0")
-    ans_feature = tf.layers.dropout(ans_feature, FLAGS.dropout,
+    ans_feature = tf.compat.v1.layers.dropout(ans_feature, FLAGS.dropout,
                                     training=is_training)
-    cls_logits = tf.layers.dense(
+    cls_logits = tf.compat.v1.layers.dense(
         ans_feature,
         1,
         kernel_initializer=initializer,
@@ -355,11 +355,11 @@ def get_qa_outputs(FLAGS, features, is_training):
 def get_race_loss(FLAGS, features, is_training):
   """Loss for downstream multi-choice QA tasks such as RACE."""
 
-  bsz_per_core = tf.shape(features["input_ids"])[0]
+  bsz_per_core = tf.shape(input=features["input_ids"])[0]
 
   def _transform_features(feature):
     out = tf.reshape(feature, [bsz_per_core, 4, -1])
-    out = tf.transpose(out, [2, 0, 1])
+    out = tf.transpose(a=out, perm=[2, 0, 1])
     out = tf.reshape(out, [-1, bsz_per_core * 4])
     return out
 
@@ -379,14 +379,14 @@ def get_race_loss(FLAGS, features, is_training):
       input_mask=inp_mask)
   summary = xlnet_model.get_pooled_out(FLAGS.summary_type, FLAGS.use_summ_proj)
 
-  with tf.variable_scope("logits"):
-    logits = tf.layers.dense(summary, 1,
+  with tf.compat.v1.variable_scope("logits"):
+    logits = tf.compat.v1.layers.dense(summary, 1,
         kernel_initializer=xlnet_model.get_initializer())
     logits = tf.reshape(logits, [bsz_per_core, 4])
 
     one_hot_target = tf.one_hot(label, 4)
     per_example_loss = -tf.reduce_sum(
-        tf.nn.log_softmax(logits) * one_hot_target, -1)
-    total_loss = tf.reduce_mean(per_example_loss)
+        input_tensor=tf.nn.log_softmax(logits) * one_hot_target, axis=-1)
+    total_loss = tf.reduce_mean(input_tensor=per_example_loss)
 
   return total_loss, per_example_loss, logits
