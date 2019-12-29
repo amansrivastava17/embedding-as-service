@@ -68,6 +68,7 @@ class Embeddings(object):
         return values, indices, dense_shape
 
     def load_model(self, model: str, model_path: str, max_seq_length: int):
+        spm_path_info = None
         g = tf.Graph()
         with g.as_default():
             hub_module = hub.Module(model_path)
@@ -83,11 +84,14 @@ class Embeddings(object):
                 self.sentences = tf.placeholder(tf.string, shape=[None])
                 self.use_outputs = hub_module(self.sentences)
                 init_op = tf.group([tf.global_variables_initializer(), tf.tables_initializer()])
+
         g.finalize()
         self.sess = tf.Session(graph=g)
         self.sess.run(init_op)
-        spm_path = self.sess.run(hub_module(signature="spm_path"))
-        self.sp_model.Load(spm_path)
+
+        if model == 'use_transformer_lite':
+            spm_path = self.sess.run(spm_path_info)
+            self.sp_model.Load(spm_path)
 
         self.model_name = model
         self.max_seq_length = max_seq_length
