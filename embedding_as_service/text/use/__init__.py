@@ -80,6 +80,7 @@ class Embeddings(object):
                         indices=self.input_placeholder.indices,
                         dense_shape=self.input_placeholder.dense_shape)
                 )
+                spm_path_info = hub_module(signature="spm_path")
             else:
                 self.sentences = tf.placeholder(tf.string, shape=[None])
                 self.use_outputs = hub_module(self.sentences, as_dict=True)
