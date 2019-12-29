@@ -8,3 +8,4 @@ smart_open==1.8.4
 sentencepiece==0.1.82
 tensorflow==1.14.0
 setuptools>=41.0.0
+sentencepiece==0.1.85
