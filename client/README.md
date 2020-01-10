@@ -70,12 +70,12 @@ $ pip install embedding-as-service-client # client
  
   
 #### 1. **Intialise encoder using supported embedding** and models from <a href="#-supported-embeddings-and-models">here</a>
-**If using** `embedding-as-service` **as a module**
+If using `embedding-as-service` **as a module**
 ```python  
 >>> from embedding_as_service.text.encode import Encoder  
 >>> en = Encoder(embedding='bert', model='bert_base_cased')  
 ```  
-**If using** `embedding-as-service` **as a server**
+If using `embedding-as-service` **as a server**
 ```bash
 # start the server by proving embedding, model, port, max_seq_length[default=256], num_workers[default=4]
 $ embedding-as-service-start --embedding bert --model bert_base_cased --port 8080 --max_seq_length 256
