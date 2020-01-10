@@ -1,2 +1,0 @@
-requests==2.21.0
-setuptools>=41.0.0

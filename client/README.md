@@ -63,7 +63,7 @@ Here you also need to install a client module `embedding-as-service-client`
 $ pip install embedding-as-service # server
 $ pip install embedding-as-service-client # client
 ```
-> Client module need not to be on Python 3.6, it support both Python2 and Python3
+> Client module need not to be on Python 3.6, it supports both Python2 and Python3
 
 <h2 align="center">⚡ ️Getting Started</h2> 
 <p align="right"><a href="#embedding-as-service"><sup>▴ Back to top</sup></a></p>

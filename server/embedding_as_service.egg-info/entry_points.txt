@@ -1,3 +1,0 @@
-[console_scripts]
-embedding-as-service-start = embedding_as_service:main
-
