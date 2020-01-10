@@ -43,27 +43,48 @@
   
 **Encoding/Embedding** is a upstream task of encoding any inputs in the form of text, image, audio, video, transactional data to fixed length vector. Embeddings are quite popular in the field of NLP, there has been various Embeddings models being proposed in recent years by researchers, some of the famous one are bert, xlnet, word2vec etc. The goal of this repo is to build one stop solution for all embeddings techniques available, here we are starting with popular text embeddings for now and later on we aim  to add as much technique for image, audio, video inputs also.  
   
-**Finally**, **`embedding-as-service`** help you to encode any given text to fixed length vector from supported embeddings and models.  
+**`embedding-as-service`** help you to encode any given text to fixed length vector from supported embeddings and models.  
   
 <h2 align="center">💾 Installation</h2>  
 <p align="right"><a href="#embedding-as-service"><sup>▴ Back to top</sup></a></p>
+
+Here we have given the capability to use `embedding-as-service` like a module or you can run it as a server and handle queries by installing client package `embedding-as-service-client`
   
-  
+#### Using `embedding-as-service` as module  
 Install the embedding-as-servive via `pip`.   
 ```bash  
 $ pip install embedding-as-service
 ```  
 > Note that the code MUST be running on **Python >= 3.6**. Again module does not support Python 2!  
   
+#### Using `embedding-as-service` as a server 
+Here you also need to install a client module `embedding-as-service-client`
+```bash
+$ pip install embedding-as-service # server
+$ pip install embedding-as-service-client # client
+```
+> Client module need not to be on Python 3.6, it support both Python2 and Python3
+
 <h2 align="center">⚡ ️Getting Started</h2> 
 <p align="right"><a href="#embedding-as-service"><sup>▴ Back to top</sup></a></p>
  
   
-#### 1. **Intialise encoder using supported embedding** and models from <a href="#-supported-embeddings-and-models">here</a>  
+#### 1. **Intialise encoder using supported embedding** and models from <a href="#-supported-embeddings-and-models">here</a>
+**If using** `embedding-as-service` **as a module**
 ```python  
 >>> from embedding_as_service.text.encode import Encoder  
 >>> en = Encoder(embedding='bert', model='bert_base_cased')  
 ```  
+**If using** `embedding-as-service` **as a server**
+```bash
+# start the server by proving embedding, model, port, max_seq_length[default=256], num_workers[default=4]
+$ embedding-as-service-start --embedding bert --model bert_base_cased --port 8080 --max_seq_length 256
+```
+```python
+>>> from embedding_as_service_client import EmbeddingClient
+>>> en = EmbeddingClient(host=<host_server_ip>, port=<host_port>)
+```
+
 #### 2. Get sentences **tokens embedding**  
 ```python 
 >>> vecs = en.encode(texts=['hello aman', 'how are you?'])  
