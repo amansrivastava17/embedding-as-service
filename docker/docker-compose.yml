@@ -8,3 +8,5 @@ services:
     hostname: python
     restart: always
     tty: true
+
+# write entry point by reading env
