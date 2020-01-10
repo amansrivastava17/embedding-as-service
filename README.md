@@ -73,7 +73,7 @@ $ pip install embedding-as-service-client # client
 If using `embedding-as-service` **as a module**
 ```python  
 >>> from embedding_as_service.text.encode import Encoder  
->>> en = Encoder(embedding='bert', model='bert_base_cased')  
+>>> en = Encoder(embedding='bert', model='bert_base_cased', max_seq_length=256)  
 ```  
 If using `embedding-as-service` **as a server**
 ```bash
@@ -119,24 +119,13 @@ array([[-0.33547154,  0.34566957,  1.1954105 , ...,  0.33702594,
 (2, 768) # batch x embedding_size  
 ```  
 
-#### 4. Use custom `max_seq_length`, default is 128  
-```python 
->>> en = Encoder(embedding='bert', model='bert_base_cased', max_seq_length=256)  
->>> vecs = en.encode(texts=['hello aman', 'how are you?'])  
->>> vecs  
-array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,  
- -0.5564591 ,  0.6454179 ], [ 0.53209245,  0.00526248, -0.71091074, ..., -0.5171917 , -0.40458363,  0.6779779 ]], dtype=float32)  
-  
->>> vecs.shape  
-(2, 256, 768) # batch x max_sequence_length x embedding_size  
-```  
-#### 5. Show embedding Tokens  
+#### 4. Show embedding Tokens  
 ```python  
 >>> en.tokenize(texts=['hello aman', 'how are you?'])  
 [['_hello', '_aman'], ['_how', '_are', '_you', '?']]  
 ```  
   
-#### 6. Using your own tokenizer  
+#### 5. Using your own tokenizer  
 ```python  
 >>> texts = ['hello aman!', 'how are you']  
   
