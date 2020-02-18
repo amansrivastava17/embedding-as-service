@@ -123,7 +123,7 @@ class Embeddings(object):
     def load_model(self, model: str, model_path: str, max_seq_length: int):
         try:
             model_file = [f for f in os.listdir(model_path) if os.path.isfile(os.path.join(model_path, f))]
-            f = open(os.path.join(model_path, model_file[0]), 'r')
+            f = open(os.path.join(model_path, model_file[0]), 'r',encoding="utf-8")
             for line in tqdm(f):
                 split_line = line.split()
                 word = split_line[0]
