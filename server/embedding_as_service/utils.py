@@ -130,11 +130,11 @@ def reduce_mean_max(vectors: np.ndarray, axis=None):
 
 
 def np_first(vectors: np.ndarray, axis=None):
-    return np.array(vectors)[0]
+    return np.array(vectors)[:, 0, :]
 
 
 def np_last(vectors: np.ndarray, axis=None):
-    return np.array(vectors)[-1]
+    return np.array(vectors)[:, -1, :]
 
 
 POOL_FUNC_MAP = {
