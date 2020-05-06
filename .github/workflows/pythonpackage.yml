@@ -25,7 +25,7 @@ jobs:
       working-directory: server
       run: |
         pip install pytest
-        pytest
+        python -m pytest tests/
 
 
   build-client:
@@ -50,4 +50,4 @@ jobs:
       working-directory: client
       run: |
         pip install pytest
-        pytest
+        python -m pytest tests/
