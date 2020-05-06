@@ -16,14 +16,13 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Change directory
-      run: |
-        cd server 
     - name: Install dependencies
+      working-directory: server
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Test with pytest
+      working-directory: server
       run: |
         pip install pytest
         pytest
@@ -42,14 +41,13 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Change directory
-      run: |
-        cd client 
     - name: Install dependencies
+      working-directory: client
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Test with pytest
+      working-directory: client
       run: |
         pip install pytest
         pytest
