@@ -118,7 +118,8 @@ class Embeddings(object):
     def load_model(self, model: str, model_path: str, max_seq_length: int):
         model_path = os.path.join(model_path, next(os.walk(model_path))[1][0])
         self.xlnet_config = xlnet.XLNetConfig(json_path=os.path.join(model_path, Embeddings.mode_config_path))
-        self.run_config = xlnet.create_run_config(is_training=True, is_finetune=True, FLAGS=Flags)
+        self.run_config = xlnet.create_run_config(is_training=False, is_finetune=False, FLAGS=Flags)
+        self.run_config.dropout = self.run_config.dropatt = 0.0
         self.load_tokenizer(model_path)
         self.max_seq_length = max_seq_length
         self.model_name = model
