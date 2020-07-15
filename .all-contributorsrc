@@ -63,7 +63,7 @@
         "doc",
         "infra"
         ]
-  },
+  }],
   "contributorsPerLine": 7,
   "projectName": "embedding-as-service",
   "projectOwner": "amansrivastava17",
