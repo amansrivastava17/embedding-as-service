@@ -21,7 +21,7 @@
              alt="GitHub license">  
   </a>
   <a href="https://github.com/amansrivastava17/embedding-as-service/graphs/contributors">  
-        <img src="https://img.shields.io/badge/all_contributors-5-blue.svg"  
+        <img src="https://img.shields.io/badge/all_contributors-9-blue.svg"  
              alt="Contributors">  
   </a>  
 </p>  
@@ -73,7 +73,7 @@ $ pip install embedding-as-service-client # client
 If using `embedding-as-service` **as a module**
 ```python  
 >>> from embedding_as_service.text.encode import Encoder  
->>> en = Encoder(embedding='bert', model='bert_base_cased')  
+>>> en = Encoder(embedding='bert', model='bert_base_cased', max_seq_length=256)  
 ```  
 If using `embedding-as-service` **as a server**
 ```bash
@@ -119,24 +119,13 @@ array([[-0.33547154,  0.34566957,  1.1954105 , ...,  0.33702594,
 (2, 768) # batch x embedding_size  
 ```  
 
-#### 4. Use custom `max_seq_length`, default is 128  
-```python 
->>> en = Encoder(embedding='bert', model='bert_base_cased', max_seq_length=256)  
->>> vecs = en.encode(texts=['hello aman', 'how are you?'])  
->>> vecs  
-array([[ 0.48388457, -0.01327741, -0.76577514, ..., -0.54265064,  
- -0.5564591 ,  0.6454179 ], [ 0.53209245,  0.00526248, -0.71091074, ..., -0.5171917 , -0.40458363,  0.6779779 ]], dtype=float32)  
-  
->>> vecs.shape  
-(2, 256, 768) # batch x max_sequence_length x embedding_size  
-```  
-#### 5. Show embedding Tokens  
+#### 4. Show embedding Tokens  
 ```python  
 >>> en.tokenize(texts=['hello aman', 'how are you?'])  
 [['_hello', '_aman'], ['_how', '_are', '_you', '?']]  
 ```  
   
-#### 6. Using your own tokenizer  
+#### 5. Using your own tokenizer  
 ```python  
 >>> texts = ['hello aman!', 'how are you']  
   
@@ -227,17 +216,22 @@ This software uses the following open source packages:
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://www.linkedin.com/in/aman-srivastava-a8bb1285/"><img src="https://avatars0.githubusercontent.com/u/5950398?v=4" width="100px;" alt="Aman Srivastava"/><br /><sub><b>Aman Srivastava</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=amansrivastava17" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=amansrivastava17" title="Documentation">📖</a> <a href="#infra-amansrivastava17" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
-    <td align="center"><a href="https://github.com/ashutoshsingh0223"><img src="https://avatars3.githubusercontent.com/u/40604544?v=4" width="100px;" alt="Ashutosh Singh"/><br /><sub><b>Ashutosh Singh</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=ashutoshsingh0223" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=ashutoshsingh0223" title="Documentation">📖</a> <a href="#infra-ashutoshsingh0223" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
-    <td align="center"><a href="https://chiragjn.github.io"><img src="https://avatars2.githubusercontent.com/u/10295418?v=4" width="100px;" alt="Chirag Jain"/><br /><sub><b>Chirag Jain</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=chiragjn" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=chiragjn" title="Documentation">📖</a> <a href="#infra-chiragjn" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
-    <td align="center"><a href="https://github.com/MrPranav101"><img src="https://avatars0.githubusercontent.com/u/43914392?v=4" width="100px;" alt="MrPranav101"/><br /><sub><b>MrPranav101</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=MrPranav101" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=MrPranav101" title="Documentation">📖</a> <a href="#infra-MrPranav101" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>    
-    <td align="center"><a href="https://www.linkedin.com/in/dhavaltaunk08/"><img src="https://avatars0.githubusercontent.com/u/31320833?v=4" width="100px;" alt="Dhaval Taunk"/><br /><sub><b>Dhaval Taunk</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=DhavalTaunk08" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=DhavalTaunk08" title="Documentation">📖</a> <a href="#infra-DhavalTaunk08" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://github.com/MrPranav101"><img src="https://avatars0.githubusercontent.com/u/43914392?v=4" width="100px;" alt=""/><br /><sub><b>MrPranav101</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=MrPranav101" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=MrPranav101" title="Documentation">📖</a> <a href="#infra-MrPranav101" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://www.linkedin.com/in/aman-srivastava-a8bb1285/"><img src="https://avatars0.githubusercontent.com/u/5950398?v=4" width="100px;" alt=""/><br /><sub><b>Aman Srivastava</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=amansrivastava17" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=amansrivastava17" title="Documentation">📖</a> <a href="#infra-amansrivastava17" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://chiragjn.github.io"><img src="https://avatars2.githubusercontent.com/u/10295418?v=4" width="100px;" alt=""/><br /><sub><b>Chirag Jain</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=chiragjn" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=chiragjn" title="Documentation">📖</a> <a href="#infra-chiragjn" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://github.com/ashutoshsingh0223"><img src="https://avatars3.githubusercontent.com/u/40604544?v=4" width="100px;" alt=""/><br /><sub><b>Ashutosh Singh</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=ashutoshsingh0223" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=ashutoshsingh0223" title="Documentation">📖</a> <a href="#infra-ashutoshsingh0223" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://www.linkedin.com/in/dhavaltaunk08/"><img src="https://avatars0.githubusercontent.com/u/31320833?v=4" width="100px;" alt=""/><br /><sub><b>Dhaval Taunk</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=DhavalTaunk08" title="Code">💻</a> <a href="https://github.com/amansrivastava17/embedding-as-service/commits?author=DhavalTaunk08" title="Documentation">📖</a> <a href="#infra-DhavalTaunk08" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://github.com/akoumjian"><img src="https://avatars3.githubusercontent.com/u/733988?v=4" width="100px;" alt=""/><br /><sub><b>Alec Koumjian</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/issues?q=author%3Aakoumjian" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://prasys.info"><img src="https://avatars2.githubusercontent.com/u/15159757?v=4" width="100px;" alt=""/><br /><sub><b>Pradeesh</b></sub></a><br /><a href="https://github.com/amansrivastava17/embedding-as-service/issues?q=author%3Aprasys" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
