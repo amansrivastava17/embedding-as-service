@@ -1,5 +1,4 @@
 class Flags:
-
     # Model
     model_config_path: str = None  # Model config path
     dropout: float = 0.1  # Dropout rate
@@ -11,7 +10,7 @@ class Flags:
 
     # Parameter initialization
     init: str = "normal"
-    init_std: float = 0.2   # Initialization std when init is normal.
+    init_std: float = 0.2  # Initialization std when init is normal.
     init_range: float = 0.1  # Initialization std when init is uniform.
 
     # I/O paths
@@ -44,13 +43,17 @@ class Flags:
     # Low layer: lr[l-1] = lr[l] * lr_layer_decay_rate.
 
     min_lr_ratio: float = 0.0  # min lr ratio for cos decay.
-    clip: float = 1.0   # Gradient clipping
+    clip: float = 1.0  # Gradient clipping
     max_save: int = 0  # Max number of checkpoints to save. Use 0 to save all.
     save_steps: int = None  # Save the model for every save_steps. If None, not to save any model.
     train_batch_size: int = 8  # Batch size for training
     weight_decay: float = 0.00  # Weight decay rate
     adam_epsilon: float = 1e-8  # Adam epsilon
     decay_method: str = "poly"  # poly or cos
+    mem_len: int = 0  # Number of steps to cache
+    same_length: bool = False  # Same length attention
+    reuse_len: int = 0  # How many tokens to be reused in the next batch.
+    bi_data: bool = False  # Use bidirectional data streams, i.e., forward & backward.
 
     # evaluation
     do_eval: bool = False  # whether to do eval
